@@ -8,7 +8,6 @@ from server.models import *
 class loginSerializer(serializers.Serializer):
     ticket = serializers.CharField(max_length=128)
 
-
 class loginView(APIView):
     def post(self, request):
         info = loginSerializer(data=request.data)
