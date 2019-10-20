@@ -4,7 +4,8 @@
     
     "pages/view_project/view_project",
     "pages/current_project/current_project",
-    "pages/me/me"
+    "pages/me/me",
+    "pages/project_details/project"
   ],
   "window": {
     "navigationBarTextStyle": "black",
