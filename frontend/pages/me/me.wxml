@@ -1,0 +1,9 @@
+<view class="page">
+    <view class="page__hd">
+        <view class="page__title">{{username}}的主页</view>
+        <view class="page__desc">主页描述</view>
+    </view>
+    <view class="page_bd">
+    <button class="weui-btn" type="default" id="myProject" bindtap="onClickMyProject">我的项目</button>
+    </view>
+</view>

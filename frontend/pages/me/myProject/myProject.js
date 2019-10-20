@@ -4,7 +4,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "username":"abc" 
+        "username":"abc"
     },
   
     /**
@@ -63,5 +63,4 @@ Page({
   
     },
   
-    
 })

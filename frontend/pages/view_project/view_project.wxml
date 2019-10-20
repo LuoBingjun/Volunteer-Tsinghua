@@ -1,0 +1,17 @@
+<view class="page">
+    <view class="page__hd">
+        <view class="page__title" wx:if="{{searchbar==true}}">
+            欢迎回来！{{username}}
+        </view>
+        <ul >
+            <view wx:for="{{projects}}" class="VBox projectBox">
+                <view style="margin:5px">{{item.name}}</view>
+                <view class="text_gray">描述：{{item.description}}</view>
+                <view class="HBox">
+                    <button id="{{index}}" class="default alignRight" bindtap="enterProject">查看></button>
+                </view>
+            </view>
+            <!--<view class ="cutline"></view>-->
+        </ul>
+    </view>
+</view>

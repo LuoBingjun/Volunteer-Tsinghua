@@ -4,7 +4,15 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "username":"abc"
+        "projects":[
+            {"name": "我是一个项目","description":"没有描述"},
+            {"name": "我也是一个项目","description":"懒得描述"},
+            {"name": "我不是一个项目","description":"上面那句话是假话"},
+            {"name": "我是一个项目","description":"没有描述"},
+            {"name": "我也是一个项目","description":"懒得描述"},
+            {"name": "我不是一个项目","description":"上面那句话是假话"}
+        ],
+        "searchbar":false
     },
   
     /**
@@ -62,6 +70,8 @@ Page({
     onShareAppMessage: function () {
   
     },
-  
-    
+    enterProject:function(e){
+        console.log(e.currentTarget.id);
+        
+    }
 })
