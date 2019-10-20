@@ -4,7 +4,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "username":"abc"
+
     },
   
     /**
@@ -63,8 +63,5 @@ Page({
   
     },
   
-    onClickMyProject: function (e) {
-        console.log("onClickMyProject!")
-        wx.navigateTo({"url":"myProject/myProject"})
-      }
+    
 })

@@ -4,14 +4,14 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "username":"abc"
+
     },
   
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-  
+
     },
   
     /**
@@ -61,10 +61,5 @@ Page({
      */
     onShareAppMessage: function () {
   
-    },
-  
-    onClickMyProject: function (e) {
-        console.log("onClickMyProject!")
-        wx.navigateTo({"url":"myProject/myProject"})
-      }
+    }
 })

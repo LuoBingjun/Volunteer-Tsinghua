@@ -8,7 +8,7 @@
                 <view style="margin:5px">{{item.name}}</view>
                 <view class="text_gray">描述：{{item.description}}</view>
                 <view class="HBox">
-                    <button id="{{index}}" class="default alignRight" bindtap="enterProject">查看></button>
+                    <button id="{{item.projectID}}" class="default alignRight" bindtap="enterProject">查看></button>
                 </view>
             </view>
             <!--<view class ="cutline"></view>-->
