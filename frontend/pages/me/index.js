@@ -63,5 +63,8 @@ Page({
   
     },
   
-    
+    onClickMyProject: function (e) {
+        console.log("ok!!")
+        wx.switchTab({"url":"view_project/index"})
+      }
 })
