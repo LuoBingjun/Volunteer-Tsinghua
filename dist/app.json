@@ -1,8 +1,9 @@
 {
   "pages": [
     "pages/login",
-    "pages/home/home",
-    "pages/home2/home"
+    "pages/view_project/index",
+    "pages/current_project/index",
+    "pages/me/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -21,11 +22,14 @@
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "list": [{
-      "pagePath": "pages/home/home",
-      "text": "首页"
+      "pagePath": "pages/view_project/index",
+      "text": "查看项目"
     }, {
-      "pagePath": "pages/home2/home",
-      "text": "另一个首页"
+      "pagePath": "pages/current_project/index",
+      "text": "正在进行的项目"
+    }, {
+      "pagePath": "pages/me/index",
+      "text": "我"
     }]
   }
 }
