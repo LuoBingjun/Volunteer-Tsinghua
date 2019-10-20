@@ -1,14 +1,15 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class User(models.Model):
     id = models.DecimalField('学生证号/工作证号', primary_key=True, max_digits=10, decimal_places=0)
     name = models.CharField('姓名', max_length=32)
-    department = models.CharField('单位/班级', max_length=32)
+    department = models.CharField('单位', max_length=32)
     email = models.EmailField('邮箱')
-    phone = models.DecimalField('电话', max_digits=11, decimal_places=0)
-    join_time = models.DateTimeField('创建时间')
+    phone = models.DecimalField('电话', null=True, max_digits=11, decimal_places=0)
+    join_time = models.DateTimeField('创建时间', auto_now_add=True)
 
 class ApplyRecord(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
