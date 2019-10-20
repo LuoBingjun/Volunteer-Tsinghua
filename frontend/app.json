@@ -1,9 +1,9 @@
 {
   "pages": [
     "pages/login",
-    "pages/view_project/index",
-    "pages/current_project/index",
-    "pages/me/index"
+    "pages/view_project/view_project",
+    "pages/current_project/current_project",
+    "pages/me/me"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -22,13 +22,13 @@
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "list": [{
-      "pagePath": "pages/view_project/index",
+      "pagePath": "pages/view_project/view_project",
       "text": "查看项目"
     }, {
-      "pagePath": "pages/current_project/index",
+      "pagePath": "pages/current_project/current_project",
       "text": "正在进行的项目"
     }, {
-      "pagePath": "pages/me/index",
+      "pagePath": "pages/me/me",
       "text": "我"
     }]
   }
