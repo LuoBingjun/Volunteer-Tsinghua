@@ -70,8 +70,8 @@ Page({
     onShareAppMessage: function () {
   
     },
-  
-    enterProject:function(){
+    enterProject:function(e){
+        console.log(e.currentTarget.id);
         
     }
 })

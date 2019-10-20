@@ -53,12 +53,12 @@ page{
     margin:20px 0px;
     height:2pt;
 }
-.Hbox
+.HBox
 {
     display:flex;
     flex-direction:row;
 }
-.Vbox
+.VBox
 {
     display:flex;
     flex-direction:column;
@@ -86,12 +86,14 @@ page{
 .text_gray{
     text-indent:2em;
     font-size: 10px;
-    color:#777777;
+    color:#998888;
 }
 .projectBox
 {
-    background:lightgrey;
+    background:#aaccaa;
     margin: 10px 20px;
     height:100px;
     border-style:outset;
+    border-radius: 4px;
+    border: 1px;
 }

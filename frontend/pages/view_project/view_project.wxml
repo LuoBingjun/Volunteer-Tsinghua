@@ -4,10 +4,12 @@
             欢迎回来！{{username}}
         </view>
         <ul >
-            <view wx:for="{{projects}}" class="Vbox projectBox">
-                <view>{{item.name}}</view>
-                <view class="text_gray">描述：{{item.description}}\n</view>
-                
+            <view wx:for="{{projects}}" class="VBox projectBox">
+                <view style="margin:5px">{{item.name}}</view>
+                <view class="text_gray">描述：{{item.description}}</view>
+                <view class="HBox">
+                    <button id="{{index}}" class="default alignRight" bindtap="enterProject">查看></button>
+                </view>
             </view>
             <!--<view class ="cutline"></view>-->
         </ul>
