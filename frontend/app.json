@@ -3,8 +3,7 @@
     "pages/login",
     "pages/view_project/view_project",
     "pages/current_project/current_project",
-    "pages/me/me",
-    "pages/me/myProject/myProject"
+    "pages/me/me"
   ],
   "window": {
     "navigationBarTextStyle": "black",
