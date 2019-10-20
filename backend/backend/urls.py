@@ -20,5 +20,4 @@ urlpatterns = [
     path(r'admin/', admin.site.urls),
     path(r'auth/', include('server.auth.urls')),
     path(r'project/', include('server.project.urls')),
-    path(r'apply/',include('server.apply.urls'))
 ]
