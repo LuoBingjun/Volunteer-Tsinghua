@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/login",
+    "pages/view_project/index",
+    "pages/current_project/index",
+    "pages/me/index"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "WeUI for 小程序",
+    "navigationBarBackgroundColor": "#EDEDED",
+    "backgroundColor": "#EDEDED"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  },
+  "style": "v2",
+  "debug": true,
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/view_project/index",
+      "text": "查看项目"
+    }, {
+      "pagePath": "pages/current_project/index",
+      "text": "正在进行的项目"
+    }, {
+      "pagePath": "pages/me/index",
+      "text": "我"
+    }]
+  }
+}
