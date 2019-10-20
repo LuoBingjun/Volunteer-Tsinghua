@@ -65,6 +65,6 @@ Page({
   
     onClickMyProject: function (e) {
         console.log("onClickMyProject!")
-        wx.switchTab({"url":"myProject/myProject"})
+        wx.navigateTo({"url":"myProject/myProject"})
       }
 })
