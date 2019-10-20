@@ -10,11 +10,11 @@ class User(models.Model):
     phone = models.DecimalField('电话', max_digits=11, decimal_places=0)
     join_time = models.DateTimeField('创建时间')
 
-class AapplyRecord(models.Model):
+class ApplyRecord(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     form = JSONField('报名表单')
-    submit_time = models.DateTimeField('提交时间')
+    submit_time = models.DateTimeField('提交时间',auto_now_add=True)
     checked = models.BooleanField('审核状态')
 
 class Project(models.Model):
