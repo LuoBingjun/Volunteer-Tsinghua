@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/login",
+    
     "pages/view_project/view_project",
     "pages/current_project/current_project",
     "pages/me/me"
