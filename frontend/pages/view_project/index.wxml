@@ -1,6 +1,15 @@
 <view class="page">
     <view class="page__hd">
-        <view class="page__title">欢迎回来！{{username}}</view>
-        <view class="page__desc">你得主页2空空荡荡，并且你无法往里面加任何东西</view>
+        <view class="page__title" wx:if="{{searchbar==true}}">
+            欢迎回来！{{username}}
+        </view>
+        <ul >
+            <view wx:for="{{projects}}" class="Vbox projectBox">
+                <view>{{item.name}}</view>
+                <view class="text_gray">描述：{{item.description}}\n</view>
+                
+            </view>
+            <!--<view class ="cutline"></view>-->
+        </ul>
     </view>
 </view>
