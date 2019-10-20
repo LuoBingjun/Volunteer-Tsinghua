@@ -5,12 +5,12 @@ Page({
      */
     data: {
         "projects":[
-            {"name": "我是一个项目","description":"没有描述"},
-            {"name": "我也是一个项目","description":"懒得描述"},
-            {"name": "我不是一个项目","description":"上面那句话是假话"},
-            {"name": "我是一个项目","description":"没有描述"},
-            {"name": "我也是一个项目","description":"懒得描述"},
-            {"name": "我不是一个项目","description":"上面那句话是假话"}
+            {"name": "我是一个项目","description":"没有描述","projectID":123},
+            {"name": "我也是一个项目","description":"懒得描述","projectID":143},
+            {"name": "我不是一个项目","description":"上面那句话是假话","projectID":179},
+            {"name": "我是一个项目","description":"没有描述","projectID":1245},
+            {"name": "我也是一个项目","description":"懒得描述","projectID":13},
+            {"name": "我不是一个项目","description":"上面那句话是假话","projectID":3}
         ],
         "searchbar":false
     },
@@ -72,7 +72,7 @@ Page({
     },
     enterProject:function(e){
         console.log(e.currentTarget.id)
-        wx.navigateTo({"url":"../project_details/project"})
+        wx.navigateTo({"url":"../project_details/project?projectID="+e.currentTarget.id})
         
     }
 })
