@@ -1,0 +1,6 @@
+<view class="page">
+    <view class="page__hd">
+        <view class="page__title">欢迎回来！{{username}}</view>
+        <view class="page__desc">你得主页空空荡荡，并且你无法往里面加任何东西</view>
+    </view>
+</view>
