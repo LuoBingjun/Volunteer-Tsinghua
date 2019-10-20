@@ -5,6 +5,5 @@
     </view>
     <view class="page_bd">
     <button class="weui-btn" type="default" id="myProject" bindtap="onClickMyProject">我的项目</button>
-    <navigator url="view_project/index" hover-class="navigator-hover">我的项目</navigator>
     </view>
 </view>

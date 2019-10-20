@@ -1,0 +1,9 @@
+<view class="page">
+    <view class="page__hd">
+        <view class="page__title">{{username}}的所有项目</view>
+        <view class="page__desc">所有项目描述</view>
+    </view>
+    <view class="page_bd">
+    
+    </view>
+</view>
