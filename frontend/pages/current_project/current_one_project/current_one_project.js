@@ -9,10 +9,7 @@ Page({
         "title":"项目1",
         "description":"这里有很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多总之非常多的描述",
         "requirement":["需求1","需求2","需求3"],
-        "other_info":"假装没有其他需求",
-        "can_signin":true,
-        "already_signin":false,
-        "already_passed":false,
+        "other_info":"假装没有其他需求"
     },
   
     /**
