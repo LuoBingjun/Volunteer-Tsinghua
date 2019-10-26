@@ -41,7 +41,7 @@ class loginView(APIView):
                 'id': userinfo['id'],
                 'department': userinfo['department']
             })
-            # response['Set-Cookie'] = 'sessionid={0}; Path=/'.format(request.session.session_key)
+            response['Set-Cookie'] = 'sessionid={0}; Path=/'.format(request.session.session_key)
             return response
         else:
             return Response(info.errors, status=400)
