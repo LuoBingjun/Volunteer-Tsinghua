@@ -41,7 +41,7 @@ class loginView(APIView):
                 'id': userinfo['id'],
                 'department': userinfo['department']
             })
-            response['Set-Cookie'] = 'sessionid={0};Path=/'.format(request.session.session_key)
+            # response['Set-Cookie'] = 'sessionid={0}; Path=/'.format(request.session.session_key)
             return response
         else:
             return Response(info.errors, status=400)
@@ -49,7 +49,7 @@ class loginView(APIView):
     def get_userinfo(self, ticket, ip):
         # response = requests.get('https://id.tsinghua.edu.cn/thuser/authapi/checkticket/{0}/{1}/{2}'.format(1234, ticket, ip))
         return {
-            'id': 2017013573,
+            'id': 2017111111,
             'name': '清小华',
             'department': '软件学院',
             'email': 'lbj17@mails.tsinghua.edu.cm'
