@@ -70,8 +70,16 @@ Page({
     onShareAppMessage: function () {
   
     },
-
-    signin:function(){
-        wx.navigateTo({"url":"/pages/submit/submit?projectID="+this.data.projectID});
+    signIn:function(e){
+        console.log("signIn")
+        
+    },
+    signOut:function(e){
+        console.log("signOut")
+        
+    },
+    onMessageSubmit:function(e){
+        console.log("onMessageSubmit")
+        
     }
 })

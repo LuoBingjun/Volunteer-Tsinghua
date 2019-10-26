@@ -4,6 +4,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        "userTotalWorkTime": 140,
         "projects":[
             {"name": "我是一个项目","description":"没有描述","projectID":123, "imageUrl": "img2.jpg"},
             {"name": "我也是一个项目","description":"懒得描述","projectID":143, "imageUrl": "img1.jpg"},

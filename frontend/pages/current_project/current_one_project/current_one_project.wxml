@@ -15,14 +15,17 @@
             {{other_info}}
         </view>
         <view class="cutline"></view>
-        <view wx:if="{{can_signin}}">
-            <button class="weui-btn" type="primary" bindtap="signin">我要报名</button>
+        <view style="margin:10px">
+            <button class="weui-btn" type="primary" bindtap="signIn">签到</button>
         </view>
-        <view wx:elif="{{already_signin}}">
-            <button class="weui-btn" type="primary" disabled="true">等待审核</button>
+
+        <view style="margin:10px">
+            <button class="weui-btn" type="primary" bindtap="signOut">签退</button>
         </view>
-        <view wx:elif="{{already_passed}}">
-            <button class="weui-btn" type="primary" disabled="true">审核已通过</button>
-        </view>
+        <form bindsubmit="onMessageSubmit">
+            <input id="message" placeholder="留言："/>
+            <button class="weui-btn" type="primary" form-type="submit">留言</button>
+        </form>
+
     </view>
 </view>
