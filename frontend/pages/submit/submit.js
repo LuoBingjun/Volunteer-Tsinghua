@@ -5,13 +5,20 @@ Page({
      */
     data: {
         "projectID":0,
+        "title":"我是一个莫得感情的项目",
         "form" : [
             {
                 "text":"姓名",
                 "type":"text"
             },{
                 "text":"献血量",
-                "type":"options",
+                "type":"radioBox",
+                "options":[
+                    "200","300","400"
+                ]
+            },{
+                "text":"献血量2",
+                "type":"checkBox",
                 "options":[
                     "200","300","400"
                 ]
