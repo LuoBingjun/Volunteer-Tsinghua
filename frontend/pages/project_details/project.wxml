@@ -1,9 +1,10 @@
-<view class="page">
+<view class="page" style="margin:10px">
+    <view wx:if="{{imageUrl}}" class="HBox">
+        <image src="{{imageUrl}}" class="sprinter"/>
+    </view>
     <view class="page__hd VBox">
-        <view wx:if="{{imageUrl}}">
-            <image src="{{imageUrl}}" />
-        </view>
         <view class="page__title">{{title}}</view>
+    </view>
         <view class="cutline"></view>   
         <view>简介：{{description}}</view>
         <view class="cutline"></view>
@@ -24,5 +25,5 @@
         <view wx:elif="{{already_passed}}">
             <button class="weui-btn" type="primary" disabled="true">审核已通过</button>
         </view>
-    </view>
+    
 </view>
