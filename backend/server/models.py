@@ -24,5 +24,5 @@ class Project(models.Model):
     cover = models.ImageField('封面图片', blank=True)
     require_num = models.PositiveIntegerField('需求人数')
     form = JSONField('报名表单', blank=True)
-    time = models.DateTimeField('创建时间')
+    time = models.DateTimeField('创建时间', auto_now_add=True)
     deadline = models.DateTimeField('截止日期')
