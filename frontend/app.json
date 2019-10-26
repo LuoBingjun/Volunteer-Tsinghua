@@ -4,11 +4,12 @@
     "pages/submit/submit",
     "pages/view_project/view_project",
     "pages/current_project/current_project",
+    "pages/current_project/current_one_project/current_one_project",
     "pages/me/me",
     "pages/project_details/project",
     "pages/me/myProject/myProject",
     "pages/me/myWorkTime/myWorkTime",
-    "pages/me/myProject/myOneProject/myOneProject"
+    "pages/me/myProject/myOneProject/myOneProject"    
   ],
   "window": {
     "navigationBarTextStyle": "black",

@@ -91,7 +91,7 @@ Page({
     },
     onClickOneProject: function(){
         console.log("current_projects onClickOneProject!")
-        wx.navigateTo({"url":"/pages/project_details/project"})
+        wx.navigateTo({"url":"current_one_project/current_one_project"})
     }
     
 })

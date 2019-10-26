@@ -1,0 +1,28 @@
+<view class="page">
+    <view class="page__hd VBox">
+        <view wx:if="{{imageUrl}}">
+            <image src="{{imageUrl}}" />
+        </view>
+        <view class="page__title">{{title}}</view>
+        <view class="cutline"></view>   
+        <view>简介：{{description}}</view>
+        <view class="cutline"></view>
+        <view wx:for="{{requirement}}">
+            {{index+1}}: {{item}}
+        </view>
+        <view class="cutline"></view>
+        <view>
+            {{other_info}}
+        </view>
+        <view class="cutline"></view>
+        <view wx:if="{{can_signin}}">
+            <button class="weui-btn" type="primary" bindtap="signin">我要报名</button>
+        </view>
+        <view wx:elif="{{already_signin}}">
+            <button class="weui-btn" type="primary" disabled="true">等待审核</button>
+        </view>
+        <view wx:elif="{{already_passed}}">
+            <button class="weui-btn" type="primary" disabled="true">审核已通过</button>
+        </view>
+    </view>
+</view>
