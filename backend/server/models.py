@@ -21,8 +21,8 @@ class ApplyRecord(models.Model):
 class Project(models.Model):
     title = models.CharField('项目', max_length=128)
     content = models.TextField('详情')
-    cover = models.ImageField('封面图片')
+    cover = models.ImageField('封面图片', blank=True)
     require_num = models.PositiveIntegerField('需求人数')
-    form = JSONField('报名表单')
+    form = JSONField('报名表单', blank=True)
     time = models.DateTimeField('创建时间')
     deadline = models.DateTimeField('截止日期')
