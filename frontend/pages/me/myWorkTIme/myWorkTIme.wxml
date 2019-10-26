@@ -3,4 +3,16 @@
         <view class="page__title">欢迎回来！{{username}}</view>
         <view class="page__desc">你得主页2空空荡荡，并且你无法往里面加任何东西</view>
     </view>
+    <view class="page_bd">
+        <ul >
+                <view wx:for="{{projects}}" class="VBox projectBox">
+                    <view style="background:url(\"{{item.imageUrl}}\");width:100%;height:100%;background-size: cover"
+                     bindtap="onClickOneProject">
+                        <view>{{item.name}}</view>
+                        <view class="text_gray">描述：{{item.description}}</view>
+                    </view>
+                </view>
+                <!--<view class ="cutline"></view>-->
+        </ul>
+    </view>
 </view>

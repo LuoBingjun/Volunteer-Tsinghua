@@ -4,7 +4,12 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "username":"abc"
+        username: "abc",
+        "projects":[
+            {"name": "我是一个项目","description":"没有描述","projectID":123, "imageUrl": "img2.jpg"},
+            {"name": "我也是一个项目","description":"懒得描述","projectID":143, "imageUrl": ""},
+            {"name": "我不是一个项目","description":"上面那句话是假话","projectID":179, "imageUrl": ""}
+        ]
     },
   
     /**
@@ -62,5 +67,10 @@ Page({
     onShareAppMessage: function () {
   
     },
+
+    onClickOneProject: function(){
+        console.log("current_projects onClickOneProject!")
+        wx.navigateTo({"url":"/pages/project_details/project"})
+    }
   
 })
