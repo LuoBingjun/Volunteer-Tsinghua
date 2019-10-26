@@ -1,0 +1,9 @@
+<view class="page">
+    <view class="page__hd VBox">
+        <view class="page__title">报名：{{title}}</view>
+        <view class="cutline"></view>
+        <view wx:for="{{form}}" class="HBox">
+            {{item.text}}:
+        </view>
+    </view>
+</view>

@@ -4,22 +4,26 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "projectID": 123,
-        //"imageUrl":"",
-        "title":"项目1",
-        "description":"这里有很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多总之非常多的描述",
-        "requirement":["需求1","需求2","需求3"],
-        "other_info":"假装没有其他需求",
-        "can_signin":true,
-        "already_signin":false,
-        "already_passed":false,
+        "projectID":0,
+        "form" : [
+            {
+                "text":"姓名",
+                "type":"text"
+            },{
+                "text":"献血量",
+                "type":"options",
+                "options":[
+                    "200","300","400"
+                ]
+            }
+        ]
     },
   
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+  
     },
   
     /**
@@ -47,7 +51,7 @@ Page({
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-        
+        console.log("ok2!!!")
     },
   
     /**
@@ -70,8 +74,14 @@ Page({
     onShareAppMessage: function () {
   
     },
-
-    signin:function(){
-        wx.navigateTo({"url":"/pages/submit/submit?projectID="+this.data.projectID});
-    }
+            /*
+        wx.showToast({
+            title: '报名成功',
+            icon: 'success',
+            duration: 3000
+        });
+        // post: ok
+        // this.setData({"can_signin":false,"already_signin":true})
+        */
+    
 })
