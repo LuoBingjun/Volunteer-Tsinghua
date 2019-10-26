@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.contrib import auth
+from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
+from rest_framework.generics import RetrieveAPIView
+
+from django.shortcuts import get_object_or_404
 
 
 from server.models import *
@@ -13,6 +16,7 @@ class loginSerializer(serializers.Serializer):
     ticket = serializers.CharField(max_length=128)
 
 class loginView(APIView):
+    @login_required
     def post(self, request):
         info = loginSerializer(data=request.data)
         if info.is_valid():
@@ -38,8 +42,7 @@ class loginView(APIView):
                 'id': userinfo['id'],
                 'department': userinfo['department']
             })
-            response['Set-Cookie'] = 'sessionid=' + \
-                request.session.session_key+';Path=/'
+            response['Set-Cookie'] = 'sessionid={0};Path=/'.format(request.session.session_key)
             return response
         else:
             return Response(info.errors, status=400)
@@ -52,3 +55,26 @@ class loginView(APIView):
             'department': '软件学院',
             'email': 'lbj17@mails.tsinghua.edu.cm'
         }
+
+class getUserSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = User
+        exclude = ['join_time']
+
+class putUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['department', 'email', 'phone']
+
+class userView(APIView, UpdateModelMixin):
+    @login_required
+    def put(self, request):
+        serializer = putUserSerializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    @login_required
+    def get(self, request):
+        serializer = getUserSerializer(request.user)
+        return Response(serializer.data)
