@@ -5,5 +5,6 @@
     </view>
     <view class="page_bd">
     <button class="weui-btn" type="default" id="myProject" bindtap="onClickMyProject">我的项目</button>
+    <button class="weui-btn" type="default" id="myWorkTime" bindtap="onClickMyWorkTime">我的工时</button>
     </view>
 </view>

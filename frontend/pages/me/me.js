@@ -66,5 +66,9 @@ Page({
     onClickMyProject: function (e) {
         console.log("onClickMyProject!")
         wx.navigateTo({"url":"myProject/myProject"})
+    },
+    onClickMyWorkTime: function (e) {
+        console.log("onClickMyProject!")
+        wx.navigateTo({"url":"myWorkTime/myWorkTime"})
       }
 })
