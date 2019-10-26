@@ -16,7 +16,6 @@ class loginSerializer(serializers.Serializer):
     ticket = serializers.CharField(max_length=128)
 
 class loginView(APIView):
-    @login_required
     def post(self, request):
         info = loginSerializer(data=request.data)
         if info.is_valid():
