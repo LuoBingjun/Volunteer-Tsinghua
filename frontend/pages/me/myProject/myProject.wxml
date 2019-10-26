@@ -4,6 +4,15 @@
         <view class="page__desc">所有项目描述</view>
     </view>
     <view class="page_bd">
-    
+        <ul >
+                <view wx:for="{{projects}}" class="VBox projectBox">
+                    <view style="background:url(\"{{item.imageUrl}}\");width:100%;height:100%;background-size: cover"
+                     bindtap="onClickOneProject">
+                        <view>{{item.name}}</view>
+                        <view class="text_gray">描述：{{item.description}}</view>
+                    </view>
+                </view>
+                <!--<view class ="cutline"></view>-->
+        </ul>
     </view>
 </view>

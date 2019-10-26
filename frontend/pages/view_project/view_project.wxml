@@ -3,15 +3,18 @@
         <view class="page__title" wx:if="{{searchbar==true}}">
             欢迎回来！{{username}}
         </view>
+        
+    </view>
+    <view class="page_bd">
         <ul >
-            <view wx:for="{{projects}}" class="VBox projectBox">
-                <view style="margin:5px">{{item.name}}</view>
-                <view class="text_gray">描述：{{item.description}}</view>
-                <view class="HBox">
-                    <button id="{{item.projectID}}" class="default alignRight" bindtap="enterProject">查看></button>
+                <view wx:for="{{projects}}" class="VBox projectBox">
+                    <view style="background:url(\"{{item.imageUrl}}\");width:100%;height:100%;background-size: cover"
+                     bindtap="enterProject">
+                        <view>{{item.name}}</view>
+                        <view class="text_gray">描述：{{item.description}}</view>
+                    </view>
                 </view>
-            </view>
-            <!--<view class ="cutline"></view>-->
+                <!--<view class ="cutline"></view>-->
         </ul>
     </view>
 </view>

@@ -4,7 +4,15 @@ Page({
      * 页面的初始数据
      */
     data: {
-
+        "projectID": 123,
+        "imageUrl":"/pages/current_project/img1.jpg",
+        "title":"项目1",
+        "description":"这里有很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多总之非常多的描述",
+        "requirement":["需求1","需求2","需求3"],
+        "other_info":"假装没有其他需求",
+        "can_signin":true,
+        "already_signin":false,
+        "already_passed":false,
     },
   
     /**
@@ -39,7 +47,7 @@ Page({
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-        console.log("ok2!!!")
+        
     },
   
     /**
@@ -61,5 +69,9 @@ Page({
      */
     onShareAppMessage: function () {
   
+    },
+
+    signin:function(){
+        wx.navigateTo({"url":"/pages/submit/submit?projectID="+this.data.projectID});
     }
 })

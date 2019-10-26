@@ -1,0 +1,30 @@
+<view class="page" style="margin:10px">
+    <view class="page__hd VBox">
+        <view class="page__title">报名：{{title}}</view>
+    </view>
+    <view class="cutline"></view>
+    <form bindsubmit="formSubmit">
+        <view wx:for="{{form}}">
+            {{item.text}}
+
+            <view wx:if="{{item.type=='text'}}">                        <!--  纯文本   -->
+                <div class="weui-cells">
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" placeholder="请输入文本"/>
+                        </div>
+                    </div>
+                </div>
+            </view>
+
+            <view wx:elif="{{item.type=='radioBox'}}">                   <!--  选择     -->
+                <radio-group name="{{index}}" class="VBox">
+                    <view wx:for="{{item.options}}" class="HBox">
+                        <radio value="{{index}}"/>{{item}}
+                    </view>
+                </radio-group>
+            </view>
+        </view>
+        <button formType="submit">我要报名</button>
+    </form>
+</view>

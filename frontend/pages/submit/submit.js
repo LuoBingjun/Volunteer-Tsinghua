@@ -4,12 +4,20 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "projects":[
-            {"name": "我是一个项目","description":"没有描述","projectID":123, "imageUrl": "img2.jpg"},
-            {"name": "我也是一个项目","description":"懒得描述","projectID":143, "imageUrl": ""},
-            {"name": "我不是一个项目","description":"上面那句话是假话","projectID":179, "imageUrl": ""}
-        ],
-        "searchbar":false
+        "projectID":0,
+        "title":"我是一个莫得感情的项目",
+        "form" : [
+            {
+                "text":"姓名",
+                "type":"text"
+            },{
+                "text":"献血量",
+                "type":"radioBox",
+                "options":[
+                    "200","300","400"
+                ]
+            }
+        ]
     },
   
     /**
@@ -67,9 +75,14 @@ Page({
     onShareAppMessage: function () {
   
     },
-    enterProject:function(e){
-        console.log(e.currentTarget.id)
-        wx.navigateTo({"url":"../project_details/project?projectID="+e.currentTarget.id})
-        
-    }
+            /*
+        wx.showToast({
+            title: '报名成功',
+            icon: 'success',
+            duration: 3000
+        });
+        // post: ok
+        // this.setData({"can_signin":false,"already_signin":true})
+        */
+    
 })
