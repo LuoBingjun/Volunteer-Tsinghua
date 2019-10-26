@@ -14,7 +14,7 @@ class User(models.Model):
 class ApplyRecord(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
-    form = JSONField('报名表单')
+    form = models.TextField('报名表单')
     submit_time = models.DateTimeField('提交时间',auto_now_add=True)
     checked = models.BooleanField('审核状态')
 
@@ -23,6 +23,6 @@ class Project(models.Model):
     content = models.TextField('详情')
     cover = models.ImageField('封面图片', blank=True)
     require_num = models.PositiveIntegerField('需求人数')
-    form = JSONField('报名表单', blank=True)
+    form = models.TextField('报名表单', blank=True)
     time = models.DateTimeField('创建时间')
     deadline = models.DateTimeField('截止日期')
