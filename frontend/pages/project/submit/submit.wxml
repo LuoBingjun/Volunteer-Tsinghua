@@ -2,34 +2,25 @@
     <view class="page__hd VBox">
         <view class="page__title">报名：{{title}}</view>
     </view>
-    <view class="cutline"></view>
     <form bindsubmit="formSubmit">
         <view wx:for="{{form}}">
-            {{item.text}}
+            <view class="weui-cell">{{item.text}}</view>
 
-            <view wx:if="{{item.type=='text'}}">                        <!--  纯文本   -->
-                <div class="weui-cells">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                            <input class="weui-input" type="text" placeholder="请输入文本"/>
-                        </div>
-                    </div>
-                </div>
+            <view wx:if="{{item.type=='text'}}" class="weui-cell">                        <!--  纯文本   -->
+                <input class="weui-input" type="text" placeholder="请输入文本"/>
             </view>
 
-            <view wx:elif="{{item.type=='radioBox'}}">                   <!--  选择     -->
-                <radio-group name="{{index}}" class="VBox">
+            <view wx:elif="{{item.type=='radioBox'}}">
+                <view wx:for="{{item.options}}" class="weui-cell">
+                    <div class="weui-cell__bd" name="{{index}}"> 
+                        <p> {{item}} </p>
+                    </div>
+                </view>
+                <!--<radio-group name="{{index}}" class="VBox">
                     <view wx:for="{{item.options}}" class="HBox">
                         <radio value="{{index}}"/>{{item}}
                     </view>
-                </radio-group>
-            </view>
-            <view wx:elif="{{item.type=='checkBox'}}">               <!--  选择     -->
-                <check-group name="{{index}}" class="VBox">
-                    <view wx:for="{{item.options}}" class="HBox">
-                        <input type="checkbox" value="{{index}}"/>{{item}}
-                    </view>
-                </check-group>
+                </radio-group>-->
             </view>
         </view>
         <button formType="submit">我要报名</button>
