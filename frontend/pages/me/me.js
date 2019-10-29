@@ -4,21 +4,44 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "username":"abc"
+        "username":"FTP server"
     },
   
-    /**
+    /*
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-  
+        var that = this;
+        /*
+        wx.request({
+            url: 'http://localhost:8000/image',// 我自己测试时用的接口地址
+            method: 'post',// 请求方式
+            data: { // 想接口提交的数据
+                page: 1,
+                pageSize: 2
+            },
+            header: {
+                'content-type': 'application/json'// 提交的数据类型
+            },
+            success(res) {  // 成功回调
+                console.log(res.data.result);
+                that.setData({
+                arrays: res.data.result,
+                })
+            },
+            fail() { // 失败回调
+                console.log('error');
+            }
+
+        })
+        */
     },
   
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function () {
-  
+        
     },
   
     /**
@@ -61,14 +84,10 @@ Page({
      */
     onShareAppMessage: function () {
   
-    },
-  
-    onClickMyProject: function (e) {
-        console.log("onClickMyProject!")
-        wx.navigateTo({"url":"myProject/myProject"})
-    },
-    onClickMyWorkTime: function (e) {
-        console.log("onClickMyProject!")
-        wx.navigateTo({"url":"myWorkTime/myWorkTime"})
-      }
+    },    
+
+    test: function(e)
+    {
+        wx.navigateTo({"url":"/pages/me/viewMyProject/viewMyProject?type="+e.currentTarget.id})
+    }
 })

@@ -24,6 +24,13 @@
                     </view>
                 </radio-group>
             </view>
+            <view wx:elif="{{item.type=='checkBox'}}">               <!--  选择     -->
+                <check-group name="{{index}}" class="VBox">
+                    <view wx:for="{{item.options}}" class="HBox">
+                        <input type="checkbox" value="{{index}}"/>{{item}}
+                    </view>
+                </check-group>
+            </view>
         </view>
         <button formType="submit">我要报名</button>
     </form>

@@ -1,10 +1,50 @@
 <view class="page">
     <view class="page__hd">
         <view class="page__title">{{username}}的主页</view>
-        <view class="page__desc">主页描述</view>
     </view>
-    <view class="page_bd">
-    <button class="weui-btn" type="default" id="myProject" bindtap="onClickMyProject">我的项目</button>
-    <button class="weui-btn" type="default" id="myWorkTime" bindtap="onClickMyWorkTime">我的工时</button>
+
+    <view class="weui-cell" catchtap="test" id="0">
+        <div class="weui-cell__bd">
+            <p>所有项目</p>
+        </div>
+        <div class="weui-cell__ft">
+            <view> > </view>
+        </div>
+    </view>
+
+    <view class="weui-cell" catchtap="test" id="1">
+        <div class="weui-cell__bd">
+            <p>审核中的项目</p>
+        </div>
+        <div class="weui-cell__ft">
+            <view> > </view>
+        </div>
+    </view>
+
+    <view class="weui-cell" catchtap="test" id="2">
+        <div class="weui-cell__bd">
+            <p>已审核项目</p>
+        </div>
+        <div class="weui-cell__ft">
+            <view> > </view>
+        </div>
+    </view>
+
+    <view class="weui-cell" catchtap="test" id="3">
+        <div class="weui-cell__bd">
+            <p>正在进行的项目</p>
+        </div>
+        <div class="weui-cell__ft">
+            <view> > </view>
+        </div>
+    </view>
+
+    <view class="weui-cell" catchtap="test" id="4">
+        <div class="weui-cell__bd">
+            <p>历史项目</p>
+        </div>
+        <div class="weui-cell__ft">
+            <view> > </view>
+        </div>
     </view>
 </view>

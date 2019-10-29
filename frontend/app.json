@@ -1,15 +1,11 @@
 {
   "pages": [
     "pages/login",
-    "pages/submit/submit",
-    "pages/view_project/view_project",
-    "pages/current_project/current_project",
-    "pages/current_project/current_one_project/current_one_project",
     "pages/me/me",
-    "pages/project_details/project",
-    "pages/me/myProject/myProject",
-    "pages/me/myWorkTime/myWorkTime",
-    "pages/me/myProject/myOneProject/myOneProject"    
+    "pages/me/viewMyProject/viewMyProject",
+    "pages/message/message",
+    "pages/home/home",
+    "pages/project/project"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -28,11 +24,11 @@
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "list": [{
-      "pagePath": "pages/view_project/view_project",
-      "text": "查看项目"
+      "pagePath": "pages/home/home",
+      "text": "主页"
     }, {
-      "pagePath": "pages/current_project/current_project",
-      "text": "正在进行的项目"
+      "pagePath": "pages/message/message",
+      "text": "消息"
     }, {
       "pagePath": "pages/me/me",
       "text": "我"

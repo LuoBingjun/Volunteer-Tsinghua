@@ -69,7 +69,7 @@ Page({
     },
     enterProject:function(e){
         console.log(e.currentTarget.id)
-        wx.navigateTo({"url":"../project_details/project?projectID="+e.currentTarget.id})
+        wx.navigateTo({"url":"/pages/project/project?projectID="+e.currentTarget.id})
         
     }
 })

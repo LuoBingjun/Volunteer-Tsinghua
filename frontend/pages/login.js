@@ -65,7 +65,6 @@ Page({
   },
 
   kindToggle: function (e) {
-    console.log("ok!!")
-    wx.switchTab({"url":"view_project/view_project"})
+    wx.switchTab({"url":"/pages/home/home"})
   }
 })
