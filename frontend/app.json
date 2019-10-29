@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/login",
+    "pages/fillUserInfo/fillUserInfo",
     "pages/me/me",
     "pages/me/viewMyProject/viewMyProject",
     "pages/message/message",
