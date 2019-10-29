@@ -93,7 +93,7 @@ Page({
 
   kindToggle: function (e) {
     console.log("ok!!")
-    wx.switchTab({"url":"view_project/view_project"})
+    wx.switchTab({"url":"/pages/home/home"})
   },
   onLoginPushed: function(e){
     //  跳转到助教“清华人”小程序
