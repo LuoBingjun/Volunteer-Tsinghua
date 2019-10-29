@@ -45,7 +45,7 @@ Page({
       },
       success(res) {  // 成功回调
         console.log('向后端发送数据成功！', res.data);
-        
+        // res.data 包含了后端传回的学号等信息。
 
       },
       fail() { // 失败回调
