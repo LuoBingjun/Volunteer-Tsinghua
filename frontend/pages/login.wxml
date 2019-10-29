@@ -3,5 +3,8 @@
         <view class="page__title">登陆</view>
         <view class="page__desc">志愿清华正在测试中，如果有任何问题，请憋着</view>
     </view>
-    <button class="weui-btn" type="primary" id="login" bindtap="kindToggle">现在不填信息也可以登陆，但是以后你就没那么走运了</button>
+    <view class="page_bd">
+        <button class="weui-btn" type="primary" id="login" bindtap="onLoginPushed">登录</button>
+    </view>
+    <button style = "margin:20px" class="weui-btn" type="primary" id="login" bindtap="kindToggle">现在不填信息也可以登陆，但是以后你就没那么走运了</button>
 </view>
