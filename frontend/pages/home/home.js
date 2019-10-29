@@ -4,22 +4,19 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "projectID": 123,
-        "imageUrl":"/pages/current_project/img1.jpg",
-        "title":"项目1",
-        "description":"这里有很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多总之非常多的描述",
-        "requirement":["需求1","需求2","需求3"],
-        "other_info":"假装没有其他需求",
-        "can_signin":true,
-        "already_signin":false,
-        "already_passed":false,
+        "projects":[
+            {"name": "我是一个项目","description":"没有描述","projectID":123, "imageUrl": "/src/img2.jpg"},
+            {"name": "我也是一个项目","description":"懒得描述","projectID":143, "imageUrl": ""},
+            {"name": "我不是一个项目","description":"上面那句话是假话","projectID":179, "imageUrl": ""}
+        ],
+        "searchbar":false
     },
   
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+  
     },
   
     /**
@@ -47,7 +44,7 @@ Page({
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-        
+        console.log("ok2!!!")
     },
   
     /**
@@ -70,8 +67,9 @@ Page({
     onShareAppMessage: function () {
   
     },
-
-    signin:function(){
-        wx.navigateTo({"url":"/pages/submit/submit?projectID="+this.data.projectID});
+    enterProject:function(e){
+        console.log(e.currentTarget.id)
+        wx.navigateTo({"url":"/pages/project/project?projectID="+e.currentTarget.id})
+        
     }
 })

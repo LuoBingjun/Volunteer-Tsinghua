@@ -9,6 +9,7 @@ App({
         console.log('App Hide')
     },
     globalData: {
-        hasLogin: false
+        hasLogin: false,
+        backEndUrl: "127.0.0.1:8000"
     }
 });

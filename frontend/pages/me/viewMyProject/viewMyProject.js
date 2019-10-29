@@ -4,10 +4,17 @@ Page({
      * 页面的初始数据
      */
     data: {
+        "type":"0",
         "projects":[
-            {"name": "我是一个项目","description":"没有描述","projectID":123, "imageUrl": "img2.jpg"},
-            {"name": "我也是一个项目","description":"懒得描述","projectID":143, "imageUrl": ""},
-            {"name": "我不是一个项目","description":"上面那句话是假话","projectID":179, "imageUrl": ""}
+            {
+                "projectID":"0",
+                "title":"我是标题",
+                "workTime":"-"
+            },{
+                "projectID":"1",
+                "title":"我也是标题",
+                "workTime":"10"
+            }
         ]
     },
   
@@ -16,6 +23,8 @@ Page({
      */
     onLoad: function (options) {
         var that = this;
+        console.log("WELL ",options)
+        this.setData(options)
         /*
         wx.request({
             url: 'http://localhost:8000/image',// 我自己测试时用的接口地址
@@ -89,9 +98,9 @@ Page({
     onShareAppMessage: function () {
   
     },
-    onClickOneProject: function(){
-        console.log("current_projects onClickOneProject!")
-        wx.navigateTo({"url":"current_one_project/current_one_project"})
-    }
-    
+
+    jumpPage: function(e)
+    {
+        wx.navigateTo({"url":"/pages/project/project?projectID="+e.currentTarget.id})
+    }  
 })

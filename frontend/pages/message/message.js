@@ -4,26 +4,44 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "projectID": 123,
-        //"imageUrl":"",
-        "title":"项目1",
-        "description":"这里有很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多总之非常多的描述",
-        "requirement":["需求1","需求2","需求3"],
-        "other_info":"假装没有其他需求"
+        "name":"FTP server"
     },
   
-    /**
+    /*
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        var that = this;
+        /*
+        wx.request({
+            url: 'http://localhost:8000/image',// 我自己测试时用的接口地址
+            method: 'post',// 请求方式
+            data: { // 想接口提交的数据
+                page: 1,
+                pageSize: 2
+            },
+            header: {
+                'content-type': 'application/json'// 提交的数据类型
+            },
+            success(res) {  // 成功回调
+                console.log(res.data.result);
+                that.setData({
+                arrays: res.data.result,
+                })
+            },
+            fail() { // 失败回调
+                console.log('error');
+            }
 
+        })
+        */
     },
   
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function () {
-  
+        
     },
   
     /**
@@ -44,7 +62,7 @@ Page({
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-        
+        console.log("ok2!!!")
     },
   
     /**
@@ -66,17 +84,5 @@ Page({
      */
     onShareAppMessage: function () {
   
-    },
-    signIn:function(e){
-        console.log("signIn")
-        
-    },
-    signOut:function(e){
-        console.log("signOut")
-        
-    },
-    onMessageSubmit:function(e){
-        console.log("onMessageSubmit")
-        
-    }
+    }    
 })
