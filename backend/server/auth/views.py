@@ -6,39 +6,35 @@ from rest_framework.generics import RetrieveAPIView
 
 from django.shortcuts import get_object_or_404
 
+import json
+import requests
 
 from server.models import *
 from server.utils import login_required
-# import requests
 
 
 class loginSerializer(serializers.Serializer):
-    ticket = serializers.CharField(max_length=128)
+    token = serializers.CharField(max_length=128)
 
 class loginView(APIView):
     def post(self, request):
         info = loginSerializer(data=request.data)
         if info.is_valid():
-            ticket = info.validated_data['ticket']
-            if request._request.META.__contains__('HTTP_X_FORWARDED_FOR'):
-                ip =  request._request.META['HTTP_X_FORWARDED_FOR']
-            else:
-                ip = request._request.META['REMOTE_ADDR']
-            userinfo = self.get_userinfo(ticket, ip)
-            user = User.objects.filter(pk=userinfo['id'])
+            token = info.validated_data['token']
+            userinfo = self.get_userinfo(token)
+            request.session.cycle_key()
+            request.session['user'] = int(userinfo['card'])
+            
+            user = User.objects.filter(pk=userinfo['card'])
             if user.exists():
-                user = user[0]
                 first_login = False
             else:
-                user = User(**userinfo)
-                user.save()
                 first_login = True
-            request.session.cycle_key()
-            request.session['user'] = int(user.id)
+            
             response = Response({
                 'first_login': first_login,
                 'name': userinfo['name'],
-                'id': userinfo['id'],
+                'id': userinfo['card'],
                 'department': userinfo['department']
             })
             response['Set-Cookie'] = 'sessionid={0}; Path=/'.format(request.session.session_key)
@@ -46,14 +42,19 @@ class loginView(APIView):
         else:
             return Response(info.errors, status=400)
 
-    def get_userinfo(self, ticket, ip):
-        # response = requests.get('https://id.tsinghua.edu.cn/thuser/authapi/checkticket/{0}/{1}/{2}'.format(1234, ticket, ip))
+    def get_userinfo(self, token):
+        # response = requests.post('https://alumni-test.iterator-traits.com/fake-id-tsinghua-proxy/api/user/session/token', data={'token':token})
+        # ret = json.loads(response.text)
         return {
-            'id': 2017111111,
+            'card': 2017111111,
             'name': '清小华',
             'department': '软件学院',
-            'email': 'lbj17@mails.tsinghua.edu.cm'
         }
+
+class postUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'name', 'department', 'email', 'phone']
 
 class getUserSerializer(serializers.ModelSerializer):
     class Meta: 
@@ -65,7 +66,13 @@ class putUserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['department', 'email', 'phone']
 
-class userView(APIView, UpdateModelMixin):
+class userView(APIView):
+    def post(self, request):
+        serializer = postUserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
     @login_required
     def put(self, request):
         serializer = putUserSerializer(request.user, data=request.data, partial=True)

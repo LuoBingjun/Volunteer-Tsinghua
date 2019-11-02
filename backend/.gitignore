@@ -130,3 +130,7 @@ dmypy.json
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+
+media
+
+server/migrations

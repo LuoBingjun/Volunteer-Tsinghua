@@ -11,6 +11,9 @@ from server.models import User, ApplyRecord, Project
 
 from django.shortcuts import get_object_or_404
 
+from server.utils import login_required
+
+# 管理员查看报名信息
 class ViewApplyInfoSerializer(serializers.ModelSerializer): 
     #submit_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S") 
     
@@ -31,6 +34,7 @@ class ViewApplyInfo(generics.ListAPIView):
         return _project.applyrecord_set.all()
 
 
+# 管理员做审核操作
 class CheckSerializer(serializers.Serializer):  
     apply_id = serializers.IntegerField(max_value=None, min_value=0) 
     checked = serializers.BooleanField()
@@ -51,3 +55,21 @@ class CheckOp(APIView):
                 return Response('applyinfo not be found', status=404)    
         else:
             return Response(info.errors, status=400) #数据格式错误
+
+# 普通用户查看自己某个项目的审核结果
+# 问题：客户端必须发送请求，才会发送给客户端信息吗？
+# 还是更新check的状态后可以直接发送给客户端
+# 问题 get的时候需不需要验证客户端传来的信息的正确性
+class ViewResultSerializer(serializers.Serializer): 
+    apply_id = serializers.IntegerField(max_value=None, min_value=0)
+    
+class ViewResult(APIView): 
+   
+    @login_required
+    def get(self, resquest):
+        _apply_id = self.request.GET.get("apply_id")
+        #项目存在是否判断
+        if ApplyRecord.objects.filter(id=_apply_id).exists():
+            return Response({"checked":ApplyRecord.objects.filter(id=_apply_id)[0].checked}, status=200)
+        else:
+            return Response('applyinfo not be found', status=404)
