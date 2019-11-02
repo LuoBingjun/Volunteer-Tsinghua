@@ -4,6 +4,10 @@ Page({
      * 页面的初始数据
      */
     data: {
+        department: "一二三学院",
+        id: "12345678",
+        name: "哈哈哈",
+
         "projects":[
             {"name": "我是一个项目","description":"没有描述","projectID":123, "imageUrl": "/src/img2.jpg"},
             {"name": "我也是一个项目","description":"懒得描述","projectID":143, "imageUrl": ""},
@@ -16,7 +20,8 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-  
+        console.log("fillUserInfo获取传来的用户信息：",options)
+        this.setData(options)
     },
   
     /**

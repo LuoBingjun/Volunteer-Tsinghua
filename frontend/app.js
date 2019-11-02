@@ -27,7 +27,12 @@ App({
         success(res) {  // 成功回调
             console.log('向后端发送数据成功！', res.data);
             // res.data 包含了后端传回的学号等信息。
-
+            //app.globalData.userInfo = JSON.parse(JSON.stringify(res.data))
+            // console.log('拷贝globalData.userInfo:', app.globalData.userInfo)
+            if (res.data.first_login){
+                wx.navigateTo({"url":"/pages/fillUserInfo/fillUserInfo?department="
+                +res.data.department + "&id="+ res.data.id + "&name="+ res.data.name})
+            }
         },
         fail() { // 失败回调
             console.log('向后端发送数据失败！');
@@ -39,6 +44,12 @@ App({
     },
     globalData: {
         hasLogin: false,
-        backEndUrl: "http://www.lbjthu.tech:8080"
+        backEndUrl: "http://www.lbjthu.tech:8080",
+        userInfo:{
+            department: "一二三学院",
+            first_login: true,
+            id: "12345678",
+            name: "哈哈哈"
+        }
     }
 });
