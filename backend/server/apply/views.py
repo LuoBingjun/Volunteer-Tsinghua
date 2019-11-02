@@ -12,7 +12,7 @@ class applySerializer(serializers.Serializer):
     project_id = serializers.IntegerField(max_value=None, min_value=0)
     
 
-
+# 用户报名接口 需要注意：不能重复报名 返回报名编号便于前端查询报名信息
 class fillformView(APIView):
     @login_required
     def post(self, request):
@@ -27,13 +27,19 @@ class fillformView(APIView):
             else:    
                 return Response('project not be found', status=404)
 
-            #if(!request.user.applyrecord_set)
-            _checked = False
+            # if _project.
 
+            # 验证重复报名 需要使用user和prject来在applyRecord中检索  
+            if ApplyRecord.objects.filter(user=request.user, project__id=project_id).exists():
+                return Response('applyinfo already exists', status=401)
 
-            apply_record = ApplyRecord(project=_project,  #request.session['user']#
+            # 项目存在且从未报名,则有下列操作
+
+            _checked = False  # 初始设定为未审核通过
+
+            # 建立新数据
+            apply_record = ApplyRecord(user=request.user, project=_project,
                         form=_form, checked=_checked)
-            apply_record.user_id = 3
             apply_record.save()
             return Response(status=200)
         else:
