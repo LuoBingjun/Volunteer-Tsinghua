@@ -6,6 +6,7 @@ Page({
     data: {
         "projectID":0,
         "title":"我是一个莫得感情的项目",
+        "status":"not_joined",
         "form" : [
             {
                 "text":"姓名",
@@ -14,10 +15,25 @@ Page({
                 "text":"献血量",
                 "type":"radioBox",
                 "options":[
-                    "200","300","400"
+                        {name: '100', value: '0'},
+                        {name: '200', value: '1', checked: true}
+                ]
+            },{
+                "text":"献血量",
+                "type":"checkBox",
+                "options":[
+                        {name: '100', value: '0'},
+                        {name: '200', value: '1', checked: true}
+                ]
+            },{
+                "text":"献血量",
+                "type":"radioBox",
+                "options":[
+                        {name: '100', value: '0'},
+                        {name: '200', value: '1', checked: true}
                 ]
             }
-        ]
+        ],
     },
   
     /**
@@ -75,14 +91,50 @@ Page({
     onShareAppMessage: function () {
   
     },
-            /*
+    radioChange: function (e) {
+        console.log('radio',e.currentTarget.id,'发生change事件，携带value值为：', e.detail.value);
+        var new_form=this.data.form;
+        var radioItems = new_form[e.currentTarget.id].options;
+        for (var i = 0, len = radioItems.length; i < len; ++i) {
+            radioItems[i].checked = radioItems[i].value == e.detail.value;
+        }
+
+        this.setData({
+            form: new_form
+        });
+    },
+
+    checkboxChange: function (e) {
+        console.log('checkbox发生change事件，携带value值为：', e.detail.value);
+        var new_form=this.data.form;
+        var values = e.detail.value
+        var checkboxItems = new_form[e.currentTarget.id].options;
+        for (var i = 0, lenI = checkboxItems.length; i < lenI; ++i) {
+            checkboxItems[i].checked = false;
+
+            for (var j = 0, lenJ = values.length; j < lenJ; ++j) {
+                if(checkboxItems[i].value == values[j]){
+                    checkboxItems[i].checked = true;
+                    break;
+                }
+            }
+        }
+
+        this.setData({
+            form: new_form
+        });
+    },
+
+    on_submit:function(e){
         wx.showToast({
             title: '报名成功',
             icon: 'success',
-            duration: 3000
+            duration: 2000
         });
-        // post: ok
-        // this.setData({"can_signin":false,"already_signin":true})
-        */
-    
+        this.setData({"status":"joined"});
+        setTimeout(function(){
+            console.log("返回主界面");
+            wx.navigateBack();
+        },2000);
+    }
 })
