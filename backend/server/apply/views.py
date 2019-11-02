@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from server.models import User, ApplyRecord, Project
 from server.utils import login_required
 
+import datetime
+
 class applySerializer(serializers.Serializer):  
     form = serializers.CharField(max_length=None, min_length=None, allow_blank=False, trim_whitespace=True)
     project_id = serializers.IntegerField(max_value=None, min_value=0)
@@ -22,14 +24,12 @@ class fillformView(APIView):
             project_id = info.validated_data['project_id']
 
             # 项目存在是否判断
-            if Project.objects.filter(id=project_id).exists():
-                _project = Project.objects.filter(id=project_id)[0]
+            if Project.objects.filter(id=project_id, deadline__gt=datetime.datetime.now()).exists():
+                _project = Project.objects.filter(id=project_id, deadline__gt=datetime.datetime.now())[0]
             else:    
                 return Response('project not be found', status=404)
 
-            # if _project.
-
-            # 验证重复报名 需要使用user和prject来在applyRecord中检索  
+            # 验证重复报名 需要使用user和prject来在applyRecord中检索
             if ApplyRecord.objects.filter(user=request.user, project__id=project_id).exists():
                 return Response('applyinfo already exists', status=401)
 
