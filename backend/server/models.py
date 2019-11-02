@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
@@ -16,7 +15,30 @@ class ApplyRecord(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     form = models.TextField('报名表单')
     submit_time = models.DateTimeField('提交时间',auto_now_add=True)
-    checked = models.BooleanField('审核状态')
+    status = models.CharField('审核状态', max_length=1, default='W', choices=[('W', '待审核'), ('S', '审核通过'), ('F', '审核不通过')])
+    # checked = models.BooleanField('审核状态', default=False)
+
+class JoinRecord(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    work_time = models.FloatField('工时')
+    sign_record = models.ManyToManyField('SignRecord')
+
+# 项目签到
+class SignProject(models.Model):
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    title = models.CharField('标题', max_length=128)
+    content = models.TextField('详情')
+    begin_time = models.DateTimeField('签到开始时间')
+    end_time = models.DateTimeField('签到结束时间')
+    # position = models.CharField(max_length=10)
+
+class SignRecord(models.Model):
+    join_record = models.ForeignKey('JoinRecord', on_delete=models.CASCADE)
+    sign_project = models.ForeignKey('SignProject', on_delete=models.CASCADE)
+    sign_in_time = models.DateTimeField('签到时间')
+    sign_out_time = models.DateTimeField('签退时间', blank=True)
+
 
 class Project(models.Model):
     title = models.CharField('项目', max_length=128)
@@ -25,4 +47,5 @@ class Project(models.Model):
     require_num = models.PositiveIntegerField('需求人数')
     form = models.TextField('报名表单', blank=True)
     time = models.DateTimeField('创建时间', auto_now_add=True)
-    deadline = models.DateTimeField('截止日期')
+    deadline = models.DateTimeField('报名截止时间')
+    finished = models.BooleanField('结项状态', default=False)
