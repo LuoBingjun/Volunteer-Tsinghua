@@ -21,8 +21,8 @@ class ApplyRecord(models.Model):
 class JoinRecord(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
-    work_time = models.FloatField('工时')
-    sign_record = models.ManyToManyField('SignRecord')
+    work_time = models.FloatField('工时', blank=True, null=True)
+    sign_record = models.ManyToManyField('SignRecord', blank=True)
 
 # 项目签到
 class SignProject(models.Model):
@@ -36,8 +36,8 @@ class SignProject(models.Model):
 class SignRecord(models.Model):
     join_record = models.ForeignKey('JoinRecord', on_delete=models.CASCADE)
     sign_project = models.ForeignKey('SignProject', on_delete=models.CASCADE)
-    sign_in_time = models.DateTimeField('签到时间')
-    sign_out_time = models.DateTimeField('签退时间', blank=True)
+    sign_in_time = models.DateTimeField('签到时间', auto_now_add=True)
+    sign_out_time = models.DateTimeField('签退时间', blank=True, null=True)
 
 
 class Project(models.Model):

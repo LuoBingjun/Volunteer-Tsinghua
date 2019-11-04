@@ -5,3 +5,6 @@ from server import models
 admin.site.register(models.User)
 admin.site.register(models.ApplyRecord)
 admin.site.register(models.Project)
+admin.site.register(models.JoinRecord)
+admin.site.register(models.SignProject)
+admin.site.register(models.SignRecord)
