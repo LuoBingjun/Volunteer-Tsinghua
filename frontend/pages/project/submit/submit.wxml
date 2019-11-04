@@ -4,11 +4,17 @@
     </view>
     <form bindsubmit="formSubmit">
         <view wx:for="{{form}}">
-            <view class="weui-cells__title">{{item.text}}</view>
+            <view class="weui-cells__title">
+                <label class="weui-cell__bd">
+                    <p>{{item.text}}</p>
+                </label>
+            </view>
 
             <view wx:if="{{item.type=='text'}}">
                 <view class="weui-cells weui-cells_after-title"></view>
-                <input class="weui-input" type="text" placeholder="请输入文本"/>
+                <view class="weui-cells">
+                    <input class="weui-input" type="text" placeholder="请输入文本"/>
+                </view>
             </view>
 
             <view wx:elif="{{item.type=='radioBox'}}">
