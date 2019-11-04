@@ -13,7 +13,7 @@ Page({
    */
   onLoad: function (options) 
   {
-    
+    console.log("login界面onLoad完成")
   },
 
   /**
@@ -26,14 +26,15 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    token = this.data.extraData.token
-    console.log("得到清华人小程序发回的token:",token)
+  onShow: function (options) {
+    var that = this;
+    console.log("login界面onShow开始")
+
+    /*
     var app=getApp();
     const loginUrl = `${app.globalData.backEndUrl}/auth/login`
     console.log("得到URL：",url)
 
-    var that = this;
     wx.request({
       url: loginUrl,
       method: 'post',// 请求方式
@@ -53,7 +54,7 @@ Page({
       }
     })
 
-
+    */
   },
 
   /**
@@ -99,7 +100,7 @@ Page({
     //  跳转到助教“清华人”小程序
     wx.navigateToMiniProgram(    
       {   
-        "appId": "wx9eaa87eb532c1f35",
+        "appId": "wx1ebe3b2266f4afe0",
         "path": "pages/index/index",
         "envVersion": "trial",
         "extraData": 

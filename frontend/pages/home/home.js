@@ -4,12 +4,15 @@ Page({
      * 页面的初始数据
      */
     data: {
+        "username":"FTP server",
         "projects":[
             {"name": "我是一个项目","description":"没有描述","projectID":123, "imageUrl": "/src/img2.jpg"},
             {"name": "我也是一个项目","description":"懒得描述","projectID":143, "imageUrl": ""},
             {"name": "我不是一个项目","description":"上面那句话是假话","projectID":179, "imageUrl": ""}
         ],
-        "searchbar":false
+        "searchbar":true,
+        inputShowed: false,
+        inputVal: ""
     },
   
     /**
@@ -71,5 +74,28 @@ Page({
         console.log(e.currentTarget.id)
         wx.navigateTo({"url":"/pages/project/project?projectID="+e.currentTarget.id})
         
+    },
+
+    
+    showInput: function () {
+        this.setData({
+            inputShowed: true
+        });
+    },
+    hideInput: function () {
+        this.setData({
+            inputVal: "",
+            inputShowed: false
+        });
+    },
+    clearInput: function () {
+        this.setData({
+            inputVal: ""
+        });
+    },
+    inputTyping: function (e) {
+        this.setData({
+            inputVal: e.detail.value
+        });
     }
 })

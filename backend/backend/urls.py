@@ -26,4 +26,5 @@ urlpatterns = [
     path(r'check/',include('server.check.urls')),
     path(r'worktime/',include('server.worktime.urls')),
     path(r'history/',include('server.history.urls')),
+    path(r'sign/',include('server.sign.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
