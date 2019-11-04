@@ -130,6 +130,7 @@ Page({
                           }
                         }
                     })
+                    return
                 }
                 wx.switchTab({"url":"/pages/home/home"})
             },
