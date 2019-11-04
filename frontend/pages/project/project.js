@@ -1,5 +1,4 @@
 Page({
-
     /**
      * 页面的初始数据
      */
@@ -19,7 +18,30 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+        var app=getApp();
+        const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${options.projectID}`
+        console.log("从project跳转到URL：",getUrl)
+        var that=this;
+        wx.request({
+            url: getUrl,
+            method: 'get',
+            header: {
+                'content-type': 'application/json', // 提交的数据类型
+                'cookie':app.globalData.cookies //读取cookie
+            },
+            success(res) {  // 成功回调
+                console.log("得到的数据为",res)
+                that.setData({
+                    'projectID':res.data.id,
+                    'imageUrl':res.data.cover,
+                    'title':res.data.title,
+                    'description':res.data.content,
+                })
+            },
+            fail() { // 失败回调
+                console.log('向后端发送数据失败！');
+            }
+            })
     },
   
     /**
@@ -33,7 +55,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-  
+
     },
   
     /**
