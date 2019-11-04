@@ -92,6 +92,7 @@ Page({
   
     },
     radioChange: function (e) {
+        if(this.data.status=='joined')return;
         console.log('radio',e.currentTarget.id,'发生change事件，携带value值为：', e.detail.value);
         var new_form=this.data.form;
         var radioItems = new_form[e.currentTarget.id].options;
@@ -105,6 +106,7 @@ Page({
     },
 
     checkboxChange: function (e) {
+        if(this.data.status=='joined')return;
         console.log('checkbox发生change事件，携带value值为：', e.detail.value);
         var new_form=this.data.form;
         var values = e.detail.value

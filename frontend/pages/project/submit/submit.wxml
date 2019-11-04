@@ -13,7 +13,7 @@
             <view wx:if="{{item.type=='text'}}">
                 <view class="weui-cells weui-cells_after-title"></view>
                 <view class="weui-cells">
-                    <input class="weui-input" type="text" placeholder="请输入文本"/>
+                    <input class="weui-input" type="text" placeholder="请输入文本" disabled="{{status=='not_joined'?false:true }}"/>
                 </view>
             </view>
 
@@ -48,7 +48,7 @@
             <button class="weui-btn" type="primary" formType="submit" bindtap="on_submit" >我要报名</button>
         </view>
         <view wx:elif="{{status=='joined'}}">
-            <button class="weui-button" type="primary" disabled="true">等待审核</button>
+            <button class="weui-button" type="primary" disabled="{{true}}">等待审核</button>
         </view>
     </form>
 </view>
