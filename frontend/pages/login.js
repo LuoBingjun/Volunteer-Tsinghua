@@ -103,6 +103,8 @@ Page({
               'token':'null'
             },
             success(res) {  // 成功回调
+              if(res.statusCode==200)
+              {
                 console.log("得到的cookies为",res.header['Set-Cookie'])
                 console.log(res)
                 if('data' in res)
@@ -114,6 +116,7 @@ Page({
                   app.globalData.cookies=res.header['Set-Cookie'];
                 }
                 return;
+              }
             },
             fail() { // 失败回调
                 console.log('向后端发送数据失败！');
