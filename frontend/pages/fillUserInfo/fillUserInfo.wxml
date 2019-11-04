@@ -1,11 +1,45 @@
 <view class="page">
     <view class="page__hd">
         <view class="page__title">
-            填写用户信息{{name}} 您的学号:{{id}} 您的院系:{{department}}
+            <view><p>来自{{department}}的{{name}}:</p></view>
+            <view><p>欢迎注册志愿清华！</p></view>
         </view>
         
     </view>
+
+
     <view class="page_bd">
-        
-    </view>
+        <view><p>请补充联系方式</p></view>
+        <form bindsubmit="formSubmit">
+            <view class="weui-cells__title">
+                <label class="weui-cell__bd">
+                    <p>手机号:</p>
+                </label>
+            </view>
+
+            <view>
+                <view class="weui-cells weui-cells_after-title"></view>
+                <view class="weui-cells">
+                    <input class="weui-input" type="text" name="phone" placeholder="请输入手机号"/>
+                </view>
+            </view>
+
+            <view class="weui-cells__title">
+                <label class="weui-cell__bd">
+                    <p>邮箱:</p>
+                </label>
+            </view>
+
+            <view>
+                <view class="weui-cells weui-cells_after-title"></view>
+                <view class="weui-cells">
+                    <input class="weui-input" type="text" name="email" placeholder="请输入邮箱地址"/>
+                </view>
+            </view>
+            <view>
+                <button class="weui-btn" type="primary" formType="submit">提交</button>
+            </view>
+        </form>
+    </view> 
+
 </view>

@@ -76,5 +76,25 @@ Page({
         console.log(e.currentTarget.id)
         wx.navigateTo({"url":"/pages/project/project?projectID="+e.currentTarget.id})
         
+    },
+    formSubmit: function(e){
+        console.log("fillUserInfo.js: formSubmit函数开始", e.detail.value)
+        let {phone, email} = e.detail.value
+        if(!phone || !email)
+        {
+            wx.showModal({
+                title: '提示',
+                content: '请输入手机号和邮箱',
+                success(res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                  } else if (res.cancel) {
+                    console.log('用户点击取消')
+                  }
+                }
+            })
+        }
+
+        
     }
 })
