@@ -24,22 +24,21 @@ class fillformView(APIView):
             project_id = info.validated_data['project_id']
 
             # 项目存在是否判断
-            if Project.objects.filter(id=project_id, deadline__gt=datetime.datetime.now()).exists():
-                _project = Project.objects.filter(id=project_id, deadline__gt=datetime.datetime.now())[0]
+            _a_record_for_project = Project.objects.filter(id=project_id, deadline__gt=datetime.datetime.now(), finished=False)
+            if _a_record_for_project.exists():
+                _project = _a_record_for_project[0]
             else:    
-                return Response('project not be found', status=404)
+                return Response({'error':'project not be found'}, status=404)
 
             # 验证重复报名 需要使用user和prject来在applyRecord中检索
             if ApplyRecord.objects.filter(user=request.user, project__id=project_id).exists():
-                return Response('applyinfo already exists', status=401)
+                return Response({'error':'applyinfo already exists'}, status=400)
 
             # 项目存在且从未报名,则有下列操作
 
-            _checked = False  # 初始设定为未审核通过
-
             # 建立新数据
             apply_record = ApplyRecord(user=request.user, project=_project,
-                        form=_form, checked=_checked)
+                        form=_form)
             apply_record.save()
             return Response(status=200)
         else:

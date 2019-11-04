@@ -7,7 +7,7 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from server.models import User, ApplyRecord, Project
+from server.models import User, ApplyRecord, Project, JoinRecord
 
 from django.shortcuts import get_object_or_404
 
@@ -46,13 +46,29 @@ class CheckOp(APIView):
         if info.is_valid():
             _apply_id = info.validated_data['apply_id']
             # 项目存在是否判断
-            if ApplyRecord.objects.filter(id=_apply_id).exists():
-                _apply = ApplyRecord.objects.filter(id=_apply_id)[0]
-                _apply.checked = info.validated_data['checked']
-                _apply.save()
-                return Response(status=200)
+            _a_record_for_id = ApplyRecord.objects.filter(id=_apply_id)
+            if _a_record_for_id.exists():
+                _apply = _a_record_for_id[0]
             else:    
-                return Response('applyinfo not be found', status=404)    
+                return Response({'error':'applyinfo not be found'}, status=404)
+
+            if(info.validated_data['checked']): # 审核通过
+                _apply.status = 'S'
+                # 审核通过添加到joinRecord
+                if not JoinRecord.objects.filter(user=_apply.user, project=_apply.project).exists():# 不可重复设置
+                    join_record = JoinRecord(user=_apply.user, project=_apply.project, work_time=0)
+                    join_record.save()
+            else:
+                _apply.status = 'F'
+
+                _a_record = JoinRecord.objects.filter(user=_apply.user, project=_apply.project)
+                if _a_record.exists():
+                    _a_record.delete()
+
+            
+            _apply.save() # 存储审核状态
+            
+            return Response(status=200)
         else:
             return Response(info.errors, status=400) #数据格式错误
 
@@ -66,10 +82,15 @@ class ViewResultSerializer(serializers.Serializer):
 class ViewResult(APIView): 
    
     @login_required
-    def get(self, resquest):
-        _apply_id = self.request.GET.get("apply_id")
-        #项目存在是否判断
-        if ApplyRecord.objects.filter(id=_apply_id).exists():
-            return Response({"checked":ApplyRecord.objects.filter(id=_apply_id)[0].checked}, status=200)
+    def get(self, request):
+        info = ViewResultSerializer(data=self.request.query_params)
+        if info.is_valid():
+            _apply_id = info.validated_data["apply_id"]
+            #项目存在是否判断
+            _set = ApplyRecord.objects.filter(id=_apply_id)
+            if _set.exists():
+                return Response({"审核状态":_set[0].status}, status=200)
+            else:
+                return Response({'error':'applyinfo not be found'}, status=404)
         else:
-            return Response('applyinfo not be found', status=404)
+            return Response(info.errors, status=400) #数据格式错误

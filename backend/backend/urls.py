@@ -24,4 +24,6 @@ urlpatterns = [
     path(r'project/', include('server.project.urls')),
     path(r'apply/', include('server.apply.urls')),
     path(r'check/',include('server.check.urls')),
+    path(r'worktime/',include('server.worktime.urls')),
+    path(r'history/',include('server.history.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
