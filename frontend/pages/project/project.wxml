@@ -12,10 +12,6 @@
         {{index+1}}: {{item}}
     </view>
     <view class="cutline"></view>
-    <view>
-        {{other_info}}
-    </view>
-    <view class="cutline"></view>
     <view wx:if="{{can_signin}}">
         <button class="weui-btn" type="primary" bindtap="signin">我要报名</button>
     </view>

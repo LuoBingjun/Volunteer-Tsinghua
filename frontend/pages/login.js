@@ -105,8 +105,8 @@ Page({
             success(res) {  // 成功回调
               if(res.statusCode==200)
               {
-                console.log("得到的cookies为",res.header['Set-Cookie'])
-                console.log(res)
+                console.log("得到的cookies为",res.header['Set-Cookie']);
+                //console.log(res);
                 if('data' in res)
                 {
                   app.globalData.name=res.data.name;
@@ -121,22 +121,23 @@ Page({
                 wx.showModal({
                   title: '错误',
                   content: JSON.stringify(res.data)
-              })
+                  });
               }
             },
             fail() { // 失败回调
-                console.log('向后端发送数据失败！');
-                return;
+              wx.showModal({
+                title: '错误',
+                content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+                });
             }
             })
     
   },
   onLoginPushed: function(e){
-
         // TODO: 下面几行是测试使用，跳过了登录，将来用下面登录的。
         wx.navigateTo({"url":"/pages/fillUserInfo/fillUserInfo?department="
                     +"软件学院" + "&id="+ "2017125112" + "&name="+ "清华小"})
-          
+
         /*
         //  跳转到助教“清华人”小程序
         wx.navigateToMiniProgram(    
