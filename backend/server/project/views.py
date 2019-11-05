@@ -35,10 +35,7 @@ class detailView(APIView):
             apply_records = ApplyRecord.objects.filter(user=request.user, project=project)
             if apply_records.exists():
                 apply_record = apply_records[0]
-                if apply_record.status == 'B':
-                    res['status'] = 'N'
-                else:
-                    res['status'] = apply_record.status
+                res['status'] = apply_record.status
             else:
                 if project.deadline >= datetime.now(timezone.utc):
                     res['status'] = 'A'
