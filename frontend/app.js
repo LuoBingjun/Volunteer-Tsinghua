@@ -13,7 +13,6 @@ App({
 
         var app=getApp();
         const loginUrl = `${app.globalData.backEndUrl}/auth/login`
-        console.log("得到URL：",loginUrl)
 
         wx.request({
         url: loginUrl,

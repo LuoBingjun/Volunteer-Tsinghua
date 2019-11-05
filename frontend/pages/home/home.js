@@ -6,7 +6,7 @@ Page({
     data: {
         "username":"FTP server",
         "projects":[
-            {"name": "我是一个项目","description":"没有描述","projectID":123, "imageUrl": "/src/img2.jpg"},
+            {"name": "我是一个项目","description":"没有描述","projectID":1, "imageUrl": "/src/img2.jpg"},
             {"name": "我也是一个项目","description":"懒得描述","projectID":143, "imageUrl": ""},
             {"name": "我不是一个项目","description":"上面那句话是假话","projectID":179, "imageUrl": ""}
         ],
@@ -19,7 +19,10 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-  
+        var app=getApp();
+        this.setData({
+            "username":app.globalData.name,
+        })
     },
   
     /**
@@ -71,9 +74,8 @@ Page({
   
     },
     enterProject:function(e){
-        console.log(e.currentTarget.id)
+        //console.log("-------"+e.currentTarget.id)
         wx.navigateTo({"url":"/pages/project/project?projectID="+e.currentTarget.id})
-        
     },
 
     

@@ -4,9 +4,9 @@ Page({
      * 页面的初始数据
      */
     data: {
-        department: "一二三学院",
-        id: "12345678",
-        name: "哈哈哈",
+        'department': "一二三学院",
+        'id': "1234567438",
+        'name': "哈哈哈",
 
         "projects":[
             {"name": "我是一个项目","description":"没有描述","projectID":123, "imageUrl": "/src/img2.jpg"},
@@ -78,8 +78,11 @@ Page({
         
     },
     formSubmit: function(e){
+        var that = this
         console.log("fillUserInfo.js: formSubmit函数开始", e.detail.value)
         let {phone, email} = e.detail.value
+
+        // 检测用户是否填写完全信息
         if(!phone || !email)
         {
             wx.showModal({
@@ -94,7 +97,46 @@ Page({
                 }
             })
         }
-
         
+
+        var app=getApp();
+        const userUrl = `${app.globalData.backEndUrl}/auth/user`
+        // 向后端发送填写信息请求
+        wx.request({
+            url: userUrl,
+            method: 'post',// 请求方式
+            data: { // 想接口提交的数据
+                'name': that.data.name,
+                'id': that.data.id,
+                'department': that.data.department,
+                'email': email,
+                'phone': phone
+            },
+            header: {
+                'content-type': 'application/json'// 提交的数据类型
+            },
+            success(res) {  // 成功回调
+                console.log('填写用户信息向后端发送请求成功', res.data);
+                if(res.statusCode != 200)
+                {
+                    wx.showModal({
+                        title: '错误',
+                        content: '手机号或邮箱格式有误',
+                        success(res) {
+                          if (res.confirm) {
+                            console.log('用户点击确定')
+                          } else if (res.cancel) {
+                            console.log('用户点击取消')
+                          }
+                        }
+                    })
+                    return
+                }
+                wx.switchTab({"url":"/pages/home/home"})
+            },
+            fail() { // 失败回调
+                console.log('填写用户信息向后端发送数据失败！');
+            }
+            })
     }
 })
