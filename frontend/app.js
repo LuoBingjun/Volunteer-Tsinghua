@@ -50,6 +50,7 @@ App({
             name: "哈哈哈",
             email: "lbj17@mails.tsinghua.edu.cm",
             phone: "13888888888"
-        }
+        },
+        cookies: "?"
     }
 });
