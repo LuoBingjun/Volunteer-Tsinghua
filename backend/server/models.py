@@ -15,7 +15,7 @@ class ApplyRecord(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     form = models.TextField('报名表单')
     submit_time = models.DateTimeField('提交时间',auto_now_add=True)
-    status = models.CharField('审核状态', max_length=1, default='W', choices=[('W', '待审核'), ('S', '审核通过'), ('F', '审核不通过')])
+    status = models.CharField('审核状态', max_length=1, default='D', choices=[('D', '待审核'), ('T', '审核通过'), ('B', '审核不通过')])
     # checked = models.BooleanField('审核状态', default=False)
 
 class JoinRecord(models.Model):
