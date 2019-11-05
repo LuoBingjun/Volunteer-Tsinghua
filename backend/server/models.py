@@ -45,6 +45,7 @@ class Project(models.Model):
     content = models.TextField('详情')
     cover = models.ImageField('封面图片', blank=True)
     require_num = models.PositiveIntegerField('需求人数')
+    requirements = models.TextField('需求')
     form = models.TextField('报名表单', blank=True)
     time = models.DateTimeField('创建时间', auto_now_add=True)
     deadline = models.DateTimeField('报名截止时间')
