@@ -1,12 +1,12 @@
 <view class="page">
     <view class="page__hd">
-        <view wx:if="{{type==0}}" class="page__title">所有项目</view>
-        <view wx:if="{{type==1}}" class="page__title">审核中的项目</view>
-        <view wx:if="{{type==2}}" class="page__title">已审核项目</view>
-        <view wx:if="{{type==3}}" class="page__title">正在进行的项目</view>
-        <view wx:if="{{type==4}}" class="page__title">历史项目</view>
+        <view wx:if="{{type=='ALL'}}" class="page__title">所有项目</view>
+        <view wx:if="{{type=='CHECKING'}}" class="page__title">审核中的项目</view>
+        <view wx:if="{{type=='CURRENT'}}" class="page__title">正在进行的项目</view>
+        <view wx:if="{{type=='HISTORY'}}" class="page__title">历史项目</view>
     </view>
-    <view wx:if="{{type==4}}" class="weui-cell">
+
+    <view wx:if="{{type=='HISTORY'}}" class="weui-cell">
         <div class="weui-cell__bd">
             <p> 项目名称 </p>
         </div>
@@ -14,12 +14,16 @@
             <view>工时</view>
         </div>
     </view>
+
+
     <view wx:for="{{projects}}" class="weui-cell">
-        <div class="weui-cell__bd" catchtap="jumpPage" id="{{item.projectID}}">
+        <div class="weui-cell__bd" catchtap="jumpPage" id="{{item.id}}">
             <p> {{item.title}} </p>
         </div>
-        <div wx:if="{{type==4}}" class="weui-cell__ft">
+        <!-- 这个需要修改：<div wx:if="{{type=='HISTORY'}}" class="weui-cell__ft">
             <view> {{item.workTime}} </view>
-        </div>
+        </div> -->
     </view>
+
+
 </view>
