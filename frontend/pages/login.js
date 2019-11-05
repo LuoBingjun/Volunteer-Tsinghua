@@ -117,6 +117,12 @@ Page({
                 }
                 return;
               }
+              else {
+                wx.showModal({
+                  title: '错误',
+                  content: JSON.stringify(res.data)
+              })
+              }
             },
             fail() { // 失败回调
                 console.log('向后端发送数据失败！');
