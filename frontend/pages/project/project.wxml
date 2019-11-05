@@ -1,6 +1,6 @@
 <view class="page" style="margin:10px">
-    <view wx:if="{{imageUrl}}" class="HBox">
-        <image src="{{imageUrl}}" class="sprinter"/>
+    <view wx:if="{{cover}}" class="HBox">
+        <image src="{{cover}}" class="sprinter"/>
     </view>
     <view class="page__hd VBox">
         <view class="page__title">{{title}}</view>

@@ -17,7 +17,7 @@
 
 
     <view wx:for="{{projects}}" class="weui-cell">
-        <div class="weui-cell__bd" catchtap="jumpPage" id="{{item.id}}">
+        <div class="weui-cell__bd" catchtap="jumpPage" id="{{item.project.id}}">
             <p> {{item.project.title}} </p>
         </div>
         <div wx:if="{{type=='HISTORY'}}" class="weui-cell__ft">

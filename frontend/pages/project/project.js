@@ -49,7 +49,7 @@ Page({
                     reqs.push(`最大报名人数为${res.data.require_num}人，报完即止。`);
                     that.setData({
                         'projectID':res.data.id,
-                        'imageUrl':res.data.cover,
+                        'cover':res.data.cover,
                         'title':res.data.title,
                         'description':res.data.content,
                         'requirement':reqs,

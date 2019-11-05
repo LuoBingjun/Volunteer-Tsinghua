@@ -131,6 +131,7 @@ Page({
 
     jumpPage: function(e)
     {
+        console.log("url是：: /pages/project/project?projectID="+e.currentTarget.id)
         wx.navigateTo({"url":"/pages/project/project?projectID="+e.currentTarget.id})
     }  
 })
