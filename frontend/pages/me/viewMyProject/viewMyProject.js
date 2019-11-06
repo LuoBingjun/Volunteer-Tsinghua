@@ -39,7 +39,7 @@ Page({
         let urlWhole = "null"
         if(that.data.type == "ALL")
         {
-            urlWhole = `${app.globalData.backEndUrl}/project/list`
+            urlWhole = `${app.globalData.backEndUrl}/my/allrecord`
         }
         else if(that.data.type == "CHECKING")
         {

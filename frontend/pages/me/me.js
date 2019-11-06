@@ -4,7 +4,13 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "username":"FTP server"
+        userInfo:{
+            department: "一二三学院",
+            id: "12345678",
+            name: "哈哈哈",
+            email: "lbj17@mails.tsinghua.edu.cm",
+            phone: "13888888888"
+        }
     },
   
     /*
@@ -12,29 +18,10 @@ Page({
      */
     onLoad: function (options) {
         var that = this;
-        /*
-        wx.request({
-            url: 'http://localhost:8000/image',// 我自己测试时用的接口地址
-            method: 'post',// 请求方式
-            data: { // 想接口提交的数据
-                page: 1,
-                pageSize: 2
-            },
-            header: {
-                'content-type': 'application/json'// 提交的数据类型
-            },
-            success(res) {  // 成功回调
-                console.log(res.data.result);
-                that.setData({
-                arrays: res.data.result,
-                })
-            },
-            fail() { // 失败回调
-                console.log('error');
-            }
-
+        var app = getApp()
+        that.setData({
+            userInfo: app.globalData.userInfo
         })
-        */
     },
   
     /**

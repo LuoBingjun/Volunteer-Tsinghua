@@ -134,11 +134,11 @@ Page({
     
   },
   onLoginPushed: function(e){
-        // TODO: 下面几行是测试使用，跳过了登录，将来用下面登录的。
-        wx.navigateTo({"url":"/pages/fillUserInfo/fillUserInfo?department="
-                    +"软件学院" + "&id="+ "2017125112" + "&name="+ "清华小"})
+    //     // TODO: 下面几行是测试使用，跳过了登录，将来用下面登录的。
+    //     wx.navigateTo({"url":"/pages/fillUserInfo/fillUserInfo?department="
+    //                 +"软件学院" + "&id="+ "2017126112" + "&name="+ "清华小"})
 
-        /*
+        
         //  跳转到助教“清华人”小程序
         wx.navigateToMiniProgram(    
           {   
@@ -158,6 +158,6 @@ Page({
               }
           } 
         )
-        */
+        
       }
 })

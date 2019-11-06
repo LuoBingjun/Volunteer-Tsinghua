@@ -25,12 +25,17 @@ App({
         },
         success(res) {  // 成功回调
             console.log('向后端发送数据成功！', res.data);
+            app.globalData.cookies=res.header['Set-Cookie'];
             // res.data 包含了后端传回的学号等信息。
             //app.globalData.userInfo = JSON.parse(JSON.stringify(res.data))
             // console.log('拷贝globalData.userInfo:', app.globalData.userInfo)
             if (res.data.first_login){
                 wx.navigateTo({"url":"/pages/fillUserInfo/fillUserInfo?department="
                 +res.data.department + "&id="+ res.data.id + "&name="+ res.data.name})
+            }
+            else
+            {
+                wx.switchTab({"url":"/pages/home/home"})
             }
         },
         fail() { // 失败回调
