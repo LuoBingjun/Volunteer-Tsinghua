@@ -13,7 +13,7 @@ from server.utils import login_required
 class historySerializer(serializers.ModelSerializer):     
     class Meta: 
         model = JoinRecord
-        fields = "__all__"  #全部显示
+        exclude = ['user']
         depth = 2 
 
 # 用户查看参加活动的历史记录
@@ -27,8 +27,8 @@ class historyView(generics.ListAPIView):
 class processSerializer(serializers.ModelSerializer):     
     class Meta: 
         model = JoinRecord
-        fields = "__all__"  #全部显示
-        depth = 2 
+        exclude = ['user']
+        depth = 2
 
 # 用户查看正在参加活动的记录
 class processView(generics.ListAPIView):
@@ -41,7 +41,7 @@ class processView(generics.ListAPIView):
 class applySerializer(serializers.ModelSerializer):     
     class Meta: 
         model = ApplyRecord
-        fields = "__all__"  #全部显示
+        exclude = ['user']
         depth = 2 
 
 # 用户查看正在待审核的记录
@@ -51,3 +51,17 @@ class applyView(generics.ListAPIView):
     @login_required
     def get_queryset(self):
         return ApplyRecord.objects.filter(user=self.request.user, project__finished=False).exclude(status='P')
+
+class allSerializer(serializers.ModelSerializer):     
+    class Meta: 
+        model = ApplyRecord
+        exclude = ['user']
+        depth = 2 
+
+# 用户查看正在待审核的记录
+class allView(generics.ListAPIView):
+    serializer_class = allSerializer
+    
+    @login_required
+    def get_queryset(self):
+        return ApplyRecord.objects.filter(user=self.request.user)
