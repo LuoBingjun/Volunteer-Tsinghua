@@ -1,0 +1,8 @@
+登录过程：
+现在的登录需要每次都登录(cookie不限时)
+1. 在app.js中的login请求的success返回设置全局变量cookies
+2. 在home.js中的onShow中通过cookies获取用户信息(即：发起请求/auth/user，并设置全局变量userInfo)
+3. 在各页面的onLoad或onShow函数设置本页面的用户信息
+(即：that.setData({
+            userInfo: app.globalData.userInfo
+        }))
