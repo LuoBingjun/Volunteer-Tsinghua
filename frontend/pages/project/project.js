@@ -4,7 +4,7 @@ Page({
      */
     data: {
         "projectID": 123,
-        "imageUrl":"/src/img1.jpg",
+        "cover":"/src/img1.jpg",
         "title":"项目1",
         "description":"这里有很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多总之非常多的描述",
         "requirement":["需求1","需求2","需求3"],
@@ -110,6 +110,7 @@ Page({
     },
 
     signin:function(){
-        wx.navigateTo({"url":"submit/submit?projectID="+this.data.projectID});
+        console.log("project.js:signin函数开始，projectID:",this.data.projectID)
+        wx.navigateTo({"url":"/pages/project/submit/submit?projectID="+this.data.projectID});
     }
 })

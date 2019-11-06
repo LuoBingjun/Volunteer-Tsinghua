@@ -6,7 +6,8 @@
     "pages/me/viewMyProject/viewMyProject",
     "pages/message/message",
     "pages/home/home",
-    "pages/project/project"
+    "pages/project/project",
+    "pages/project/submit/submit"
   ],
   "window": {
     "navigationBarTextStyle": "black",

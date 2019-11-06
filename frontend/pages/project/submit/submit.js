@@ -46,6 +46,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        console.log("submit.js onLoad函数开始,options:",options)
         var app=getApp();
         const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${options.projectID}`
         console.log("从project跳转到URL：",getUrl)
