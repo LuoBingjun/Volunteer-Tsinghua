@@ -1,15 +1,23 @@
 from django.db import models
 from django.http import JsonResponse
+from django.http import HttpResponse
 
 from rest_framework import generics
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+
 from django.shortcuts import get_object_or_404
-from server.models import User, ApplyRecord, Project, JoinRecord
+from server.models import User, ApplyRecord, Project, JoinRecord, SignRecord, SignProject
 from server.utils import login_required
 
+
+import xlwt
+from io import BytesIO
+import time,datetime
 import xlrd
+
 
 class ViewWorktimeSerializer(serializers.Serializer): 
     project_id = serializers.IntegerField(max_value=None, min_value=0)
@@ -29,6 +37,100 @@ class ViewWorktime(APIView):
             
         else:
             return Response(info.errors, status=400) #数据格式错误
+
+
+
+# 导出名单
+# class Export(APIView):
+
+#     def get(self, request):
+#         info = ViewWorktimeSerializer(data=self.request.query_params)
+#         info.is_valid(raise_exception=True)
+        
+#         _project_id=info.validated_data['project_id']
+#         queryset = Project.objects.all()
+#         _project = get_object_or_404(queryset, id=_project_id) #判断项目是否存在
+
+#         return export_excel(request)
+   
+
+
+# 导出名单
+
+def export_excel(request):
+
+    if request.method == 'GET':
+
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment;filename=workname.xls'
+    
+        # 创建一个文件对象
+        wb = xlwt.Workbook(encoding='utf8')
+        # 创建一个表
+        sheet = wb.add_sheet('namelist',cell_overwrite_ok=True)
+
+        # project_id
+        p_id=request.GET.get('project_id') 
+        # 根据projectid获取历次签到的title
+        signproject_set=SignProject.objects.filter(project__id=p_id).order_by('begin_time')
+
+        # 构建表头
+        sheet.write(0,0,'id')
+        sheet.write(0,1,'姓名')
+
+        _row=0 # 行 
+        _column=2 # 列
+
+        # 存储title，便于后续输入
+        signproject_title_dict = {}
+
+        for i in signproject_set:
+            sheet.write(_row,_column,i.title)
+            signproject_title_dict[i.id]=_column
+            _column=_column+1
+    
+        sheet.write(_row,_column,'总工时')
+
+        # 参加项目的所有人
+        joinrecord_set=JoinRecord.objects.filter(project__id=p_id)
+
+        _row=1
+        for i in joinrecord_set:
+            sheet.write(_row,0,i.user.id)
+            sheet.write(_row,1,i.user.name)
+
+            a_signrecord=SignRecord.objects.filter(join_record__id=i.id).order_by('sign_in_time')
+
+            alltime=0
+            for j in a_signrecord:
+                signal_worktime=0
+                if j.sign_in_time and j.sign_out_time:
+                    strtime_t1 = j.sign_in_time.strftime("%Y-%m-%d %H:%M:%S")
+                    datetime_t1 = time.strptime(strtime_t1, '%Y-%m-%d %H:%M:%S')
+                    t1 = time.mktime(datetime_t1)
+
+                    strtime_t2 = j.sign_out_time.strftime("%Y-%m-%d %H:%M:%S")
+                    datetime_t2 = time.strptime(strtime_t2, '%Y-%m-%d %H:%M:%S')
+                    t2 = time.mktime(datetime_t2)
+
+                    signal_worktime=round((t2-t1)/3600,2)
+                else:
+                    signal_worktime=0
+                alltime=alltime+signal_worktime
+                sheet.write(_row, signproject_title_dict[j.sign_project.id], signal_worktime)
+
+            sheet.write(_row, _column, alltime)
+            _row=_row+1
+
+
+        output = BytesIO()
+        wb.save(output)
+        output.seek(0)
+
+        response.write(output.getvalue())
+        return response
+    else:
+        return Response({"error": 'method wrong'},status=401)
 
 
 class importSerializer(serializers.Serializer): 

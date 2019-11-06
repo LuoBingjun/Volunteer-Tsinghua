@@ -32,6 +32,7 @@ class SignProject(models.Model):
     begin_time = models.DateTimeField('签到开始时间')
     end_time = models.DateTimeField('签到结束时间')
     # position = models.CharField(max_length=10)
+    
 
 class SignRecord(models.Model):
     join_record = models.ForeignKey('JoinRecord', on_delete=models.CASCADE)

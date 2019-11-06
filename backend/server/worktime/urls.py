@@ -3,5 +3,7 @@ from django.urls import path
 
 urlpatterns = [
     path(r'ViewWorktime', views.ViewWorktime.as_view()),
+    path(r'Export',views.export_excel),
     path(r'import', views.importView.as_view()),
 ]
+
