@@ -17,12 +17,12 @@
 
 
     <view wx:for="{{projects}}" class="weui-cell">
-        <div class="weui-cell__bd" catchtap="jumpPage" id="{{item.id}}">
-            <p> {{item.title}} </p>
+        <div class="weui-cell__bd" catchtap="jumpPage" id="{{item.project.id}}">
+            <p> {{item.project.title}} </p>
         </div>
-        <!-- 这个需要修改：<div wx:if="{{type=='HISTORY'}}" class="weui-cell__ft">
+        <div wx:if="{{type=='HISTORY'}}" class="weui-cell__ft">
             <view> {{item.workTime}} </view>
-        </div> -->
+        </div>
     </view>
 
 

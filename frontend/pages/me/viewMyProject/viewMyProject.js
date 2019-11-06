@@ -8,25 +8,21 @@ Page({
         "projects":[
             {
                 "id": 1,
-                "cover": "封面图片url",
-                "title": "标题",
-                "content": "内容",
-                "require_num": 5, // "需求人数"
-                "requirements": "需求" ,
-                "form": "表单",
-                "time": "发起时间",
-                "deadline": "截止时间"
-            },
-            {
-                "id": 1,
-                "cover": "封面图片url",
-                "title": "标题",
-                "content": "内容",
-                "require_num": 5, // "需求人数"
-                "requirements": "需求" ,
-                "form": "表单",
-                "time": "发起时间",
-                "deadline": "截止时间"
+                "form": "{}",
+                "submit_time": "2019-11-05T17:32:36.000059+08:00",
+                "status": "B",
+                "project":{
+                    "id": 1,
+                    "title": "3123123",
+                    "content": "31232131",
+                    "cover": "",
+                    "require_num": 5,
+                    "requirements": "123456",
+                    "form": "adasdadadadadad",
+                    "time": "2019-10-26T19:52:57+08:00",
+                    "deadline": "2019-11-06T06:00:00+08:00",
+                    "finished": false
+                }
             },
         ]
     },
@@ -47,15 +43,15 @@ Page({
         }
         else if(that.data.type == "CHECKING")
         {
-            urlWhole = `${app.globalData.backEndUrl}/project/list`
+            urlWhole = `${app.globalData.backEndUrl}/my/applyrecord`
         }
         else if(that.data.type == "CURRENT")
         {
-            urlWhole = `${app.globalData.backEndUrl}/project/list`
+            urlWhole = `${app.globalData.backEndUrl}/my/processrecord`
         }        
         else if(that.data.type == "HISTORY")
         {
-            urlWhole = `${app.globalData.backEndUrl}/project/list`
+            urlWhole = `${app.globalData.backEndUrl}/my/historyrecord`
         }
         else
         {
@@ -135,6 +131,7 @@ Page({
 
     jumpPage: function(e)
     {
+        console.log("url是：: /pages/project/project?projectID="+e.currentTarget.id)
         wx.navigateTo({"url":"/pages/project/project?projectID="+e.currentTarget.id})
     }  
 })

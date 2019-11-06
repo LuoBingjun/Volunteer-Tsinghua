@@ -1,6 +1,6 @@
 <view class="page" style="margin:10px">
-    <view wx:if="{{imageUrl}}" class="HBox">
-        <image src="{{imageUrl}}" class="sprinter"/>
+    <view wx:if="{{cover}}" class="HBox">
+        <image src="{{cover}}" class="sprinter"/>
     </view>
     <view class="page__hd VBox">
         <view class="page__title">{{title}}</view>
@@ -12,13 +12,19 @@
         {{index+1}}: {{item}}
     </view>
     <view class="cutline"></view>
-    <view wx:if="{{can_signin}}">
+    <view wx:if="{{status=='F'}}">
+        <button class="weui-btn" type="primary" disabled="true">已经结束</button>
+    </view>
+    <view wx:elif="{{status=='W'}}">
+        <button class="weui-btn" type="primary" disabled="true">正在审核</button>
+    </view>
+    <view wx:elif="{{status=='P'}}">
+        <button class="weui-btn" type="primary" disabled="true">正在进行</button>
+    </view>
+    <view wx:elif="{{status=='N'}}">
+        <button class="weui-btn" type="primary" disabled="true">无法报名</button>
+    </view>
+    <view wx:elif="{{status=='A'}}">
         <button class="weui-btn" type="primary" bindtap="signin">我要报名</button>
-    </view>
-    <view wx:elif="{{already_signin}}">
-        <button class="weui-btn" type="primary" disabled="true">等待审核</button>
-    </view>
-    <view wx:elif="{{already_passed}}">
-        <button class="weui-btn" type="primary" disabled="true">审核已通过</button>
     </view>
 </view>

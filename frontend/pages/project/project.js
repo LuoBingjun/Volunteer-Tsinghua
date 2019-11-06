@@ -8,17 +8,30 @@ Page({
         "title":"项目1",
         "description":"这里有很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多总之非常多的描述",
         "requirement":["需求1","需求2","需求3"],
-        "can_signin":true,
-        "already_signin":false,
-        "already_passed":false,
+        "status":"A"
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {
+    onLoad: function (options) {        
+        this.setData({'projectID':options.projectID})
+    },
+  
+    /**
+     * 生命周期函数--监听页面初次渲染完成
+     */
+    onReady: function () {
+  
+    },
+  
+    /**
+     * 生命周期函数--监听页面显示
+     */
+    onShow: function () {
+        console.log("烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫")
         var app=getApp();
-        const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${options.projectID}`
+        const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${this.data.projectID}`
         console.log("从project跳转到URL：",getUrl)
         var that=this;
         wx.request({
@@ -36,11 +49,13 @@ Page({
                     reqs.push(`最大报名人数为${res.data.require_num}人，报完即止。`);
                     that.setData({
                         'projectID':res.data.id,
-                        'imageUrl':res.data.cover,
+                        'cover':res.data.cover,
                         'title':res.data.title,
                         'description':res.data.content,
                         'requirement':reqs,
+                        'status':res.data.status
                     });
+                    console.log("Status为：",that.data.status)
                 }
                 else 
                 {
@@ -57,20 +72,6 @@ Page({
                     });
             }
             })
-    },
-  
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady: function () {
-  
-    },
-  
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function () {
-
     },
   
     /**

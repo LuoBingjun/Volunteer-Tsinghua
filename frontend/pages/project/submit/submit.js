@@ -62,7 +62,7 @@ Page({
                 if(res.statusCode==200)
                 {
                     that.setData({
-                        "projectID":res.projectID,
+                        "projectID":options.projectID,
                         "status":"not_joined",
                         "title":res.data.title,
                         "form":JSON.parse(res.data.form),
@@ -185,23 +185,57 @@ Page({
                 return;            
             }
         }
-
-        
         var values=[];
         for(var idx in this.data.form)
         {
             values[idx]=this.data.form[idx].value
         }
-        console.log(values);
-        wx.showToast({
-            title: "报名成功",
-            icon: "success",
-            duration: 2000
-        });
-        this.setData({"status":"joined"});
-        setTimeout(function(){
-            console.log("返回主界面");
-            wx.navigateBack();
-        },2000);
+        console.log("表单页汇总：",values);
+
+        var app=getApp();
+        const postUrl = `${app.globalData.backEndUrl}/apply/fillform`
+        var that=this;
+        console.log("index是",this.data.projectID)
+        wx.request({
+            url: postUrl,
+            method: 'post',
+            header: {
+                'content-type': 'application/json', // 提交的数据类型
+                'cookie':app.globalData.cookies, //读取cookie
+            },
+            data:{
+                'project_id':this.data.projectID,
+                'form':JSON.stringify(values)
+            },
+            success(res) {  // 成功回调
+                console.log("得到的数据为",res);
+                if(res.statusCode==200)
+                {
+                    wx.showToast({
+                        title: "报名成功",
+                        icon: "success",
+                        duration: 2000
+                    });
+                    that.setData({"status":"joined"});
+                    setTimeout(function(){
+                        console.log("返回主界面");
+                        wx.navigateBack();
+                    },2000);
+                }
+                else 
+                {
+                    wx.showModal({
+                        title: '错误',
+                        content: JSON.stringify(res.data),
+                        });
+                }
+            },
+            fail() { // 失败回调
+                wx.showModal({
+                    title: '错误',
+                    content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+                    });
+            }
+            })
     }
 })
