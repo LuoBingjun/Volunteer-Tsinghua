@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
@@ -15,7 +15,9 @@ class detailSerializer(serializers.ModelSerializer):
         model = Project
         fields = '__all__'
 
-class detailView(APIView):
+class detailView(GenericAPIView):
+    serializer_class = detailSerializer
+
     @login_required
     def post(self, request):
         serializer = detailSerializer(data=request.data)
@@ -27,7 +29,7 @@ class detailView(APIView):
     def get(self, request):
         id = self.request.query_params.get('id')
         project = get_object_or_404(Project, id=id)
-        serializer = detailSerializer(project)
+        serializer = self.get_serializer(project)
         res = dict(serializer.data)
         if project.finished:
             res['status'] = 'F'
