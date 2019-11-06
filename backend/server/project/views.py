@@ -5,11 +5,12 @@ from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
 
+from datetime import datetime, timezone
+
 from server.models import *
 from server.utils import login_required
 
 class detailSerializer(serializers.ModelSerializer):
-    # cover = serializers.ImageField(use_url=True)
     class Meta:
         model = Project
         fields = '__all__'
@@ -27,7 +28,20 @@ class detailView(APIView):
         id = self.request.query_params.get('id')
         project = get_object_or_404(Project, id=id)
         serializer = detailSerializer(project)
-        return Response(serializer.data)
+        res = dict(serializer.data)
+        if project.finished:
+            res['status'] = 'F'
+        else:
+            apply_records = ApplyRecord.objects.filter(user=request.user, project=project)
+            if apply_records.exists():
+                apply_record = apply_records[0]
+                res['status'] = apply_record.status
+            else:
+                if project.deadline >= datetime.now(timezone.utc):
+                    res['status'] = 'A'
+                else:
+                    res['status'] = 'N'
+        return Response(res)
 
 class listView(ListAPIView):
     queryset = Project.objects.all()

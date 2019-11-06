@@ -13,7 +13,6 @@ App({
 
         var app=getApp();
         const loginUrl = `${app.globalData.backEndUrl}/auth/login`
-        console.log("得到URL：",loginUrl)
 
         wx.request({
         url: loginUrl,
@@ -44,12 +43,14 @@ App({
     },
     globalData: {
         hasLogin: false,
-        backEndUrl: "http://www.lbjthu.tech:8080",
+        backEndUrl: "http://62.234.0.237:80/api",
         userInfo:{
             department: "一二三学院",
-            first_login: true,
             id: "12345678",
-            name: "哈哈哈"
-        }
+            name: "哈哈哈",
+            email: "lbj17@mails.tsinghua.edu.cm",
+            phone: "13888888888"
+        },
+        cookies: "?"
     }
 });

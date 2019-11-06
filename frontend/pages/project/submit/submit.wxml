@@ -6,14 +6,14 @@
         <view wx:for="{{form}}">
             <view class="weui-cells__title">
                 <label class="weui-cell__bd">
-                    <p>{{item.text}}</p>
+                    <p>{{index+1}}.{{item.text}}<text wx:if="{{item.required}}">*</text></p>
                 </label>
             </view>
 
             <view wx:if="{{item.type=='text'}}">
                 <view class="weui-cells weui-cells_after-title"></view>
                 <view class="weui-cells">
-                    <input class="weui-input" type="text" placeholder="请输入文本"/>
+                    <input class="weui-input" type="text" placeholder="请输入文本" id="{{index}}" catchinput="on_text_changed" disabled="{{status=='not_joined'?false:true }}"/>
                 </view>
             </view>
 
@@ -44,11 +44,12 @@
                 </checkbox-group>
             </view>
         </view>
+        <view wx:if="{{error_prompt}}" style="font-size:10px,font-color:red">{{error_prompt}}</view>
         <view wx:if="{{status=='not_joined'}}">
             <button class="weui-btn" type="primary" formType="submit" bindtap="on_submit" >我要报名</button>
         </view>
         <view wx:elif="{{status=='joined'}}">
-            <button class="weui-button" type="primary" disabled="true">等待审核</button>
+            <button class="weui-button" type="primary" disabled="{{true}}">等待审核</button>
         </view>
     </form>
 </view>

@@ -4,17 +4,26 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "type":"0",
+        "type":"ALL",
         "projects":[
             {
-                "projectID":"0",
-                "title":"我是标题",
-                "workTime":"-"
-            },{
-                "projectID":"1",
-                "title":"我也是标题",
-                "workTime":"10"
-            }
+                "id": 1,
+                "form": "{}",
+                "submit_time": "2019-11-05T17:32:36.000059+08:00",
+                "status": "B",
+                "project":{
+                    "id": 1,
+                    "title": "3123123",
+                    "content": "31232131",
+                    "cover": "",
+                    "require_num": 5,
+                    "requirements": "123456",
+                    "form": "adasdadadadadad",
+                    "time": "2019-10-26T19:52:57+08:00",
+                    "deadline": "2019-11-06T06:00:00+08:00",
+                    "finished": false
+                }
+            },
         ]
     },
   
@@ -23,31 +32,52 @@ Page({
      */
     onLoad: function (options) {
         var that = this;
-        console.log("WELL ",options)
+        console.log("viewMyProject页面加载： ",options)
         this.setData(options)
-        /*
+
+        var app=getApp()
+        let urlWhole = "null"
+        if(that.data.type == "ALL")
+        {
+            urlWhole = `${app.globalData.backEndUrl}/project/list`
+        }
+        else if(that.data.type == "CHECKING")
+        {
+            urlWhole = `${app.globalData.backEndUrl}/my/applyrecord`
+        }
+        else if(that.data.type == "CURRENT")
+        {
+            urlWhole = `${app.globalData.backEndUrl}/my/processrecord`
+        }        
+        else if(that.data.type == "HISTORY")
+        {
+            urlWhole = `${app.globalData.backEndUrl}/my/historyrecord`
+        }
+        else
+        {
+            urlWhole = `${app.globalData.backEndUrl}/project/list`
+        }
+
+
+
+        console.log("viewMyProject得到完整URL：",urlWhole)
         wx.request({
-            url: 'http://localhost:8000/image',// 我自己测试时用的接口地址
-            method: 'post',// 请求方式
-            data: { // 想接口提交的数据
-                page: 1,
-                pageSize: 2
-            },
+            url: urlWhole,
+            method: 'get',
             header: {
-                'content-type': 'application/json'// 提交的数据类型
+                'content-type': 'application/json', // 提交的数据类型
+                'cookie':app.globalData.cookies //读取cookie
             },
             success(res) {  // 成功回调
-                console.log(res.data.result);
+                console.log("得到的数据为",res)
                 that.setData({
-                arrays: res.data.result,
+                    "projects": res.data
                 })
             },
             fail() { // 失败回调
-                console.log('error');
+                console.log('向后端发送数据失败！');
             }
-
-        })
-        */
+            })
     },
   
     /**
@@ -101,6 +131,7 @@ Page({
 
     jumpPage: function(e)
     {
+        console.log("url是：: /pages/project/project?projectID="+e.currentTarget.id)
         wx.navigateTo({"url":"/pages/project/project?projectID="+e.currentTarget.id})
     }  
 })

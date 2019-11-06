@@ -3,7 +3,7 @@
         <view class="page__title">{{username}}的主页</view>
     </view>
 
-    <view class="weui-cell" catchtap="test" id="0">
+    <view class="weui-cell" catchtap="test" id="ALL">
         <div class="weui-cell__bd">
             <p>所有项目</p>
         </div>
@@ -12,7 +12,7 @@
         </div>
     </view>
 
-    <view class="weui-cell" catchtap="test" id="1">
+    <view class="weui-cell" catchtap="test" id="CHECKING">
         <div class="weui-cell__bd">
             <p>审核中的项目</p>
         </div>
@@ -21,16 +21,7 @@
         </div>
     </view>
 
-    <view class="weui-cell" catchtap="test" id="2">
-        <div class="weui-cell__bd">
-            <p>已审核项目</p>
-        </div>
-        <div class="weui-cell__ft">
-            <view> > </view>
-        </div>
-    </view>
-
-    <view class="weui-cell" catchtap="test" id="3">
+    <view class="weui-cell" catchtap="test" id="CURRENT">
         <div class="weui-cell__bd">
             <p>正在进行的项目</p>
         </div>
@@ -39,7 +30,7 @@
         </div>
     </view>
 
-    <view class="weui-cell" catchtap="test" id="4">
+    <view class="weui-cell" catchtap="test" id="HISTORY">
         <div class="weui-cell__bd">
             <p>历史项目</p>
         </div>
