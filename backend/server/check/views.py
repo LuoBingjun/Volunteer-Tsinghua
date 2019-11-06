@@ -53,13 +53,13 @@ class CheckOp(APIView):
                 return Response({'error':'applyinfo not be found'}, status=404)
 
             if(info.validated_data['checked']): # 审核通过
-                _apply.status = 'S'
+                _apply.status = 'P'
                 # 审核通过添加到joinRecord
                 if not JoinRecord.objects.filter(user=_apply.user, project=_apply.project).exists():# 不可重复设置
                     join_record = JoinRecord(user=_apply.user, project=_apply.project, work_time=0)
                     join_record.save()
             else:
-                _apply.status = 'F'
+                _apply.status = 'N'
 
                 _a_record = JoinRecord.objects.filter(user=_apply.user, project=_apply.project)
                 if _a_record.exists():
