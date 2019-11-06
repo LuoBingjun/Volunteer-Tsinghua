@@ -29,9 +29,6 @@ Page({
     onLoad: function (options) {
         var that = this
         var app=getApp()
-        this.setData({
-            "username":app.globalData.name,
-        })
 
         const urlWhole = `${app.globalData.backEndUrl}/project/list`
         wx.request({
@@ -64,7 +61,28 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-  
+        var that =  this
+        var app=getApp()
+        // 请求用户信息：
+        const urlWhole = `${app.globalData.backEndUrl}/auth/user`
+        wx.request({
+            url: urlWhole,
+            method: 'get',
+            header: {
+                'content-type': 'application/json', // 提交的数据类型
+                'cookie':app.globalData.cookies //读取cookie
+            },
+            success(res) {  // 成功回调
+                console.log("home.js 获取用户信息：",res.data)
+                app.globalData.userInfo = JSON.parse(JSON.stringify(res.data))
+                that.setData({
+                    "username":app.globalData.userInfo.name,
+                })
+            },
+            fail() { // 失败回调
+                console.log('向后端发送数据失败！');
+            }
+            })        
     },
   
     /**

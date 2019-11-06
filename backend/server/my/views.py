@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from server.models import User, ApplyRecord, Project, JoinRecord
+from server.models import *
 from server.utils import login_required
 
 class historySerializer(serializers.ModelSerializer):     
@@ -16,7 +16,6 @@ class historySerializer(serializers.ModelSerializer):
         exclude = ['user']
         depth = 2 
 
-# 用户查看参加活动的历史记录
 class historyView(generics.ListAPIView):
     serializer_class = historySerializer
     
@@ -30,7 +29,6 @@ class processSerializer(serializers.ModelSerializer):
         exclude = ['user']
         depth = 2
 
-# 用户查看正在参加活动的记录
 class processView(generics.ListAPIView):
     serializer_class = processSerializer
     
@@ -44,7 +42,6 @@ class applySerializer(serializers.ModelSerializer):
         exclude = ['user']
         depth = 2 
 
-# 用户查看正在待审核的记录
 class applyView(generics.ListAPIView):
     serializer_class = applySerializer
     
@@ -58,10 +55,23 @@ class allSerializer(serializers.ModelSerializer):
         exclude = ['user']
         depth = 2 
 
-# 用户查看正在待审核的记录
 class allView(generics.ListAPIView):
     serializer_class = allSerializer
     
     @login_required
     def get_queryset(self):
         return ApplyRecord.objects.filter(user=self.request.user)
+
+class signrecordSerializer(serializers.ModelSerializer):     
+    class Meta: 
+        model = SignRecord
+        fields = '__all__'
+
+class signrecordView(generics.RetrieveAPIView):    
+    serializer_class = signrecordSerializer
+    @login_required
+    def get_object(self):
+        id = self.request.query_params.get('signproject')
+        sign_project = get_object_or_404(SignProject, pk=id)
+        return get_object_or_404(sign_project.signrecord_set, join_record__user=self.request.user)
+        
