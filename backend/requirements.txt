@@ -1,0 +1,5 @@
+xlwt
+xlrd
+django
+djangorestframework
+Pillow
