@@ -1,9 +1,7 @@
-language:
-  - python
-sudo:
-  - enabled
+language: python
+sudo: enabled
 python:
-  - "3"
+  - "3.7"
 env:
     global:
      - TRAVIS=true
