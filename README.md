@@ -1,5 +1,5 @@
 # Volunteer-Tsinghua
-“志愿清华”团队
+[![Build Status](https://travis-ci.com/LuoBingjun/Volunteer-Tsinghua.svg?token=rRHtFzF4GshyKpWEi2rA&branch=master)](https://travis-ci.com/LuoBingjun/Volunteer-Tsinghua) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zx1239856/libserver/blob/master/LICENSE)  
 
 ## 文件结构
 - backend: 后端代码
