@@ -12,5 +12,5 @@ cache:
 before_script:
    - npm install -g gulp
 
-script: cd frontend && npm install --save-dev gulp && npm run start
+script: cd frontend && npm install && npm run start
   
