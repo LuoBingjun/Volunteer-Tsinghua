@@ -1,11 +1,15 @@
-language: python
-sudo: enabled
-python:
-  - "3.7"
-env:
-    global:
-     - TRAVIS=true
-install:
-    - pip install -r requirements.txt   
-script:
-    - python ./backend/manage.py test
+sudo: false
+
+language: node_js
+
+node_js:
+  - stable
+
+cache:
+  directories:
+    - node_modules
+
+before_script:
+#   - npm install -g gulp
+
+script: true
