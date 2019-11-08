@@ -11,4 +11,4 @@ gulp.task('watch', function() {
   gulp.watch('./**', []);
 });
 
-gulp.task('default', ['watch']);
+gulp.task('default', gulp.series('watch', done => done()));
