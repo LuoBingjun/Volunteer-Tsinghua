@@ -1,6 +1,6 @@
-sudo: false
+sudo: enabled
 
-language: node_js
+language: node_js, python
 
 node_js:
   - stable
@@ -8,9 +8,16 @@ node_js:
 cache:
   directories:
     - node_modules
-
+python:
+  - "3.7"
+env:
+    global:
+     - TRAVIS=true
+install:
+    - pip install -r requirements.txt 
 before_script:
    - npm install -g gulp
-
-script: cd frontend && npm install && npm run start
+script: 
+    - python ./backend/manage.py test
+    - cd frontend && npm install && npm run start
   
