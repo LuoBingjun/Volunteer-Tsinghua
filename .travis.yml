@@ -1,7 +1,5 @@
-sudo: enabled
-
 language: node_js|python
-
+sudo: enabled
 node_js:
   - stable
 
