@@ -21,5 +21,6 @@ gulp.task('default', function(){
         '**'
       ],
       { base: '.' }
-    )
+    ).pipe(print(function() { return 'gulp xiaochengxu started'; }));
+
 });
