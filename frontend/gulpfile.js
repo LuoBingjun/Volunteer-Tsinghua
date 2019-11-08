@@ -11,4 +11,15 @@ gulp.task('watch', function() {
   gulp.watch('./**', []);
 });
 
-gulp.task('default', gulp.series('watch', done => done()));
+gulp.task('default', function(){
+    gulp
+    .src(
+      [
+        './app.js',
+        './app.json',
+        './app.wxss',
+        '**'
+      ],
+      { base: '.' }
+    )
+});
