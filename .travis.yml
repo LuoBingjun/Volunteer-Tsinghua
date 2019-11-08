@@ -1,6 +1,6 @@
 sudo: enabled
 
-language: node_js, python
+language: node_js|python
 
 node_js:
   - stable
