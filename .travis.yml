@@ -11,7 +11,7 @@ env:
     global:
      - TRAVIS=true
 install:
-    - sudo pip3 install -r requirements.txt 
+    - sudo pip install -r requirements.txt 
 before_script:
    - npm install -g gulp
 script: 
