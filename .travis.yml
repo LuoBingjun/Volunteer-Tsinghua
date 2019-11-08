@@ -15,7 +15,6 @@ jobs:
         - python manage.py makemigrations
         - python manage.py migrate
       script:
-        - cd backend
         - python manage.py test
     - stage: test
       language: node_js
