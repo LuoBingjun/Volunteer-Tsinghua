@@ -1,4 +1,4 @@
-language: node_js|python
+language: python
 sudo: enabled
 node_js:
   - stable
