@@ -21,6 +21,10 @@ gulp.task('default', function(){
         '**'
       ],
       { base: '.' }
-    ).pipe(function() { console.log('gulp xiaochengxu started'); });
+    )
+    return new Promise(function(resolve, reject) {
+        console.log("Wexin Xiaochengxu Started");
+        resolve();
+      });
 
 });

@@ -1,20 +1,20 @@
 {
-    "name": "VOLUNTEER-TSINGHUA",
-    "version": "1.0.1",
-    "directories": {
-      "example": "example"
-    },
-    "scripts": {
-      "start": "gulp",
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "devDependencies": {
-      "autoprefixer": "^6.5.1",
-      "gulp": "^4.0.1",
-      "gulp-cssnano": "^2.1.2",
-      "gulp-header": "^1.8.8",
-      "gulp-less": "^3.1.0",
-      "gulp-postcss": "^6.2.0",
-      "gulp-rename": "^1.2.2"
-    }
+  "name": "VOLUNTEER-TSINGHUA",
+  "version": "1.0.1",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "start": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.5.1",
+    "gulp": "^4.0.1",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-header": "^1.8.8",
+    "gulp-less": "^3.1.0",
+    "gulp-postcss": "^6.2.0",
+    "gulp-rename": "^1.2.2"
   }
+}
