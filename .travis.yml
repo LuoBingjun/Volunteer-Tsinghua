@@ -12,4 +12,6 @@ cache:
 before_script:
 #   - npm install -g gulp
 
-script: true
+script:
+  - npm run build
+  
