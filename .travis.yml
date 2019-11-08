@@ -13,5 +13,6 @@ before_script:
 #   - npm install -g gulp
 
 script:
+  - cd frontend
   - npm run build
   
