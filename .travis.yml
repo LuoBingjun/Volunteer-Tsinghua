@@ -1,20 +1,31 @@
-language: python
-sudo: enabled
-node_js:
-  - stable
-python:
-  - "3.7"
-cache:
-  directories:
-    - node_modules
-env:
-    global:
-     - TRAVIS=true
-install:
-    - sudo pip install -r requirements.txt 
-before_script:
-   - npm install -g gulp
-script: 
-    - python3 ./backend/manage.py test
-    - cd frontend && npm install && npm run start
+jobs:
+  include:
+    - stage: test
+      language: python
+      python:
+        - '3.7'
+      sudo: enabled
+      env:
+          global:
+           - TRAVIS=true
+      install:
+        - pip install -r requirements.txt   
+      script:
+        - cd backend
+        - python manage.py test
+    - stage: test
+      language: node_js
+      node_js:
+        - stable
+      cache:
+        directories:
+          - node_modules
+      env:
+        global:
+          - TRAVIS=true
+      install:
+        - npm install -g gulp
+      script:
+        - cd frontend
+        - npm install && npm run start
   
