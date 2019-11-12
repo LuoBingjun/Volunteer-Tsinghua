@@ -65,7 +65,7 @@ Page({
                 if(res.statusCode==200)
                 {
                     var list=[]
-                    var reslen=res.data.length
+                    that.reslen=res.data.length
                     for(var i in res.data)
                     {
                         var item={}
@@ -73,55 +73,66 @@ Page({
                         item.name=res.data[i].title
                         item.content=res.data[i].content
                         item.has_sign_in=false
+                        list.push(item)
+
                         var now=new Date().getTime()
                         var begin=new Date(res.data[i].begin_time).getTime()
                         var end=new Date(res.data[i].end_time).getTime()
-
-                        wx.request({
-                            url:`${app.globalData.backEndUrl}/my/signrecord?signproject=${item.signID}`,
-                            method:'get',
-                            header:{
-                                'content-type': 'application/json', // 提交的数据类型
-                                'cookie':app.globalData.cookies //读取cookie
-                            },
-                            success(res){
-                                if(res.statusCode==404)
-                                {
-                                    item.has_sign_in=false
-                                }
-                                else if(res.statusCode==200)
-                                {
-                                    item.has_sign_in=true
-                                }
-                                else{
+                        that.setData({'list':[]})
+                        if(now<begin)
+                        {
+                            item.status=3
+                        }
+                        else if(now>end)
+                        {
+                            item.status=0
+                        }                            
+                        else
+                        {
+                            item.status=1
+                            wx.request({
+                                url:`${app.globalData.backEndUrl}/my/signrecord?signproject=${item.signID}`,
+                                method:'get',
+                                header:{
+                                    'content-type': 'application/json', // 提交的数据类型
+                                    'cookie':app.globalData.cookies //读取cookie
+                                },
+                                success(res2){
+                                    console.log(res2)
+                                    if(res2.statusCode==200)
+                                    {
+                                        for (var j in list)
+                                        {
+                                            console.log(list[j].signID,res2.data.sign_project)
+                                            if(list[j].signID==res2.data.sign_project)
+                                            {
+                                                list[j].status=2;
+                                                that.setData({'list':list});
+                                                console.log("set!!!!!!!!!!!!!!!!1")
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else if(res2.statusCode!=404){
+                                        wx.showModal({
+                                            title: '错误',
+                                            content: JSON.stringify(res2.data),
+                                            });
+                                    }
+                                }, 
+                                fail() { // 失败回调
                                     wx.showModal({
                                         title: '错误',
-                                        content: JSON.stringify(res.data),
+                                        content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
                                         });
+                                    that.setData({'list':[]})
                                 }
-                                console.log("time",now,begin,end,item.has_sign_in)
-                                if(now<begin)item.status=3
-                                else if(now>end)item.status=0
-                                else if(item.has_sign_in)item.status=2
-                                else item.status=1
-                                list.push(item)
-                                if(i==reslen-1)
-                                {
-                                    that.setData({'list':list})
-                                }
-                            },
-                            fail() { // 失败回调
-                                wx.showModal({
-                                    title: '错误',
-                                    content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
-                                    });
-                                that.setData({'list':[]})
-                            }
-                        })
+                            })
+                        }
+                        that.setData({'list':list});
                     }
-
-                    
                     console.log(list)
+                    setTimeout(function(){console.log(that.data.list)},1000)
                 }
                 else 
                 {
