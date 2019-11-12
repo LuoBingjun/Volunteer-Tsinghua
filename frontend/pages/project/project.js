@@ -110,7 +110,10 @@ Page({
     },
 
     signin:function(){
-        console.log("project.js:signin函数开始，projectID:",this.data.projectID)
-        wx.navigateTo({"url":"/pages/project/submit/submit?projectID="+this.data.projectID});
+        wx.navigateTo({"url":"submit/submit?projectID="+this.data.projectID});
+    },
+
+    sign:function(){
+        wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
     }
 })

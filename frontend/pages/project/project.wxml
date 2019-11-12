@@ -19,7 +19,7 @@
         <button class="weui-btn" type="primary" disabled="true">正在审核</button>
     </view>
     <view wx:elif="{{status=='P'}}">
-        <button class="weui-btn" type="primary" disabled="true">正在进行</button>
+        <button class="weui-btn" type="primary" bindtap="sign">查看签到</button>
     </view>
     <view wx:elif="{{status=='N'}}">
         <button class="weui-btn" type="primary" disabled="true">无法报名</button>

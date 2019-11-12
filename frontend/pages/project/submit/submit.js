@@ -49,6 +49,7 @@ Page({
         console.log("submit.js onLoad函数开始,options:",options)
         var app=getApp();
         const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${options.projectID}`
+        this.setData({'projectID':options.projectID})
         console.log("从project跳转到URL：",getUrl)
         var that=this;
         wx.request({

@@ -7,7 +7,8 @@
     "pages/message/message",
     "pages/home/home",
     "pages/project/project",
-    "pages/project/submit/submit"
+    "pages/project/submit/submit",
+    "pages/project/sign/sign"
   ],
   "window": {
     "navigationBarTextStyle": "black",

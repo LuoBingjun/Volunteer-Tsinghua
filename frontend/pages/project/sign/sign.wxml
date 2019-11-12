@@ -1,0 +1,23 @@
+<view class="page" style="margin:10px">
+    <view class="page__hd VBox">
+        <view class="page__title">{{title}}的所有签到</view>
+    </view>
+    
+    <view wx:for="{{list}}">
+        <view class="weui-cell" bindtap="switchOpen" id="{{index}}">
+            <view class="weui-cell__bd">
+                {{item.name}}
+            </view>
+            <view class="weui-cell__ft">
+                {{item.open=='true'?'v':'>'}}
+            </view>
+        </view>
+        <view wx:if="{{item.open=='true'}}" class='weui-cell'>
+            <button class="weui-button" wx:if="{{item.status=='0'}}" disabled='{{true}}'>无法签到</button>
+            <button class="weui-button" wx:elif="{{item.status=='1'}}" catchtap='sign' id="{{item.signID}}">点击签到</button>
+            <button class="weui-button" wx:elif="{{item.status=='2'}}" disabled='{{true}}'>已经签到</button>
+            <button class="weui-button" wx:elif="{{item.status=='3'}}" disabled='{{true}}'>签到未开始</button>
+        </view>
+    </view>
+
+</view>
