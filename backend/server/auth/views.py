@@ -1,3 +1,4 @@
+from django.contrib import auth
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -24,9 +25,9 @@ class loginView(APIView):
             token = info.validated_data['token']
             userinfo = self.get_userinfo(token)
             request.session.cycle_key()
-            request.session['user'] = int(userinfo['card'])
+            request.session['wx_user'] = int(userinfo['card'])
 
-            user = User.objects.filter(pk=userinfo['card'])
+            user = WxUser.objects.filter(pk=userinfo['card'])
             if user.exists():
                 first_login = False
             else:
@@ -38,6 +39,7 @@ class loginView(APIView):
                 'id': userinfo['card'],
                 'department': userinfo['department']
             })
+            
             response['Set-Cookie'] = 'sessionid={0}; Path=/'.format(
                 request.session.session_key)
             return response
@@ -62,22 +64,43 @@ class loginView(APIView):
         userinfo = response.get('user')
         return userinfo
 
+class webloginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=128)
+    password = serializers.CharField(max_length=128)
+
+class webloginView(APIView):
+    def post(self, request):
+        info = webloginSerializer(data=request.data)
+        info.is_valid(raise_exception=True)
+        username = info.validated_data['username']
+        password = info.validated_data['password']
+        user = auth.authenticate(username=username, password=password)
+        if user:
+            auth.logout(request)
+            auth.login(request, user)
+            response = Response(status=200)
+            # response['Set-Cookie'] = 'sessionid={0}; Path=/'.format(
+            #     request.session.session_key)
+            return response
+        else:
+            return Response('Login failed.', status=406)
+
 
 class postUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = WxUser
         fields = ['id', 'name', 'department', 'email', 'phone']
 
 
 class getUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = WxUser
         exclude = ['join_time']
 
 
 class putUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = WxUser
         fields = ['department', 'email', 'phone']
 
 
@@ -88,7 +111,7 @@ class userView(APIView):
         serializer.save()
         return Response(serializer.data)
 
-    @login_required
+    @login_required(wx=True)
     def put(self, request):
         serializer = putUserSerializer(
             request.user, data=request.data, partial=True)
@@ -96,7 +119,7 @@ class userView(APIView):
         serializer.save()
         return Response(serializer.data)
 
-    @login_required
+    @login_required(wx=True)
     def get(self, request):
         serializer = getUserSerializer(request.user)
         return Response(serializer.data)
