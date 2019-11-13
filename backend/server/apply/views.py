@@ -4,19 +4,19 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from server.models import User, ApplyRecord, Project
+from server.models import *
 from server.utils import login_required
 
 import datetime
 
-class applySerializer(serializers.Serializer):  
+class applySerializer(serializers.Serializer):
     form = serializers.CharField(max_length=None, min_length=None, allow_blank=False, trim_whitespace=True)
     project_id = serializers.IntegerField(max_value=None, min_value=0)
     
 
 # 用户报名接口 需要注意：不能重复报名 返回报名编号便于前端查询报名信息
 class fillformView(APIView):
-    @login_required
+    @login_required(wx=True)
     def post(self, request):
         info = applySerializer(data=request.data) # 验证数据
         if info.is_valid():
