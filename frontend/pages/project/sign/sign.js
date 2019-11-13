@@ -108,7 +108,6 @@ Page({
                                             {
                                                 list[j].status=2;
                                                 that.setData({'list':list});
-                                                console.log("set!!!!!!!!!!!!!!!!1")
                                                 break;
                                             }
                                         }
