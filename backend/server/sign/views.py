@@ -15,7 +15,7 @@ class createSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class projectView(CreateAPIView):
-    @login_required
+    @login_required(web=True, wx=False)
     def post(self, request):
         serializer = createSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -30,6 +30,7 @@ class listSerializer(serializers.ModelSerializer):
 
 class listView(ListAPIView):
     serializer_class = listSerializer
+    @login_required(wx=True)
     def get_queryset(self):
         project = self.request.query_params.get('project')
         return SignProject.objects.filter(project=project)
@@ -40,7 +41,7 @@ class signinSerializer(serializers.ModelSerializer):
         fields = ['sign_project']
 
 class signinView(APIView):
-    @login_required
+    @login_required(wx=True)
     def post(self, request):
         serializer = signinSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
