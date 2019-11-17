@@ -5,17 +5,15 @@ jobs:
       python:
         - '3.7'
       sudo: enabled
-      env:
-          global:
-           - TRAVIS=true
       install:
+        - cd backend
         - pip install -r requirements.txt   
       before_script:
-        - cd backend
         - python manage.py makemigrations
         - python manage.py migrate
       script:
         - python manage.py test
+
     - stage: test
       language: node_js
       node_js:
