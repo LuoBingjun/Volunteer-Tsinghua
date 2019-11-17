@@ -38,7 +38,7 @@ class ViewApplyInfo(generics.ListAPIView):
 # 管理员做审核操作
 class CheckSerializer(serializers.Serializer):
     apply_id = serializers.IntegerField(max_value=None, min_value=0)
-    checked = serializers.BooleanField()
+    checked = serializers.BooleanField(allow_null=True)
 
 class CheckOp(APIView):
     @login_required(web=True)

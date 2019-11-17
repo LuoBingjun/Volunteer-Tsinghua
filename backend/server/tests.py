@@ -70,3 +70,40 @@ class ProjectTestCase(TestCase):
     # 测试函数执行后执行
     def tearDown(self):
         pass
+
+class CheckTestCase(TestCase):
+    # 测试函数执行前执行
+    def setUp(self):
+        WebUser.objects.create_user('test1234', password='test1234')
+
+        # 在ApplyRecord中创建一条记录
+        _user = WxUser(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
+        _user.save()
+        _project = Project(id=1,title='test', content='testcontent', require_num=12, requirements='req', deadline=datetime.datetime(2019,12,1,23,59,59))
+        _project.save()
+
+        ApplyRecord.objects.create(id=1,user=_user,project=_project,form='{json文本}',status='W')
+
+    def test_viewapplyinfo(self):
+        client = APIClient()
+        response = client.post(
+            '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
+        assert response.status_code == 200
+
+        response = client.get('/check/ViewApplyInfo', {'project_id':1})
+        assert response.status_code == 200
+
+    def test_checkop(self):
+        client = APIClient()
+        response = client.post(
+            '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
+        assert response.status_code == 200
+
+        response = client.post('/check/CheckOp', {'apply_id':1, 'checked':True})
+        assert response.status_code == 200
+
+    # 测试函数执行后执行
+    def tearDown(self):
+        pass
+
+    
