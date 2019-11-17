@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from server.models import *
 from server.utils import login_required
 
+from django.shortcuts import get_object_or_404
 import datetime
 
 class applySerializer(serializers.Serializer):
@@ -40,8 +41,24 @@ class fillformView(APIView):
             apply_record = ApplyRecord(user=request.user, project=_project,
                         form=_form)
             apply_record.save()
-            return Response(status=200)
+            return Response({'apply_id':apply_record.id},status=200)
         else:
             return Response(info.errors, status=400) #数据格式错误
 
 
+class cancelapplySerializer(serializers.Serializer):
+    apply_id = serializers.IntegerField(max_value=None, min_value=1)
+    
+
+class cancelapplyView(APIView):
+    @login_required(wx=True)
+    def post(self, request):
+        info = cancelapplySerializer(data=request.data) # 验证数据
+        if info.is_valid():
+            apply_id = info.validated_data['apply_id']  
+            queryset = ApplyRecord.objects.all()
+            apply_record = get_object_or_404(queryset, id=apply_id)
+            apply_record.delete()
+            return Response(status=200)     
+        else:
+            return Response(info.errors, status=400) #数据格式错误
