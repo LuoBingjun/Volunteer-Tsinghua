@@ -5,7 +5,7 @@ from rest_framework.test import APIClient
 from rest_framework.test import APIRequestFactory
 
 import datetime
-
+from django.utils import timezone
 # Create your tests here.
 from server.models import *
 
@@ -142,3 +142,31 @@ class CancelApplyTestCase(TestCase):
 
     def tearDown(self):
         pass
+
+class signoutTestCase(TestCase):
+
+    def setUp(self):
+        _user = WxUser(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
+        _user.save()
+
+        _project = Project(title='test', content='testcontent', require_num=12, requirements='req', deadline=datetime.datetime(2019,12,1,23,59,59))
+        _project.save()
+        
+        _join_record = JoinRecord(user=_user,project=_project)
+        _join_record.save()
+
+        _sign_project=SignProject(project=_project, title='第一次活动', content='content', begin_time=timezone.now(), end_time=timezone.now())
+        _sign_project.save()
+
+        SignRecord.objects.create(id=1, join_record=_join_record, sign_project=_sign_project)
+
+    def test_signout(self):
+        client = APIClient()
+        response = client.post('/auth/login', {'token':'null'})
+        assert response.status_code == 200
+
+        response = client.post('/sign/signout', {'sign_record_id':1})
+        assert response.status_code == 200
+    def tearDown(self):
+        pass
+    
