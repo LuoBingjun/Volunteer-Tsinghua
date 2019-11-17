@@ -57,7 +57,7 @@ class cancelapplyView(APIView):
         if info.is_valid():
             apply_id = info.validated_data['apply_id']  
             queryset = ApplyRecord.objects.all()
-            apply_record = get_object_or_404(queryset, id=apply_id)
+            apply_record = get_object_or_404(queryset, id=apply_id, user=request.user)
             apply_record.delete()
             return Response(status=200)     
         else:
