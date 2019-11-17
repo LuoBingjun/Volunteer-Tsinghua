@@ -5,7 +5,7 @@ jobs:
       python:
         - '3.7'
       sudo: enabled
-      service:
+      services:
         - redis-server
       install:
         - cd backend
