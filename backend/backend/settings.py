@@ -148,3 +148,6 @@ CACHES = {
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
+
+APPID = 'wxc8b9330a6cba4b05'
+APPSECRET = '20f089254aea198ca071c774dfc55572'
