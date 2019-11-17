@@ -3,6 +3,7 @@ from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework.test import APIClient
 from rest_framework.test import APIRequestFactory
+from django_redis import get_redis_connection
 
 import datetime
 
@@ -39,7 +40,7 @@ class AuthTestCase(TestCase):
 
     # 测试函数执行后执行
     def tearDown(self):
-        pass
+        get_redis_connection("default").flushall()
 
 
 class ProjectTestCase(TestCase):
@@ -69,4 +70,4 @@ class ProjectTestCase(TestCase):
 
     # 测试函数执行后执行
     def tearDown(self):
-        pass
+        get_redis_connection("default").flushall()

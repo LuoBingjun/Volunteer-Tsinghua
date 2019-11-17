@@ -5,6 +5,8 @@ jobs:
       python:
         - '3.7'
       sudo: enabled
+      service:
+        - redis-server
       install:
         - cd backend
         - pip install -r requirements.txt   
