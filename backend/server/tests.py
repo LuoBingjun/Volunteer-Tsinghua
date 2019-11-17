@@ -106,4 +106,39 @@ class CheckTestCase(TestCase):
     def tearDown(self):
         pass
 
+class ApplyTestCase(TestCase):
+    def setUp(self):
+        WxUser.objects.create(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
+        Project.objects.create(title='test', content='testcontent', require_num=12, requirements='req', deadline=datetime.datetime(2019,12,1,23,59,59))
     
+    def test_fillform(self):
+        client = APIClient()
+        response = client.post('/auth/login', {'token':'null'})
+        assert response.status_code == 200
+
+        response = client.post('/apply/fillform', {'project_id':1, 'form':'{json文本}'})
+        assert response.status_code == 200
+
+    def tearDown(self):
+        pass
+
+class CancelApplyTestCase(TestCase):
+
+    def setUp(self):
+        _user = WxUser(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
+        _user.save()
+        _project = Project(title='test', content='testcontent', require_num=12, requirements='req', deadline=datetime.datetime(2019,12,1,23,59,59))
+        _project.save()
+
+        ApplyRecord.objects.create(id=1,user=_user,project=_project,form='{json文本}',status='W')
+    def test_cancelapply(self):
+        client = APIClient()
+
+        response = client.post('/auth/login', {'token':'null'})
+        assert response.status_code == 200
+
+        response = client.post('/apply/cancelapply',{'apply_id':1})
+        assert response.status_code == 200
+
+    def tearDown(self):
+        pass
