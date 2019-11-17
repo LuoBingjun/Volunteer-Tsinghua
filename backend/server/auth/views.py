@@ -1,4 +1,5 @@
 from django.contrib import auth
+from django.core.exceptions import PermissionDenied
 from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,8 +11,42 @@ from django.shortcuts import get_object_or_404
 import json
 import requests
 
+from backend import settings
 from server.models import *
 from server.utils import login_required
+
+class preloginSerializer(serializers.Serializer):
+    code = serializers.CharField()
+
+class preloginView(APIView):
+    def post(self, request):
+        serializer = preloginSerializer(request.data)
+        serializer.is_valid(raise_exception=True)
+        code = serializer.validated_data['code']
+
+        errcode = -1
+        while errcode == -1:
+            response = requests.get('https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code'.format(settings.APPID, settings.APPSECRET, code)).json()
+            errcode = response.get('errcode')
+        
+        openid = response.get('openid')
+        if not openid:
+            return Response(status=400)
+        
+        request.session.cycle_key()
+        request.session['openid'] = openid
+
+        user = WxUser.objects.filter(openid=openid)
+        if user.exists():
+            request.session['wx_user'] = user[0].id
+            login_status = True
+        else:
+            login_status = False
+
+        return Response({
+            'login_status':login_status
+        })
+
 
 
 class loginSerializer(serializers.Serializer):
@@ -24,12 +59,19 @@ class loginView(APIView):
         if info.is_valid():
             token = info.validated_data['token']
             userinfo = self.get_userinfo(token)
+
             request.session.cycle_key()
+            openid = request.session['openid']
             request.session['wx_user'] = int(userinfo['card'])
 
             user = WxUser.objects.filter(pk=userinfo['card'])
             if user.exists():
                 first_login = False
+                users = WxUser.objects.filter(openid=openid)
+                users.update(openid=None)
+
+                user = WxUser.objects.get(pk=userinfo['card'])
+                user.update(openid=openid)
             else:
                 first_login = True
 
@@ -53,7 +95,7 @@ class loginView(APIView):
                 'card': 2017011111,
                 'department': '软件学院'
             }
-        print(token)
+        # print(token)
         params = {
             'token': token
         }
@@ -89,7 +131,7 @@ class webloginView(APIView):
 class postUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WxUser
-        fields = ['id', 'name', 'department', 'email', 'phone']
+        fields = ['name', 'department', 'email', 'phone']
 
 
 class getUserSerializer(serializers.ModelSerializer):
@@ -106,7 +148,12 @@ class putUserSerializer(serializers.ModelSerializer):
 
 class userView(APIView):
     def post(self, request):
-        serializer = postUserSerializer(data=request.data)
+        id = request.session.get('wx_user')
+        if not id:
+            raise PermissionDenied()
+        data = dict(request.data)
+        data['id'] = id
+        serializer = postUserSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
