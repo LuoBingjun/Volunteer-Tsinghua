@@ -1,7 +1,13 @@
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ImproperlyConfigured
+from django.core.cache import cache
 from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication 
+
+import requests
+import time
 
 from server.models import WxUser, WebUser
+from backend import settings
 
 # from django.contrib.auth import decorators
 
@@ -19,7 +25,7 @@ def login_required(web=False, wx=False):
             id = request.session.get('wx_user')
             user = WxUser.objects.filter(pk=id)
             if user.exists():
-                request.user = WxUser.objects.get(pk=id)
+                request.user = user[0]
                 return func(self, *args, **kargs)
             else:
                 raise PermissionDenied()
@@ -38,9 +44,25 @@ def login_required(web=False, wx=False):
         return inner
     return wrapper
 
-from rest_framework.authentication import SessionAuthentication 
-
 class CsrfExemptSessionAuthentication(SessionAuthentication):
-
     def enforce_csrf(self, request):
         return
+
+def get_AccessToken():
+    access_token = cache.get('access_token')
+    print(access_token)
+    if not (access_token and access_token['expire_time'] >= int(time.time())):
+        errcode  = -1
+        while errcode == -1:
+            response = requests.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}'.format(settings.APPID, settings.APPSECRET)).json()
+            errcode = response.get('errcode')
+
+        if response.get('access_token') and response.get('expires_in'):
+            access_token = {
+                'access_token':response['access_token'],
+                'expire_time':int(time.time()) + response['expires_in']
+            }
+            cache.set('access_token', access_token)
+        else:
+            raise ImproperlyConfigured()
+    return access_token['access_token']

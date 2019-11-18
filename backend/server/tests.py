@@ -3,6 +3,7 @@ from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework.test import APIClient
 from rest_framework.test import APIRequestFactory
+from django_redis import get_redis_connection
 
 import datetime
 from django.utils import timezone
@@ -29,6 +30,7 @@ class AuthTestCase(TestCase):
             'email': 'xxh17@mails.tsinghua.edu.cn',
             'phone': '13888888888'
         })
+        print(response.json())
         assert response.status_code == 200
 
     def test_web_login(self):
@@ -39,7 +41,7 @@ class AuthTestCase(TestCase):
 
     # 测试函数执行后执行
     def tearDown(self):
-        pass
+        get_redis_connection("default").flushall()
 
 
 class ProjectTestCase(TestCase):
@@ -69,7 +71,7 @@ class ProjectTestCase(TestCase):
 
     # 测试函数执行后执行
     def tearDown(self):
-        pass
+        get_redis_connection("default").flushall()
 
 class CheckTestCase(TestCase):
     # 测试函数执行前执行
@@ -104,7 +106,7 @@ class CheckTestCase(TestCase):
 
     # 测试函数执行后执行
     def tearDown(self):
-        pass
+        get_redis_connection("default").flushall()
 
 class ApplyTestCase(TestCase):
     def setUp(self):
@@ -120,7 +122,7 @@ class ApplyTestCase(TestCase):
         assert response.status_code == 200
 
     def tearDown(self):
-        pass
+        get_redis_connection("default").flushall()
 
 class CancelApplyTestCase(TestCase):
     def setUp(self):
@@ -140,7 +142,7 @@ class CancelApplyTestCase(TestCase):
         assert response.status_code == 200
 
     def tearDown(self):
-        pass
+        get_redis_connection("default").flushall()
 
 class signinTestCase(TestCase):
     def setUp(self):
@@ -161,7 +163,7 @@ class signinTestCase(TestCase):
         assert response.status_code == 409
 
     def tearDown(self):
-        pass
+        get_redis_connection("default").flushall()
 
 class signoutTestCase(TestCase):
     def setUp(self):
@@ -187,5 +189,5 @@ class signoutTestCase(TestCase):
         response = client.post('/sign/signout', {'sign_record_id':1})
         assert response.status_code == 200
     def tearDown(self):
-        pass
-    
+        get_redis_connection("default").flushall()
+
