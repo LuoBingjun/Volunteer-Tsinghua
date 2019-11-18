@@ -48,7 +48,7 @@ App({
     },
     globalData: {
         hasLogin: false,
-        backEndUrl: "http://62.234.0.237:80/api",
+        backEndUrl: "https://2019-a15.iterator-traits.com/api",
         userInfo:{
             department: "一二三学院",
             id: "12345678",

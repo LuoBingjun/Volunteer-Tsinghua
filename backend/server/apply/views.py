@@ -4,19 +4,20 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from server.models import User, ApplyRecord, Project
+from server.models import *
 from server.utils import login_required
 
+from django.shortcuts import get_object_or_404
 import datetime
 
-class applySerializer(serializers.Serializer):  
+class applySerializer(serializers.Serializer):
     form = serializers.CharField(max_length=None, min_length=None, allow_blank=False, trim_whitespace=True)
     project_id = serializers.IntegerField(max_value=None, min_value=0)
     
 
 # 用户报名接口 需要注意：不能重复报名 返回报名编号便于前端查询报名信息
 class fillformView(APIView):
-    @login_required
+    @login_required(wx=True)
     def post(self, request):
         info = applySerializer(data=request.data) # 验证数据
         if info.is_valid():
@@ -40,8 +41,24 @@ class fillformView(APIView):
             apply_record = ApplyRecord(user=request.user, project=_project,
                         form=_form)
             apply_record.save()
-            return Response(status=200)
+            return Response({'apply_id':apply_record.id},status=200)
         else:
             return Response(info.errors, status=400) #数据格式错误
 
 
+class cancelapplySerializer(serializers.Serializer):
+    apply_id = serializers.IntegerField(max_value=None, min_value=1)
+    
+
+class cancelapplyView(APIView):
+    @login_required(wx=True)
+    def post(self, request):
+        info = cancelapplySerializer(data=request.data) # 验证数据
+        if info.is_valid():
+            apply_id = info.validated_data['apply_id']  
+            queryset = ApplyRecord.objects.all()
+            apply_record = get_object_or_404(queryset, id=apply_id, user=request.user)
+            apply_record.delete()
+            return Response(status=200)     
+        else:
+            return Response(info.errors, status=400) #数据格式错误

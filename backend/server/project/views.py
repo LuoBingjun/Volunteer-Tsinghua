@@ -18,14 +18,14 @@ class detailSerializer(serializers.ModelSerializer):
 class detailView(GenericAPIView):
     serializer_class = detailSerializer
 
-    @login_required
+    @login_required(web=True)
     def post(self, request):
         serializer = detailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         project = serializer.save()
         return Response({'id': project.id})
     
-    @login_required
+    @login_required(wx=True)
     def get(self, request):
         id = self.request.query_params.get('id')
         project = get_object_or_404(Project, id=id)
@@ -46,5 +46,8 @@ class detailView(GenericAPIView):
         return Response(res)
 
 class listView(ListAPIView):
-    queryset = Project.objects.all()
     serializer_class = detailSerializer
+
+    @login_required(wx=True, web=True)
+    def get_queryset(self):
+        return Project.objects.all()

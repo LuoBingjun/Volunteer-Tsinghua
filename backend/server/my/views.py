@@ -19,7 +19,7 @@ class historySerializer(serializers.ModelSerializer):
 class historyView(generics.ListAPIView):
     serializer_class = historySerializer
     
-    @login_required
+    @login_required(wx=True)
     def get_queryset(self):
         return JoinRecord.objects.filter(user=self.request.user, project__finished=True)
 
@@ -32,7 +32,7 @@ class processSerializer(serializers.ModelSerializer):
 class processView(generics.ListAPIView):
     serializer_class = processSerializer
     
-    @login_required
+    @login_required(wx=True)
     def get_queryset(self):
         return JoinRecord.objects.filter(user=self.request.user, project__finished=False)
 
@@ -45,7 +45,7 @@ class applySerializer(serializers.ModelSerializer):
 class applyView(generics.ListAPIView):
     serializer_class = applySerializer
     
-    @login_required
+    @login_required(wx=True)
     def get_queryset(self):
         return ApplyRecord.objects.filter(user=self.request.user, project__finished=False).exclude(status='P')
 
@@ -58,7 +58,7 @@ class allSerializer(serializers.ModelSerializer):
 class allView(generics.ListAPIView):
     serializer_class = allSerializer
     
-    @login_required
+    @login_required(wx=True)
     def get_queryset(self):
         return ApplyRecord.objects.filter(user=self.request.user)
 
@@ -69,7 +69,7 @@ class signrecordSerializer(serializers.ModelSerializer):
 
 class signrecordView(generics.RetrieveAPIView):    
     serializer_class = signrecordSerializer
-    @login_required
+    @login_required(wx=True)
     def get_object(self):
         id = self.request.query_params.get('signproject')
         sign_project = get_object_or_404(SignProject, pk=id)

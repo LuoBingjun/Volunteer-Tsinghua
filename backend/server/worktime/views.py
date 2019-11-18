@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 
 from django.shortcuts import get_object_or_404
-from server.models import User, ApplyRecord, Project, JoinRecord, SignRecord, SignProject
+from server.models import *
 from server.utils import login_required
 
 
@@ -24,7 +24,7 @@ class ViewWorktimeSerializer(serializers.Serializer):
     
 class ViewWorktime(APIView): 
    
-    @login_required
+    @login_required(wx=True)
     def get(self, request):
         info = ViewWorktimeSerializer(data=self.request.query_params)
         if info.is_valid():
