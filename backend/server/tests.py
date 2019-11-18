@@ -123,7 +123,6 @@ class ApplyTestCase(TestCase):
         pass
 
 class CancelApplyTestCase(TestCase):
-
     def setUp(self):
         _user = WxUser(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
         _user.save()
@@ -143,8 +142,28 @@ class CancelApplyTestCase(TestCase):
     def tearDown(self):
         pass
 
-class signoutTestCase(TestCase):
+class signinTestCase(TestCase):
+    def setUp(self):
+        _user = WxUser.objects.create(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=10086)
+        _project = Project.objects.create(title='test', content='testcontent', require_num=12, requirements='req', deadline=datetime.datetime(2019,12,1,23,59,59))
+        _join_record = JoinRecord.objects.create(user=_user,project=_project)
+        _sign_project=SignProject.objects.create(project=_project, title='第一次活动', content='content', begin_time=timezone.now() + datetime.timedelta(minutes=1), end_time=timezone.now())
 
+    def test_signin(self):
+        client = APIClient()
+        response = client.post('/auth/login', {'token':'null'})
+        assert response.status_code == 200
+
+        response = client.post('/sign/signin', {'sign_project':1})
+        assert response.status_code == 200
+
+        response = client.post('/sign/signin', {'sign_project':1})
+        assert response.status_code == 409
+
+    def tearDown(self):
+        pass
+
+class signoutTestCase(TestCase):
     def setUp(self):
         _user = WxUser(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
         _user.save()
