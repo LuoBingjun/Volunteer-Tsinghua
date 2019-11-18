@@ -25,7 +25,7 @@ def login_required(web=False, wx=False):
             id = request.session.get('wx_user')
             user = WxUser.objects.filter(pk=id)
             if user.exists():
-                request.user = WxUser.objects.get(pk=id)
+                request.user = user[0]
                 return func(self, *args, **kargs)
             else:
                 raise PermissionDenied()

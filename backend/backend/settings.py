@@ -25,7 +25,7 @@ SECRET_KEY = 'zlwes(qp_fflk%5yi%#d@w%^1fqi@zx9ai@6j755$f9jg895+('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['62.234.0.237']
 
 
 # Application definition
