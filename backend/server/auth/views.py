@@ -20,7 +20,7 @@ class preloginSerializer(serializers.Serializer):
 
 class preloginView(APIView):
     def post(self, request):
-        serializer = preloginSerializer(request.data)
+        serializer = preloginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         code = serializer.validated_data['code']
 
@@ -33,8 +33,10 @@ class preloginView(APIView):
         if not openid:
             return Response(status=400)
         
-        request.session.cycle_key()
+        #request.session.cycle_key()
         request.session['openid'] = openid
+
+        print(openid)
 
         user = WxUser.objects.filter(openid=openid)
         if user.exists():
@@ -60,7 +62,7 @@ class loginView(APIView):
             token = info.validated_data['token']
             userinfo = self.get_userinfo(token)
 
-            request.session.cycle_key()
+            #request.session.cycle_key()
             openid = request.session.get('openid')
             request.session['wx_user'] = int(userinfo['card'])
 
@@ -83,8 +85,7 @@ class loginView(APIView):
                 'department': userinfo['department']
             })
             
-            response['Set-Cookie'] = 'sessionid={0}; Path=/'.format(
-                request.session.session_key)
+            #response['Set-Cookie'] = 'sessionid={0}; Path=/'.format(request.session.session_key)
             return response
         else:
             return Response(info.errors, status=400)
@@ -154,7 +155,9 @@ class userView(APIView):
             raise PermissionDenied()
         serializer = postUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        user = serializer.save()
+        user.openid = request.session.get('openid')
+        user.save()
         return Response(serializer.data)
 
     @login_required(wx=True)
