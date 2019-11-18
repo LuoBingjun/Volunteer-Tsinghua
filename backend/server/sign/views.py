@@ -49,6 +49,8 @@ class signinView(APIView):
         serializer.is_valid(raise_exception=True)
         project = serializer.validated_data['sign_project'].project
         join_record = get_object_or_404(JoinRecord, user=request.user, project=project)
+        if SignRecord.objects.filter(join_record=join_record, sign_project=serializer.validated_data['sign_project']).exists():
+            return Response(status=409)
         serializer.validated_data['join_record'] = join_record
         sign_record = serializer.save()
         return Response({'sign_record_id': sign_record.id})
