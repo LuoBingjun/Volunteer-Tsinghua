@@ -91,48 +91,55 @@ Page({
   onShareAppMessage: function () {
 
   },
-
-  kindToggle: function (e) {
-    var app=getApp();
-        const myUrl = `${app.globalData.backEndUrl}/auth/login`
+  // // 这个函数只是注释，将来删掉！！！
+  // kindToggle: function (e) {
+  //   var app=getApp();
+  //       const myUrl = `${app.globalData.backEndUrl}/auth/login`
         
-        wx.request({
-            url: myUrl,
-            method: 'post',
-            data:{
-              'token':'null'
-            },
-            success(res) {  // 成功回调
-              if(res.statusCode==200)
-              {
-                console.log("得到的cookies为",res.header['Set-Cookie']);
-                //console.log(res);
-                if('data' in res)
-                {
-                  app.globalData.name=res.data.name;
-                  app.globalData.id=res.data.id;
-                  app.globalData.department=res.data.department;
-                  wx.switchTab({'url':"/pages/home/home"});
-                  app.globalData.cookies=res.header['Set-Cookie'];
-                }
-                return;
-              }
-              else {
-                wx.showModal({
-                  title: '错误',
-                  content: JSON.stringify(res.data)
-                  });
-              }
-            },
-            fail() { // 失败回调
-              wx.showModal({
-                title: '错误',
-                content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
-                });
-            }
-            })
+  //       wx.request({
+  //           url: myUrl,
+  //           method: 'post',
+  //           data:{
+  //             'token':'null'
+  //           },
+  //           success(res) {  // 成功回调
+  //             if(res.statusCode==200)
+  //             {
+  //               console.log("得到的cookies为",res.header['Set-Cookie']);
+  //               //console.log(res);
+  //               if('data' in res)
+  //               {
+  //                 app.globalData.name=res.data.name;
+  //                 app.globalData.id=res.data.id;
+  //                 app.globalData.department=res.data.department;
+  //                 wx.switchTab({'url':"/pages/home/home"});
+  //                 app.globalData.cookies=res.header['Set-Cookie'];
+  //               }
+  //               return;
+  //             }
+  //             else {
+  //               wx.showModal({
+  //                 title: '错误',
+  //                 content: JSON.stringify(res.data)
+  //                 });
+  //             }
+  //           },
+  //           fail() { // 失败回调
+  //             wx.showModal({
+  //               title: '错误',
+  //               content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+  //               });
+  //           }
+  //           })
     
-  },
+  // },
+
+
+
+
+
+
+  
   onLoginPushed: function(e){
     //     // TODO: 下面几行是测试使用，跳过了登录，将来用下面登录的。
     //     wx.navigateTo({"url":"/pages/fillUserInfo/fillUserInfo?department="
@@ -155,6 +162,17 @@ Page({
               },
               fail(res){
                 console.log("跳转到助教小程序失败！", res)
+                wx.showModal({
+                        title: '网络异常',
+                        content: '网络异常',
+                        success(res) {
+                          if (res.confirm) {
+                            console.log('用户点击确定')
+                          } else if (res.cancel) {
+                            console.log('用户点击取消')
+                          }
+                        }
+                })
               }
           } 
         )

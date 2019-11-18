@@ -1,0 +1,10 @@
+<view class="page">
+    <view class="page__hd">
+        <view class="page__title">登陆</view>
+        <view class="page__desc">志愿清华正在测试中</view>
+    </view>
+    <view class="page_bd">
+        <button class="weui-btn" type="primary" id="login" bindtap="onLoginPushed">登录</button>
+    </view>
+    <!-- <button style = "margin:20px" class="weui-btn" type="primary" id="login" bindtap="kindToggle">现在不填信息也可以登陆，但是以后你就没那么走运了</button> -->
+</view>

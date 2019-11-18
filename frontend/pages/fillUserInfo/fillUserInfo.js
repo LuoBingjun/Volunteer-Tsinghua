@@ -79,6 +79,7 @@ Page({
     },
     formSubmit: function(e){
         var that = this
+        
         console.log("fillUserInfo.js: formSubmit函数开始", e.detail.value)
         let {phone, email} = e.detail.value
 
@@ -101,6 +102,7 @@ Page({
 
         var app=getApp();
         const userUrl = `${app.globalData.backEndUrl}/auth/user`
+        console.log('fillUserInfo中formSubmit函数，cookie为：',app.globalData.cookies)
         // 向后端发送填写信息请求
         wx.request({
             url: userUrl,
@@ -113,7 +115,8 @@ Page({
                 'phone': phone
             },
             header: {
-                'content-type': 'application/json'// 提交的数据类型
+                'content-type': 'application/json',// 提交的数据类型
+                'cookie':app.globalData.cookies //读取cookie
             },
             success(res) {  // 成功回调
                 console.log('填写用户信息向后端发送请求成功', res.data);
