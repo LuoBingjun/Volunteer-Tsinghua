@@ -35,28 +35,26 @@ App({
                                     if(res.data.login_status)
                                     {
                                         console.log('res.data.login_status为true')
-                                        wx.switchTab({'url':"/pages/home/home"})
+                                        wx.reLaunch({'url':"/pages/home/home"})
                                     }
                                     else
                                     {
                                         console.log('res.data.login_status为false还未登录')
-                                        wx.navigateTo({"url":"/pages/login"})
+                                        wx.reLaunch({"url":"/pages/login/login"})
                                     }
                                 }
                             }
-
-
 
                         })
                     } 
                     else {
                         console.log('wx.login success res.code == false: res.errMsg为' + res.errMsg)
-                        wx.navigateTo({"url":"/pages/login"})
+                        wx.reLaunch({"url":"/pages/login/login"})
                     }
                 },
                 fail() {
                     console.log('wx.login中fail函数被调用。')
-                    wx.navigateTo({"url":"/pages/login"})
+                    wx.reLaunch({"url":"/pages/login/login"})
                 }
             })
 
