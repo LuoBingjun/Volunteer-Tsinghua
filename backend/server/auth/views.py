@@ -61,7 +61,7 @@ class loginView(APIView):
             userinfo = self.get_userinfo(token)
 
             request.session.cycle_key()
-            openid = request.session['openid']
+            openid = request.session.get('openid')
             request.session['wx_user'] = int(userinfo['card'])
 
             user = WxUser.objects.filter(pk=userinfo['card'])
