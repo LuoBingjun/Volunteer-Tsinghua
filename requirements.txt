@@ -4,3 +4,4 @@ django
 djangorestframework
 Pillow
 requests
+jieba
