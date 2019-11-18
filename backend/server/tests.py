@@ -30,6 +30,7 @@ class AuthTestCase(TestCase):
             'email': 'xxh17@mails.tsinghua.edu.cn',
             'phone': '13888888888'
         })
+        print(response.json())
         assert response.status_code == 200
 
     def test_web_login(self):
