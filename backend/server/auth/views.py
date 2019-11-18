@@ -33,7 +33,7 @@ class preloginView(APIView):
         if not openid:
             return Response(status=400)
         
-        #request.session.cycle_key()
+        request.session.cycle_key()
         request.session['openid'] = openid
 
         print(openid)
@@ -62,7 +62,6 @@ class loginView(APIView):
             token = info.validated_data['token']
             userinfo = self.get_userinfo(token)
 
-            #request.session.cycle_key()
             openid = request.session.get('openid')
             request.session['wx_user'] = int(userinfo['card'])
 
@@ -85,7 +84,6 @@ class loginView(APIView):
                 'department': userinfo['department']
             })
             
-            #response['Set-Cookie'] = 'sessionid={0}; Path=/'.format(request.session.session_key)
             return response
         else:
             return Response(info.errors, status=400)
@@ -101,7 +99,6 @@ class loginView(APIView):
         params = {
             'token': token
         }
-        # headers = {'content_type':'application/json'}
         response = requests.post(
             'https://alumni-test.iterator-traits.com/fake-id-tsinghua-proxy/api/user/session/token', json=params).json()
         print(response)
