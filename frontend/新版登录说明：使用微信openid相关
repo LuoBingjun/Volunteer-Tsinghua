@@ -1,0 +1,40 @@
+登录说明 现在的新版登录过程：微信绑定用户身份，实现自动登录。
+
+
+
+
+app.onShow函数分为两个模块：登录模块 和 校友总会助手小程序跳转回模块。
+    登录模块 是在小程序被显示时运行
+    校友总会助手小程序跳转回模块 是在从助教小程序跳回时运行
+
+
+
+登录过程：
+1. 
+用户打开小程序，在app.onShow函数的 登录模块 中，通过wx.login获取res.code，然后向后端通过api：/auth/prelogin发送res.code，后端向微信服务器处理一大堆事情，
+    然后返回login_status和cookie，前端把cookie设置到全局变量
+如果login_status为true，证明此时用户仍处于登录状态，直接跳转到home界面
+如果login_status为false，证明此时用户没有处于登录状态，跳转到/pages/login/login界面
+    在/pages/login/login界面，用户点击登录，跳转到助教校友总会助手小程序，输入info账号密码后，调回本app
+    然后在app.onShow函数的 校友总会助手小程序跳转回模块 向后端发送/auth/login请求，返回值包括用户是否是第一次登录
+        如果用户不是第一次登录，直接跳转到home界面，登录完成
+        如果用户是第一次登录，跳转到fillUserInfo界面，填写注册信息后，再跳转到home界面，登录完成。
+
+
+
+
+
+2. 在home.js中的onShow中通过cookies获取用户信息(即：发起请求/auth/user，并设置全局变量userInfo)
+3. 在各页面的onLoad或onShow函数设置本页面的用户信息
+(即：that.setData({
+            userInfo: app.globalData.userInfo
+        }))
+
+
+
+备注：
+app.onShow函数中的页面跳转函数全部使用reLaunch，没有页面栈
+
+
+TODO待解决：
+处理没有网络的情况：预计在app.onShow函数的用户登录模块中，将所有失败情况，不是跳转到/pages/login/login界面，而是显示弹窗：“当前网络异常”，然后再处理

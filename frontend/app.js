@@ -63,7 +63,7 @@ App({
         }
         else
         {
-            console.log('app.onshow清华人小程序跳转回模块开始！')
+            console.log('app.onshow校友总会助手小程序跳转回模块开始！')
             console.log("App得到THU校友总会助手小程序发回的extraData",options.referrerInfo.extraData)       
             var token = options.referrerInfo.extraData.token
             console.log("App得到THU校友总会助手小程序发回的token:",token)
