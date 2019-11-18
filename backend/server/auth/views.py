@@ -61,7 +61,7 @@ class loginView(APIView):
             userinfo = self.get_userinfo(token)
 
             request.session.cycle_key()
-            openid = request.session['openid']
+            openid = request.session.get('openid')
             request.session['wx_user'] = int(userinfo['card'])
 
             user = WxUser.objects.filter(pk=userinfo['card'])
@@ -71,7 +71,8 @@ class loginView(APIView):
                 users.update(openid=None)
 
                 user = WxUser.objects.get(pk=userinfo['card'])
-                user.update(openid=openid)
+                user.openid = openid
+                user.save()
             else:
                 first_login = True
 
@@ -131,7 +132,7 @@ class webloginView(APIView):
 class postUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WxUser
-        fields = ['name', 'department', 'email', 'phone']
+        fields = ['id', 'name', 'department', 'email', 'phone']
 
 
 class getUserSerializer(serializers.ModelSerializer):
@@ -151,9 +152,7 @@ class userView(APIView):
         id = request.session.get('wx_user')
         if not id:
             raise PermissionDenied()
-        data = dict(request.data)
-        data['id'] = id
-        serializer = postUserSerializer(data=data)
+        serializer = postUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
