@@ -74,8 +74,10 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
+import  {login} from '@/api/login'
 
 export default {
   name: 'Login',
@@ -89,16 +91,16 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
+      if (value.length < 5) {
+        callback(new Error('The password can not be less than 5 digits'))
+      } else { 
         callback()
       }
     }
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: 'admin'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -151,6 +153,7 @@ export default {
       }
     },
     showPwd() {
+      console.log('show!!!!')
       if (this.passwordType === 'password') {
         this.passwordType = ''
       } else {
@@ -161,22 +164,16 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+      this.loading=true
+      login(this.loginForm.username,this.loginForm.password).then(res => {
+          console.log(res)
+          this.loading=false
+          console.log('跳转信息：',{ path: this.redirect || '/', query: this.otherQuery })
+          //this.$router.push({ path: this.redirect })
+        }).catch(err =>{
+          console.log(err)
+          this.loading=false
+        })
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {

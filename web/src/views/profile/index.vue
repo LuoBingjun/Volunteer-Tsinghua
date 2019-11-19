@@ -36,7 +36,7 @@ import Timeline from './components/Timeline'
 import Account from './components/Account'
 
 export default {
-  name: 'Profile1',
+  name: 'Profile',
   components: { UserCard, Activity, Timeline, Account },
   data() {
     return {

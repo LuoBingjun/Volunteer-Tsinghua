@@ -1,3 +1,4 @@
+/* eslint-disable*/
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -124,6 +125,19 @@ export const asyncRoutes = [
           title: 'Role Permission',
           roles: ['admin']
         }
+      }
+    ]
+  },
+  {
+    path: '/project',
+    component: Layout,
+    redirect: '/project/index',
+    children: [
+      {
+        path: '/project',
+        component: () => import('@/views/project'),
+        name: 'project',
+        meta: { title: '项目详情', icon: 'user', noCache: true }
       }
     ]
   },
