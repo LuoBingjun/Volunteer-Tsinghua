@@ -76,7 +76,46 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: '主页', icon: 'dashboard', affix: true }
+        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/',
+    component: Layout,
+    redirect: '/myProjects',
+    children: [
+      {
+        path: 'myProjects',
+        component: () => import('@/views/myProjects/index'),
+        name: 'myProjects',
+        meta: { title: '我的项目', icon: 'dashboard', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/profile',
+    component: Layout,
+    redirect: '/profile/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/profile/index'),
+        name: 'Profile',
+        meta: { title: '账号详情', icon: 'user', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/createProject',
+    component: Layout,
+    redirect: '/createProject',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/createProject/index'),
+        name: 'createProject',
+        meta: { title: '发起项目', icon: 'user', noCache: true }
       }
     ]
   }
