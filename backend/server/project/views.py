@@ -13,28 +13,76 @@ from server.utils import login_required
 from itertools import chain
 from django.db.models import Q
 import jieba
+import json
+
+
+class jobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        exclude = ['project']
 
 class detailSerializer(serializers.ModelSerializer):
+    jobs = serializers.ListField(child=jobSerializer())
     class Meta:
         model = Project
         fields = '__all__'
+        # fields = ['title','content','requirements','form','deadline','jobs']
 
 class detailView(GenericAPIView):
     serializer_class = detailSerializer
 
     @login_required(web=True)
     def post(self, request):
+        # 图片问题
+        # _data=request.POST.copy()
+        
+        # print(_data["jobs"])
+
+        # job_dict = eval(_data["jobs"])
+        # print(job_dict)
+
+        # #_data["jobs"] = json.loads(job_dict)
+        # _data["jobs"]=job_dict
+        # print(_data["jobs"])
+
+        # print(dict(_data["jobs"]))
+
         serializer = detailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        project = serializer.save()
-        return Response({'id': project.id})
+
+        _title = serializer.validated_data['title']
+        _content = serializer.validated_data['content']
+        _requirements=serializer.validated_data['requirements']
+        _form=serializer.validated_data['form']
+        _deadline=serializer.validated_data['deadline']
+        _jobs=serializer.validated_data['jobs']
+
+        _project=Project(title=_title, content=_content, requirements=_requirements, 
+                form=_form, deadline=_deadline)
+        
+        _project.save()
+
+        for a_job in _jobs:
+            new_job=Job(project=_project,
+                job_name=a_job["job_name"],
+                job_worktime=a_job["job_worktime"], 
+                job_content=a_job["job_content"],
+                job_require_num=a_job["job_require_num"])
+            new_job.save()
+
+        return Response({'id': _project.id})
     
     @login_required(wx=True)
     def get(self, request):
         id = self.request.query_params.get('id')
         project = get_object_or_404(Project, id=id)
+        
         serializer = self.get_serializer(project)
         res = dict(serializer.data)
+
+
+
+
         if project.finished:
             res['status'] = 'F'
         else:
