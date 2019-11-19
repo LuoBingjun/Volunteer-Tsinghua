@@ -66,3 +66,18 @@ def get_AccessToken():
         else:
             raise ImproperlyConfigured()
     return access_token['access_token']
+
+def send_wx_msg(touser, template_id, page, data):
+    access_token = cache.get('access_token')
+    response = requests.post('https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={0}'.format(access_token), data={
+        'touser':touser.openid,
+        'template_id':template_id,
+        'page':page,
+        'data':data
+    }).json()
+
+    errcode = response.get('errcode')
+    if errcode:
+        return errcode
+    else:
+        return 0
