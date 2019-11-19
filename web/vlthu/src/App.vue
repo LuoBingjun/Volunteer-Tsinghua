@@ -1,7 +1,12 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <div style='height:100px;bgcolor:#888888'>
+      <h1> 志愿清华小程序 </h1>
+    </div>
     <router-view/>
+    <div style='height:100px;bgcolor:#888888'>
+      <p> 志愿清华小程序</p>
+    </div>
   </div>
 </template>
 
