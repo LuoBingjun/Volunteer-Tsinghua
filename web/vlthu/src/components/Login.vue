@@ -8,6 +8,8 @@
 </template>
 
 <script>
+
+const axios=require('axios')
 export default {
   name: 'Info',
   data () {
@@ -21,12 +23,18 @@ export default {
       login(){
           console.log('点击了登陆按钮')
           console.log(this.$data.acc,this.$data.pass)
-
+          axios({
+            method:"post",
+            url: 'http://62.234.0.237/auth/weblogin',
+            data:{
+                username: this.$data.acc,
+                password: this.$data.pass
+            }
+            }).then(res=>console.log(res))
       },
       textChanged(e){
           console.log('文本发生了变化')
           console.log(this.$data.acc,this.$data.pass)
-
       }
   }
 }
