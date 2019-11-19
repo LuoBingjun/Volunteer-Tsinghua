@@ -6,3 +6,4 @@ Pillow
 requests
 redis
 django-redis
+jieba

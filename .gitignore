@@ -132,3 +132,5 @@ dmypy.json
 !.vscode/extensions.json
 *.code-workspace
 backend/dump.rdb
+
+node_modules/
