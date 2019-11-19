@@ -7,7 +7,7 @@ __pycache__/
 *.so
 # node modules
 frontend/node_modules/*
-web/node_modules/*
+web/vlthu/node_modules/*
 # Distribution / packaging
 .Python
 build/
