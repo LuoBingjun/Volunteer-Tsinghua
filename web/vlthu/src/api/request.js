@@ -1,20 +1,25 @@
 /* eslint-disable */
 import axios from 'axios'
-
+import { MessageBox, Message } from 'element-ui'
 const service = axios.create({
-    baseURL: './api', // url = base url + request url
+    baseURL: '/api', // url = base url + request url
     withCredentials: true, // send cookies when cross-domain requests
     timeout: 5000 // request timeout
   })
 
   service.interceptors.request.use(
     config => {
-      console.log("request拦截成功",config)
+      // console.log("request拦截成功",config)
       // do something before request is sent
       return config
     },
     error => {
       // do something with request error
+      Message({
+        message: 'Error request'+(response.message || response.status),
+        type: 'error',
+        duration: 5 * 1000
+      })
       console.log(error) // for debug
       return Promise.reject(error)
     }
@@ -33,36 +38,26 @@ const service = axios.create({
      * You can also judge the status by HTTP Status Code
      */
     response => {
-      console.log('response拦截成功',response)
+      // console.log('response拦截成功',response)
       // if the custom code is not 20000, it is judged as an error.
-      /*if (response.status !== 200) {
+      if (response.status !== 200) {
         Message({
-          message: response.message || 'Error',
+          message: '中间件捕捉到Error '+(response.message || response.status),
           type: 'error',
           duration: 5 * 1000
         })
-        //  这些注释内容属于自定义内容（暂时不启用）
-        //  50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-        //  if (res.status === 500 || res.status === 501 || res.code === 50014) {
-        //    // to re-login
-        //    MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-        //      confirmButtonText: 'Re-Login',
-        //      cancelButtonText: 'Cancel',
-        //      type: 'warning'
-        //    }).then(() => {
-        //      store.dispatch('user/resetToken').then(() => {
-        //        location.reload()
-        //      })
-        //    })
-        //  }
         return Promise.reject(new Error(response.data || 'Error'))
       } else {
         return response
-      }*/
-      return response
+      }
     },
     error => {
-      console.log('err' + error) // for debug
+      // console.log('err' + error) // for debug
+      Message({
+        message: '中间件捕捉到Error '+error,
+        type: 'error',
+        duration: 5 * 1000
+      })
       return Promise.reject(error)
     }
   )

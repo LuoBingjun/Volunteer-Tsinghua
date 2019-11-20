@@ -6,12 +6,21 @@
 </template>
 
 <script>
+import request from '@/api/request'
 export default {
   name: 'Info',
   data () {
     return {
       msg: 'This is personal info!'
     }
+  },
+  created(){
+    request({
+      url:'/auth/user',
+      method:'get',
+    }).then(res =>{
+      console.log('This page is created!',this.$data,res)
+    })
   }
 }
 </script>
