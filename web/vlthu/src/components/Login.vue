@@ -9,7 +9,7 @@
 
 <script>
 
-const axios=require('axios')
+import request from '@/api/request.js'
 export default {
   name: 'Info',
   data () {
@@ -23,9 +23,9 @@ export default {
       login(){
           console.log('点击了登陆按钮')
           console.log(this.$data.acc,this.$data.pass)
-          axios({
+          request({
             method:"post",
-            url: 'http://62.234.0.237/auth/weblogin',
+            url: '/auth/weblogin',
             data:{
                 username: this.$data.acc,
                 password: this.$data.pass
