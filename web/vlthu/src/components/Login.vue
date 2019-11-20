@@ -8,8 +8,7 @@
 </template>
 
 <script>
-
-import request from '@/api/request.js'
+import {login} from '@/api/login'
 export default {
   name: 'Info',
   data () {
@@ -23,16 +22,9 @@ export default {
       login(){
           console.log('点击了登陆按钮')
           console.log(this.$data.acc,this.$data.pass)
-          request({
-            method:"post",
-            url: '/auth/weblogin',
-            data:{
-                username: this.$data.acc,
-                password: this.$data.pass
-            }
-            }).then(res=>{
+          login(this.$data.acc,this.$data.pass).then(res=>{
               console.log(res)
-              this.$router.push({name:'Project',params:{projectID:4}})
+              this.$router.push({name:'Project',query:{projectID:4}})
             })
       },
       textChanged(e){
