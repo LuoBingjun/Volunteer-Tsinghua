@@ -4,6 +4,7 @@ import Project from '@/components/Project'
 import Info from '@/components/Info'
 import Login from '@/components/Login'
 import Home from '@/components/Home'
+import LaunchProject from '@/components/LaunchProject'
 Vue.use(Router)
 
 export default new Router({
@@ -22,10 +23,16 @@ export default new Router({
       path: '/info',
       name: 'Info',
       component: Info
-    },{
+    },
+    {
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/launchProject',
+      name: 'LaunchProject',
+      component: LaunchProject
     }
   ]
 })
