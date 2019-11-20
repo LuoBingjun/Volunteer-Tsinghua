@@ -3,6 +3,10 @@
     <h1>{{ msg }}</h1>
     <button @click="changeRouter">点击切换</button>
 
+
+    
+
+    
   </div>
 </template>
 
@@ -11,7 +15,12 @@ export default {
   name: 'Project',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      projects:[
+        {name: 'proj1'},
+        {name: 'proj2'},
+        {name: 'proj3'},
+      ]
     }
   },
   methods:{
