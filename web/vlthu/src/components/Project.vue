@@ -4,7 +4,13 @@
     <div> 
       <p> 项目详情：{{content}} </p>
       <p> 需求：</p>
-
+      <ol>
+        <li v-for='item in requirements' :key='item'> 
+          <p>
+            {{item}}
+          </p><br >
+        </li>
+      </ol>
     </div>
     <button @click="changeRouter">点击返回</button>
     <label></label>
@@ -58,7 +64,7 @@ export default {
         "title": "标题",
         "content": "内容",
         "require_num": 5, // "需求人数"
-        "requirements": "需求" ,
+        "requirements": "[\"first\",\"second\"]" ,
         "status": "", // F-已结束 W-已报名待审核 P-报名通过正在进行 N-无法报名 A-可报名
         "form": "表单",
         "time": "发起时间",
@@ -69,10 +75,11 @@ export default {
     this.cover=res.cover
     this.require_num=res.require_num
     this.status=res.status
-    this.requirements=res.requirements
+    this.requirements=JSON.parse(res.requirements)
     this.form=res.form
     this.time=res.time
     this.deadline=res.deadline
+    console.log("得到的需求们：",this.requirements)
   }
 }
 </script>
