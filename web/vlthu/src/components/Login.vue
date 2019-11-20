@@ -30,7 +30,10 @@ export default {
                 username: this.$data.acc,
                 password: this.$data.pass
             }
-            }).then(res=>console.log(res))
+            }).then(res=>{
+              console.log(res)
+              this.$router.push({name:'Project',params:{projectID:4}})
+            })
       },
       textChanged(e){
           console.log('文本发生了变化')

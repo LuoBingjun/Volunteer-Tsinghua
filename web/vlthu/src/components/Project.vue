@@ -2,11 +2,7 @@
   <div>
     <h1>{{ msg }}</h1>
     <button @click="changeRouter">点击切换</button>
-
-
-    
-
-     
+    <label>{{projectID}}</label>
   </div>
 </template>
 
@@ -16,6 +12,7 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      projectID: undefined,
       projects:[
         {name: 'proj1'},
         {name: 'proj2'},
@@ -28,6 +25,9 @@ export default {
       console.log('点击了按钮')
       this.$router.push('Info')
     }
+  },
+  created(){
+    console.log('project页面加载完毕,projectID为',this.$route)
   }
 }
 </script>
