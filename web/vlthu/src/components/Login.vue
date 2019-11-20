@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>登陆界面</h1>
-    <p><label>账号</label> <input id='acc' @input ='textChanged' :value="acc"/></p>
-    <p><label>密码</label> <input id='pass' @input ='textChanged' :value="pass"/></p>
+    <p><label>账号</label> <input ref='acc'  @input ='textChanged' :value="acc" /></p>
+    <p><label>密码</label> <input ref='pass' @input ='textChanged' :value="pass"/></p>
     <p><button @click="login" > 点击登陆</button></p>
   </div>
 </template>
@@ -29,6 +29,8 @@ export default {
       },
       textChanged(e){
           console.log('文本发生了变化')
+          this.acc=this.$refs.acc.value
+          this.pass=this.$refs.pass.value
           console.log(this.$data.acc,this.$data.pass)
       }
   }

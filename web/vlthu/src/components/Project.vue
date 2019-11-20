@@ -1,14 +1,12 @@
 <template>
-  <div>
+  <div style='margin:20px'>
     <h1>Project# {{projectID}}: {{title}}</h1>
     <div> 
       <p> 项目详情：{{content}} </p>
       <p> 需求：</p>
       <ol>
         <li v-for='item in requirements' :key='item'> 
-          <p>
             {{item}}
-          </p><br >
         </li>
       </ol>
     </div>
@@ -40,7 +38,7 @@ export default {
   methods:{
     changeRouter(){
       console.log('点击了按钮')
-      this.$router.pop()
+      this.$router.go(-1)
     }
   },
   created(){
@@ -93,11 +91,13 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
 a {
   color: #42b983;
+}
+p{
+  text-align:initial;
+}
+li{
+  text-align:initial;
 }
 </style>
