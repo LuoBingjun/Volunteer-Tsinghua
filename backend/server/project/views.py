@@ -33,7 +33,7 @@ class detailSerializer(serializers.ModelSerializer):
 class detail_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ['title', 'webuser', 'content', 'cover', 'requirements',
+        fields = ['id', 'title', 'webuser', 'content', 'cover', 'requirements',
             'form', 'time', 'deadline', 'finished', 'job_set']
         # fields = ['__all__', 'job_set'] #failed
         depth = 1
@@ -110,7 +110,7 @@ class listSerializer(serializers.ModelSerializer):
     require_num = serializers.SerializerMethodField()
     class Meta:
         model = Project
-        fields = ['title', 'webuser', 'content', 'cover', 'requirements',
+        fields = ['id', 'title', 'webuser', 'content', 'cover', 'requirements',
             'form', 'time', 'deadline', 'finished', 'require_num']
         depth = 0
 
@@ -131,13 +131,13 @@ class listView(ListAPIView):
         return Project.objects.all()
 
 
-class searchSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=Project
-        fields='__all__'
+# class searchSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model=Project
+#         fields='__all__'
 
 class searchView(ListAPIView):
-    serializer_class = searchSerializer
+    serializer_class = listSerializer
 
     @login_required(wx=True,web=True)
     def get_queryset(self):
