@@ -29,7 +29,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-        console.log("烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫")
+        // console.log("烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫")
         var app=getApp();
         const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${this.data.projectID}`
         console.log("从project跳转到URL：",getUrl)
