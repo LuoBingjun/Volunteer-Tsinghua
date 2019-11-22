@@ -19,8 +19,8 @@ class ViewApplyInfoSerializer(serializers.ModelSerializer):
     
     class Meta: 
         model = ApplyRecord
-        fields = "__all__"  #全部显示
-        depth = 2 
+        fields = "__all__"
+        depth = 1
 
 
 class ViewApplyInfo(generics.ListAPIView): 
@@ -56,13 +56,13 @@ class CheckOp(APIView):
             if(info.validated_data['checked']): # 审核通过
                 _apply.status = 'P'
                 # 审核通过添加到joinRecord
-                if not JoinRecord.objects.filter(user=_apply.user, project=_apply.project).exists():# 不可重复设置
-                    join_record = JoinRecord(user=_apply.user, project=_apply.project, work_time=0)
+                if not JoinRecord.objects.filter(user=_apply.user, project=_apply.project, job=_apply.job).exists():# 不可重复设置
+                    join_record = JoinRecord(user=_apply.user, project=_apply.project,job=_apply.job, work_time=0)
                     join_record.save()
             else:
                 _apply.status = 'N'
 
-                _a_record = JoinRecord.objects.filter(user=_apply.user, project=_apply.project)
+                _a_record = JoinRecord.objects.filter(user=_apply.user, project=_apply.project, job=_apply.job)
                 if _a_record.exists():
                     _a_record.delete()
 
@@ -77,20 +77,20 @@ class CheckOp(APIView):
 # 问题：客户端必须发送请求，才会发送给客户端信息吗？
 # 还是更新check的状态后可以直接发送给客户端
 # 问题 get的时候需不需要验证客户端传来的信息的正确性
-class ViewResultSerializer(serializers.Serializer): 
-    apply_id = serializers.IntegerField(max_value=None, min_value=0)
+# class ViewResultSerializer(serializers.Serializer): 
+#     apply_id = serializers.IntegerField(max_value=None, min_value=0)
     
-class ViewResult(APIView):
-    @login_required(wx=True)
-    def get(self, request):
-        info = ViewResultSerializer(data=self.request.query_params)
-        if info.is_valid():
-            _apply_id = info.validated_data["apply_id"]
-            #项目存在是否判断
-            _set = ApplyRecord.objects.filter(id=_apply_id)
-            if _set.exists():
-                return Response({"审核状态":_set[0].status}, status=200)
-            else:
-                return Response({'error':'applyinfo not be found'}, status=404)
-        else:
-            return Response(info.errors, status=400) #数据格式错误
+# class ViewResult(APIView):
+#     @login_required(wx=True)
+#     def get(self, request):
+#         info = ViewResultSerializer(data=self.request.query_params)
+#         if info.is_valid():
+#             _apply_id = info.validated_data["apply_id"]
+#             #项目存在是否判断
+#             _set = ApplyRecord.objects.filter(id=_apply_id)
+#             if _set.exists():
+#                 return Response({"审核状态":_set[0].status}, status=200)
+#             else:
+#                 return Response({'error':'applyinfo not be found'}, status=404)
+#         else:
+#             return Response(info.errors, status=400) #数据格式错误

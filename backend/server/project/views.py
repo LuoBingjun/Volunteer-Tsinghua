@@ -21,15 +21,25 @@ class jobSerializer(serializers.ModelSerializer):
         model = Job
         exclude = ['project']
 
+# 用于发起项目
 class detailSerializer(serializers.ModelSerializer):
     jobs = serializers.ListField(child=jobSerializer())
     class Meta:
         model = Project
-        fields = '__all__'
+        exclude = ['webuser']
         # fields = ['title','content','requirements','form','deadline','jobs']
 
+# 用于返回项目详情
+class detail_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['title', 'webuser', 'content', 'cover', 'requirements',
+            'form', 'time', 'deadline', 'finished', 'job_set']
+        # fields = ['__all__', 'job_set'] #failed
+        depth = 1
+
 class detailView(GenericAPIView):
-    serializer_class = detailSerializer
+    serializer_class = detail_Serializer
 
     @login_required(web=True)
     def post(self, request):
@@ -58,7 +68,7 @@ class detailView(GenericAPIView):
         _jobs=serializer.validated_data['jobs']
 
         _project=Project(title=_title, content=_content, requirements=_requirements, 
-                form=_form, deadline=_deadline)
+                form=_form, deadline=_deadline, webuser=request.user)
         
         _project.save()
 
@@ -80,25 +90,41 @@ class detailView(GenericAPIView):
         serializer = self.get_serializer(project)
         res = dict(serializer.data)
 
-
-
-
-        if project.finished:
-            res['status'] = 'F'
-        else:
-            apply_records = ApplyRecord.objects.filter(user=request.user, project=project)
-            if apply_records.exists():
-                apply_record = apply_records[0]
-                res['status'] = apply_record.status
-            else:
-                if project.deadline >= datetime.now(timezone.utc):
-                    res['status'] = 'A'
-                else:
-                    res['status'] = 'N'
+        # 项目的状态有待改正
+        # if project.finished:
+        #     res['status'] = 'F'
+        # else:
+        #     apply_records = ApplyRecord.objects.filter(user=request.user, project=project)
+        #     if apply_records.exists():
+        #         apply_record = apply_records[0]
+        #         res['status'] = apply_record.status
+        #     else:
+        #         if project.deadline >= datetime.now(timezone.utc):
+        #             res['status'] = 'A'
+        #         else:
+        #             res['status'] = 'N'
         return Response(res)
 
+
+class listSerializer(serializers.ModelSerializer):
+    require_num = serializers.SerializerMethodField()
+    class Meta:
+        model = Project
+        fields = ['title', 'webuser', 'content', 'cover', 'requirements',
+            'form', 'time', 'deadline', 'finished', 'require_num']
+        depth = 0
+
+    def get_require_num(self,obj):
+        jobs = obj.job_set.all()
+        require_num = 0
+        for i in jobs:
+            require_num = require_num + i.job_require_num
+        
+        return require_num
+
+
 class listView(ListAPIView):
-    serializer_class = detailSerializer
+    serializer_class = listSerializer
 
     @login_required(wx=True, web=True)
     def get_queryset(self):
@@ -123,19 +149,16 @@ class searchView(ListAPIView):
         keywords=[]
         for i in key_iter:
             keywords.append(i)
-        print(keywords)
 
         resultset=queryset.filter(title__icontains=search)
 
         for i in keywords:
             a_set=queryset.filter(title__icontains=i)
             resultset=chain(resultset, a_set)
-            print(resultset)
 
         for i in keywords:
             a_set=queryset.filter(content__icontains=i)
             resultset=chain(resultset, a_set)
-            print(resultset)
     
         resultlist=[]
         for i in resultset:

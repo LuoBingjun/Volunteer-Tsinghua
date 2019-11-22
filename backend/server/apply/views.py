@@ -24,6 +24,8 @@ class fillformView(APIView):
             _form = info.validated_data['form']
             job_id = info.validated_data['job_id']
 
+
+
             # 项目存在是否判断
             job_set = Job.objects.filter(id=job_id, project__deadline__gt=datetime.datetime.now(), project__finished=False)
             if job_set.exists():
@@ -33,12 +35,12 @@ class fillformView(APIView):
 
             # 验证重复报名 需要使用user和prject来在applyRecord中检索
             if ApplyRecord.objects.filter(user=request.user, job__id=job_id).exists():
-                return Response({'error':'applyinfo already exists'}, status=400)
+                return Response({'error':'applyinfo already exists'}, status=409)
 
             # 项目存在且从未报名,则有下列操作
 
             # 建立新数据
-            apply_record = ApplyRecord(user=request.user, job=_job,
+            apply_record = ApplyRecord(user=request.user, job=_job, project=_job.project,
                         form=_form)
             apply_record.save()
             return Response({'apply_id':apply_record.id},status=200)
@@ -59,6 +61,6 @@ class cancelapplyView(APIView):
             queryset = ApplyRecord.objects.all()
             apply_record = get_object_or_404(queryset, id=apply_id, user=request.user)
             apply_record.delete()
-            return Response(status=200)     
+            return Response(status=200)
         else:
             return Response(info.errors, status=400) #数据格式错误

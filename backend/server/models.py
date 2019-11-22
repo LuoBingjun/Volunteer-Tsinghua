@@ -16,6 +16,7 @@ class WebUser(AbstractUser):
 
 class ApplyRecord(models.Model):
     user = models.ForeignKey('WxUser', on_delete=models.CASCADE)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
     job = models.ForeignKey('Job', on_delete=models.CASCADE)
     form = models.TextField('报名表单')
     submit_time = models.DateTimeField('提交时间',auto_now_add=True)
@@ -25,6 +26,7 @@ class ApplyRecord(models.Model):
 class JoinRecord(models.Model):
     user = models.ForeignKey('WxUser', on_delete=models.CASCADE)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    job = models.ForeignKey('Job', on_delete=models.CASCADE)
     work_time = models.FloatField('工时', blank=True, null=True)
     sign_record = models.ManyToManyField('SignRecord', blank=True)
 
@@ -46,6 +48,7 @@ class SignRecord(models.Model):
 
 
 class Project(models.Model):
+    webuser = models.ForeignKey('WebUser', on_delete=models.CASCADE)
     title = models.CharField('项目', max_length=128)
     content = models.TextField('详情')
     cover = models.ImageField('封面图片', blank=True)
