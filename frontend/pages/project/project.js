@@ -3,11 +3,11 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "projectID": 123,
-        "cover":"/src/img1.jpg",
-        "title":"项目1",
-        "description":"这里有很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多总之非常多的描述",
-        "requirement":["需求1","需求2","需求3"],
+        "projectID": 0,
+        "cover":"",
+        "title":"",
+        "description":"",
+        "requirement":[],
         "status":"A"
     },
 

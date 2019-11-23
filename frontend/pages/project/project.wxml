@@ -1,6 +1,6 @@
 <view class="page">
   <view wx:if="{{cover}}">
-    <image src="{{cover}}" mode="widthFix" width="100%" />
+    <image src="{{cover}}" mode="widthFix" style="width:100%;height:auto;" />
   </view>
 
   <view class="container">
