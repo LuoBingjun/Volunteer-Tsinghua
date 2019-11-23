@@ -1,0 +1,20 @@
+<view class="page">
+  <view class="container">
+    <view wx:if="{{current=='home'}}">
+      <home></home>
+    </view>
+    <view wx:if="{{current=='message'}}">
+      <message></message>
+    </view>
+    <view wx:if="{{current=='my'}}">
+      <my></my>
+    </view>
+  </view>
+
+  <i-tab-bar current="{{ current }}" bindchange="handleChange" fixed="true">
+    <i-tab-bar-item key="home" icon="homepage" current-icon="homepage_fill" title="项目广场"></i-tab-bar-item>
+    <i-tab-bar-item key="message" icon="remind" current-icon="remind_fill" count="3" title="通知"></i-tab-bar-item>
+    <i-tab-bar-item key="my" icon="mine" current-icon="mine_fill" dot title="我的"></i-tab-bar-item>
+  </i-tab-bar>
+
+</view>
