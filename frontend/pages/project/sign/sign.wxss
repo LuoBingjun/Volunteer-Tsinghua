@@ -1,1 +1,21 @@
 /* pages/current_project/index.wxss */
+
+.caption-title {
+  font-weight: bold;
+  padding: 20px 10px;
+}
+
+.buttons {
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+}
+
+.col-icon {
+  text-align: left;
+  line-height: 100%;
+}
+
+.col-content {
+  text-align: right;
+  line-height: 100%;
+}

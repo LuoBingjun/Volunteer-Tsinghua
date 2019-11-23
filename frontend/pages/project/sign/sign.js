@@ -4,30 +4,13 @@ Page({
    */
   data: {
     projectID: 0,
-    list: [
-      {
-        'signID': '0',
-        'name': '第0次签到',
-        'status': '0',   //无法签到
-        'open': 'false'
-      },
-      {
-        'signID': '1',
-        'name': '第1次签到',
-        'status': '1',     //点击签到
-        'open': 'true'
-      }, {
-        'signID': '2',
-        'name': '第2次签到',
-        'status': '2',     //已经签到
-        'open': 'false'
-      }, {
-        'signID': '2',
-        'name': '第2次签到',
-        'status': '3',    //签到未开始
-        'open': 'false'
-      }
-    ]
+    list: {},
+    activeNames: []
+  },
+  onChange(event) {
+    this.setData({
+      activeNames: event.detail
+    });
   },
 
   /**
@@ -36,19 +19,6 @@ Page({
   onLoad: function (options) {
     console.log("选项：", options)
     this.setData({ 'projectID': options.projectID })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function (options) {
     let app = getApp()
     let that = this
     wx.request({
@@ -62,30 +32,29 @@ Page({
         console.log("得到的数据为", res);
 
         if (res.statusCode == 200) {
-          var list = []
+          let list = {}
           that.reslen = res.data.length
-          for (let i of res.data) {
-            var item = {}
-            item.signID = i.id
-            item.name = i.title
-            item.content = i.content
-            item.has_sign_in = false
-            list.push(item)
+          for (let item of res.data) {
+            list[item.id] = item
 
-            var now = new Date().getTime()
-            var begin = new Date(i.begin_time).getTime()
-            var end = new Date(i.end_time).getTime()
-            that.setData({ 'list': [] })
-            if (now < begin) {
+            let now = new Date()
+            item.begin_time = new Date(item.begin_time)
+            item.end_time = new Date(item.end_time)
+            if (now.getTime() < item.begin_time.getTime()) {
               item.status = 3
             }
-            else if (now > end) {
+            else if (now.getTime() > item.end_time.getTime()) {
               item.status = 0
             }
             else {
+              that.data.activeNames.push(item.id)
+              that.setData({
+                activeNames: that.data.activeNames
+              })
+
               item.status = 1
               wx.request({
-                url: `${app.globalData.backEndUrl}/my/signrecord?signproject=${item.signID}`,
+                url: `${app.globalData.backEndUrl}/my/signrecord?signproject=${item.id}`,
                 method: 'get',
                 header: {
                   'content-type': 'application/json', // 提交的数据类型
@@ -94,15 +63,8 @@ Page({
                 success(res2) {
                   console.log(res2)
                   if (res2.statusCode == 200) {
-                    for (var j in list) {
-                      console.log(list[j].signID, res2.data.sign_project)
-                      if (list[j].signID == res2.data.sign_project) {
-                        list[j].status = 2;
-                        that.setData({ 'list': list });
-                        console.log("set!!!!!!!!!!!!!!!!1")
-                        break;
-                      }
-                    }
+                    list[res2.data.sign_project].status = 2
+                    that.setData({ 'list': list })
                   }
                   else if (res2.statusCode != 404) {
                     wx.showModal({
@@ -120,10 +82,14 @@ Page({
                 }
               })
             }
-            that.setData({ 'list': list });
+            item.begin_time = item.begin_time.Format("yyyy-MM-dd HH:mm:ss")
+            item.end_time = item.end_time.Format("yyyy-MM-dd HH:mm:ss")
           }
-          console.log(list)
-          setTimeout(function () { console.log(that.data.list) }, 1000)
+          that.setData({
+            list: list
+          });
+          // console.log(list)
+          // setTimeout(function () { console.log(that.data.list) }, 1000)
         }
         else {
           wx.showModal({
@@ -140,6 +106,20 @@ Page({
         });
       }
     })
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function (options) {
+
   },
 
   /**
@@ -177,23 +157,22 @@ Page({
 
   },
 
-  switchOpen: function (e) {
-    var id = e.currentTarget.id
-    var list = this.data.list
-    console.log("拿到的id", id)
-    list[id].open = list[id].open == 'true' ? 'false' : 'true'
-    console.log("修改后：", list)
-    this.setData({ 'list': list })
-  },
+  // switchOpen: function (e) {
+  //   var id = e.currentTarget.id
+  //   var list = this.data.list
+  //   console.log("拿到的id", id)
+  //   list[id].open = list[id].open == 'true' ? 'false' : 'true'
+  //   console.log("修改后：", list)
+  //   this.setData({ 'list': list })
+  // },
 
   sign: function (e) {
     if (this.data.disabled) return;
     var app = getApp();
-    const postUrl = `${app.globalData.backEndUrl}/sign/signin`
     console.log(e.currentTarget)
     var that = this
     wx.request({
-      url: postUrl,
+      url: `${app.globalData.backEndUrl}/sign/signin`,
       method: 'post',
       header: {
         'content-type': 'application/json', // 提交的数据类型

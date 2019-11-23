@@ -1,3 +1,10 @@
 {
-  "usingComponents": {}
+  "navigationBarTitleText": "项目签到",
+  "usingComponents": {
+    "van-collapse": "/dist/Vant/collapse/index",
+    "van-collapse-item": "/dist/Vant/collapse-item/index",
+    "i-icon": "/dist/icon/index",
+    "i-row": "/dist/row/index",
+    "i-col": "/dist/col/index"
+  }
 }
