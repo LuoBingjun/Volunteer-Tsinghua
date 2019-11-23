@@ -14,21 +14,48 @@ class createSerializer(serializers.ModelSerializer):
     # cover = serializers.ImageField(use_url=True)
     class Meta:
         model = SignProject
-        fields = '__all__'
+        exclude = ["jobs"]
+
+        
+    def save(self, req, Validated_data):
+        
+        # _data = req.data['jobs']
+        try:
+            jobs = eval(req.data['jobs'])   # 需要修正，暂不支持数据检错
+        except:
+            return 0
+
+        sign_project=SignProject.objects.create(**Validated_data)
+        queryset = Job.objects.all()
+        for i in jobs:
+            _job=get_object_or_404(queryset,pk=i)
+            sign_project.jobs.add(_job)
+
+        sign_project.save()
+        return sign_project
 
 class projectView(CreateAPIView):
     @login_required(web=True, wx=False)
     def post(self, request):
         serializer = createSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        sign_project = serializer.save()
+        
+        sign_project = serializer.save(request,serializer.validated_data)
+
+        if not sign_project:
+            return Response({"error":"格式错误"},status=400)
+
         return Response({'id': sign_project.id})
+
+
+
 
 class listSerializer(serializers.ModelSerializer):
     # cover = serializers.ImageField(use_url=True)
     class Meta:
         model = SignProject
-        fields = '__all__'
+        exclude = ["project"]
+        depth = 1
 
 class listView(ListAPIView):
     serializer_class = listSerializer
@@ -36,6 +63,8 @@ class listView(ListAPIView):
     def get_queryset(self):
         project = self.request.query_params.get('project')
         return SignProject.objects.filter(project=project)
+
+
 
 class signinSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,8 +76,10 @@ class signinView(APIView):
     def post(self, request):
         serializer = signinSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         project = serializer.validated_data['sign_project'].project
         join_record = get_object_or_404(JoinRecord, user=request.user, project=project)
+        
         if SignRecord.objects.filter(join_record=join_record, sign_project=serializer.validated_data['sign_project']).exists():
             return Response(status=409)
         serializer.validated_data['join_record'] = join_record

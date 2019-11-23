@@ -26,7 +26,7 @@ class ApplyRecord(models.Model):
 class JoinRecord(models.Model):
     user = models.ForeignKey('WxUser', on_delete=models.CASCADE)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
-    job = models.ForeignKey('Job', on_delete=models.CASCADE)
+    job = models.ManyToManyField('Job')
     work_time = models.FloatField('工时', blank=True, null=True)
     sign_record = models.ManyToManyField('SignRecord', blank=True)
 
@@ -37,6 +37,7 @@ class SignProject(models.Model):
     content = models.TextField('详情')
     begin_time = models.DateTimeField('签到开始时间')
     end_time = models.DateTimeField('签到结束时间')
+    jobs = models.ManyToManyField('Job')
     # position = models.CharField(max_length=10)
     
 

@@ -56,17 +56,33 @@ class CheckOp(APIView):
             if(info.validated_data['checked']): # 审核通过
                 _apply.status = 'P'
                 # 审核通过添加到joinRecord
-                if not JoinRecord.objects.filter(user=_apply.user, project=_apply.project, job=_apply.job).exists():# 不可重复设置
-                    join_record = JoinRecord(user=_apply.user, project=_apply.project,job=_apply.job, work_time=0)
+                _join = JoinRecord.objects.filter(user=_apply.user, project=_apply.project)
+
+                # 重复处理
+                if not _join.exists():
+                    join_record = JoinRecord(user=_apply.user, project=_apply.project, work_time=0)
                     join_record.save()
+                    join_record.job.add(_apply.job)
+                    join_record.save()
+                else:
+                    a_job = _join[0].job.filter(id=_apply.job.id)
+                    if a_job.exists():
+                        return Response({"error":"check already pass"},status=409)
+                    else:
+
+                        _join[0].job.add(_apply.job)
+                        _join[0].save() 
             else:
                 _apply.status = 'N'
 
-                _a_record = JoinRecord.objects.filter(user=_apply.user, project=_apply.project, job=_apply.job)
-                if _a_record.exists():
-                    _a_record.delete()
+                _join = JoinRecord.objects.filter(user=_apply.user, project=_apply.project)
 
-            
+                if _join.exists():
+                    a_job=_join[0].job.filter(id=_apply.job.id)
+                    if a_job.exists():
+                        _join[0].job.remove(_apply.job)
+                        if not _join[0].job:
+                            _join[0].delete()
             _apply.save() # 存储审核状态
             
             return Response(status=200)

@@ -60,6 +60,9 @@ class cancelapplyView(APIView):
             apply_id = info.validated_data['apply_id']  
             queryset = ApplyRecord.objects.all()
             apply_record = get_object_or_404(queryset, id=apply_id, user=request.user)
+            if apply_record.status == 'P' or apply_record.status == 'N':
+                return Response({"error":"无法取消报名"},status=406)
+            
             apply_record.delete()
             return Response(status=200)
         else:
