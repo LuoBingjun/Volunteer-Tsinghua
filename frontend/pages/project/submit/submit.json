@@ -1,3 +1,13 @@
 {
-  "usingComponents": {}
+  "navigationBarTitleText": "项目报名",
+  "usingComponents": {
+    "i-input": "/dist/input/index",
+    "i-button": "/dist/button/index",
+    "i-panel": "/dist/panel/index",
+    "i-radio-group": "/dist/radio-group/index",
+    "i-radio": "/dist/radio/index",
+    "i-message": "/dist/message/index",
+    "i-checkbox-group": "/dist/checkbox-group/index",
+    "i-checkbox": "/dist/checkbox/index"
+  }
 }
