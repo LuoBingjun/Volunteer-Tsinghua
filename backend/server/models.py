@@ -28,7 +28,6 @@ class JoinRecord(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     job = models.ManyToManyField('Job')
     work_time = models.FloatField('工时', blank=True, null=True)
-    sign_record = models.ManyToManyField('SignRecord', blank=True)
 
 # 项目签到
 class SignProject(models.Model):

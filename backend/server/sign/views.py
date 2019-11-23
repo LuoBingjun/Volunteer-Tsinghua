@@ -25,10 +25,13 @@ class createSerializer(serializers.ModelSerializer):
         except:
             return 0
 
-        sign_project=SignProject.objects.create(**Validated_data)
         queryset = Job.objects.all()
         for i in jobs:
             _job=get_object_or_404(queryset,pk=i)
+        
+        sign_project=SignProject.objects.create(**Validated_data)
+        for i in jobs:
+            _job=get_object_or_404(queryset,pk=i)  #此处报错也会新加项目，考虑修改
             sign_project.jobs.add(_job)
 
         sign_project.save()
@@ -104,5 +107,5 @@ class signoutView(APIView):
             sign_record.sign_out_time = timezone.now()
             sign_record.save()
         else:
-            return Response({'error':'already signout'},status=401) 
+            return Response({'error':'already signout'},status=409) 
         return Response(status=200)
