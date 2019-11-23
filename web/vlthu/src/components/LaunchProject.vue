@@ -6,10 +6,26 @@
         <p><label>项目名称</label> <input type = "text" v-model = "title"/></p>
         <p><label>项目详情</label> <textarea type = "text" v-model = "content"/></p>
         <p><label>封面图片</label> <input type="file" id = "coverFile" @change="uploadCover"/></p>
-        <p><label>需求人数</label> <input type="text" oninput="value=value.replace(/[^\d]/g,'')" v-model = "require_num"/> </p>
         <p><label>需求</label> <textarea type = "text" v-model = "requirements"/></p>
         <p><label>截止时间</label> 日期：<textarea type = "text" v-model = "deadlineDate"/> 
                                 时刻：<textarea type = "text" v-model = "deadlineTime"/></p>
+
+        <div id = "jobs">
+          <div class = "oneJob" v-for = "(job,index) in jobs">
+            <h2>岗位{{job.job_name}}</h2>
+            <p><button :data-index="index" @click="deleteThisJob" > 删除此岗位</button></p>
+            <p><label>岗位名称</label> <input type = "text" v-model = "job.job_name"/></p>
+            <p><label>岗位工时</label> <input type = "text" v-model = "job.job_worktime"/></p>
+            <p><label>岗位要求描述</label> <textarea type = "text" v-model = "job.job_content"/></p>
+            <p><label>岗位需求人数</label> <input type="text" oninput="value=value.replace(/[^\d]/g,'')" v-model = "job.job_require_num"/> </p>
+          </div>
+        </div>
+        
+
+        <p><button @click="addNewJob" > 添加岗位</button></p>
+        
+        
+        
         <p><button @click="submit" > 建立新项目</button></p>
     </div>   
   </div>
@@ -26,19 +42,18 @@ export default {
         submitData: undefined,
         "title": "标题",
         "content": "详情",
-        "require_num": 100, // 需求人数
         "requirements": "需求" ,
         "form": "json文本",
         "deadlineDate": "2019-12-31",
         "deadlineTime": "23:59:59",
         "jobs":
         [
-            {
-                
-            },
-            {
-            
-            }
+          {
+            "job_name":"job1",
+            "job_worktime":3.5,
+            "job_content":"job1content1",
+            "job_require_num":250
+			    }
         ]
     }
   },
@@ -61,7 +76,9 @@ export default {
         that.submitData.append("require_num", parseInt(that.require_num))
         that.submitData.append("requirements", that.requirements)
         that.submitData.append("deadline", that.deadlineDate + 'T' + that.deadlineTime)
-        console.log('LaunchProject中请求数据:that.submitData', that.submitData)
+        that.submitData.append("jobs", that.jobs)
+        console.log("that.jobs:", that.jobs)
+        console.log('LaunchProject中请求数据:that.submitData', JSON.stringify(that.submitData))
         request({
             method:"post",
             url: '/project/detail',
@@ -92,6 +109,23 @@ export default {
         formData.append('cover', file[0])
         console.log(formData);
 
+    },
+    addNewJob(event){
+        console.log("addNewJob按钮按下")
+        var that = this
+        that.$data.jobs.push({
+            "job_name":"newJob",
+            "job_worktime":5,
+            "job_content":"newJobContent",
+            "job_require_num":10
+        })
+        console.log("addNewJob that.jobs:", that.$data.jobs)
+    },
+    deleteThisJob(event){
+        let target = event.target
+        console.log("target:",target)
+        let jobIndex = target.getAttribute("data-index")
+        this.jobs.splice(jobIndex, 1)
     }
   }
 }
