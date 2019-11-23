@@ -1,11 +1,11 @@
-Page({
+﻿Page({
     /**
      * 页面的初始数据
      */
     data: {
         "projectID":0,
         "title":"我是一个莫得感情的项目",
-        "status":"not_joined",
+        "status":"D",
         "form" : [
             {
                 "text":"姓名",
