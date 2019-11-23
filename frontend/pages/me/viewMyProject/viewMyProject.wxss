@@ -1,1 +1,4 @@
 /* pages/current_project/index.wxss */
+.project-card{
+  margin-top: 15rpx;
+}
