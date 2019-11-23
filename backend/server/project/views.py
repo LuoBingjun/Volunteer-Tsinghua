@@ -82,7 +82,7 @@ class detailView(GenericAPIView):
 
         return Response({'id': _project.id})
     
-    @login_required(wx=True)
+    @login_required(wx=True, web=True)
     def get(self, request):
         id = self.request.query_params.get('id')
         project = get_object_or_404(Project, id=id)
