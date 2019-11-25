@@ -34,3 +34,20 @@ export function getProjectList(){
         method:'get'
     })
 }
+
+export function downloadExcel(projectID){
+    return request({
+        url:`/worktime/Export?project_id=${projectID}`,
+        method:'get'
+    })
+}
+
+export function startSign(options)
+{
+    console.log(options)
+    return request({
+        url:"/sign/project",
+        method:"post",
+        data:options
+    })
+}

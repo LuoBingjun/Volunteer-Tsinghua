@@ -25,6 +25,7 @@
           </button>
         </p>
     </div>
+    <button @click="startSign">发起签到</button>
   </div>
 </template>
 
@@ -45,8 +46,13 @@ export default {
     jumpToDetail(e){
       console.log(e.target.id)
       this.$router.push({name:'Project',query:{projectID:e.target.id}})
+    },
+    startSign(){
+      console.log("start!")
+      this.$router.push("LaunchProject");
     }
   },
+  
   created(){
     var that=this
     this.applyingProjects=[]

@@ -11,7 +11,7 @@
         </p>
       </div>
     </div>
-    <div v-if="!finished">
+    <div v-if="!finished && !started">       <!--  审核  -->
       <p>报名列表：</p>
       <p v-if='applyList && applyList.length == 0'>还没有人报名QAQ</p>
       <table v-if='applyList && applyList.length !=0'>
@@ -41,19 +41,47 @@
         </tr>
       </table>
     </div>
-    已经结项：<button @click="exportExcel">导出为excel</button>
-    <div v-if="finished">
+    <div v-if="started && !finished">    <!--发起签到-->
+      发起签到
+      <table>
+        <tr>
+          <td> 签到标题 </td>
+          <td> <input v-model="sign_opt.title" value="签到"/></td>
+        </tr>
+        <tr>
+          <td> 签到描述 </td>
+          <td> <input v-model="sign_opt.content" value="签到"/></td>
+        </tr>
+        <tr>
+          <td>签到开始时间</td>
+          <td><input type = "text" v-model = "sign_opt.begin_time"/></td>
+        </tr>
+        <tr>
+          <td>签到结束时间</td>
+          <td><input type = "text" v-model = "sign_opt.end_time" /></td>
+        </tr>
+        <tr>
+          <td>岗位</td>
+          <td>权限</td>
+        </tr>
+        <tr v-for="item in jobs" :key="item.index">
+          <td>{{item.job_name}}</td>
+          <td><input type="checkbox" :value="item.id" v-model="sign_opt.jobs"/></td>
+        </tr>
+      </table>
+      <button @click="startSign">发起签到</button>
+    </div>
+    <div v-if="finished">          <!--导出工时-->
+      已经结项：<button @click="exportExcel">导出为excel</button>
       <p v-if='applyList && applyList.length == 0'>没有记录~</p>
       <table v-if='applyList && applyList.length !=0' style="text-align:center">
         <tr>
           <td>参加人员</td>
           <td>岗位</td>
-          <td>工时</td>
         </tr>
         <tr v-for='itemm in applyList' :key='itemm.index'>
           <td>{{itemm.user.name}}</td>
           <td>{{itemm.job.job_name}}</td>
-          <td>{{itemm.worktime}}</td>
         </tr>
       </table>
     </div>
@@ -63,7 +91,7 @@
 </template>
 
 <script>
-import {getProjectDetails ,getProjectApplyList ,checkApplyRecord} from '@/api/project'
+import {getProjectDetails ,getProjectApplyList ,checkApplyRecord, downloadExcel, startSign} from '@/api/project'
 import {Message, Checkbox} from 'element-ui'
 export default {
   name: 'Project',
@@ -85,6 +113,16 @@ export default {
       deadline:undefined,
       applyList:undefined,
       finished:undefined,
+      started:undefined,
+      jobs:undefined,
+      sign_opt:{
+        "title": undefined,
+        "content": undefined,
+        "begin_time": undefined,
+        "end_time":undefined,
+        "project": undefined,     //对应的项目ID
+        "jobs": []
+      }
     }
   },
   methods:{
@@ -128,18 +166,48 @@ export default {
           {
             checkApplyRecord(parseInt(id),flag=='Y').catch(err=>{
               Message({
-              message: 'Error request'+err,
-              type: 'error',
-              duration: 5 * 1000
+                message: 'Error request'+err,
+                type: 'error',
+                duration: 5 * 1000
               })
             })
           }
         }
       }
     },
+    startSign()
+    {
+      startSign(this.sign_opt).then(res=>{
+        Message({
+          message: '成功发起签到',
+          type: 'success',
+          duration: 5 * 1000
+        })
+      }).catch(err=>{
+        Message({
+          message: 'Error request'+err,
+          type: 'error',
+          duration: 5 * 1000
+        })
+      })
+    },
     exportExcel()
     {
-      console.log("aha!")
+      downloadExcel(this.projectID).then(res=>{
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        let fileName = res.headers['content-disposition'].split('filename=');
+        link.setAttribute('download', fileName[1]);
+        document.body.appendChild(link);
+        link.click();
+      }).catch(err=>{
+        Message({
+          message: 'Error request'+err,
+          type: 'error',
+          duration: 5 * 1000
+        })
+      })
     }
     /*
     handleSelect(e)
@@ -173,8 +241,15 @@ export default {
       that.time=res.data.time
       that.deadline=res.data.deadline
       that.finished=res.data.finished
-      console.log("得到的需求们：",this.requirements)
+      that.sign_opt.project=this.projectID
+      that.jobs=res.data.job_set
+      console.log(that.job_set)
 
+      console.log("得到的需求们：",this.requirements)
+      var start = new Date(res.deadline).getTime()
+      var now = new Date().getTime()
+      if(start>now)this.started=false
+      else this.started=true
       getProjectApplyList(this.projectID).then(res =>{
         console.log("报名信息：",res.data);
         that.applyList=res.data
