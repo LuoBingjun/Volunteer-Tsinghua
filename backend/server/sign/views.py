@@ -11,7 +11,6 @@ from server.utils import login_required
 from django.utils import timezone
 
 class createSerializer(serializers.ModelSerializer):
-    # cover = serializers.ImageField(use_url=True)
     class Meta:
         model = SignProject
         fields = '__all__'
@@ -24,11 +23,15 @@ class projectView(CreateAPIView):
         sign_project = serializer.save()
         return Response({'id': sign_project.id})
 
+
+
+
 class listSerializer(serializers.ModelSerializer):
     # cover = serializers.ImageField(use_url=True)
     class Meta:
         model = SignProject
-        fields = '__all__'
+        exclude = ["project"]
+        depth = 1
 
 class listView(ListAPIView):
     serializer_class = listSerializer
@@ -36,6 +39,8 @@ class listView(ListAPIView):
     def get_queryset(self):
         project = self.request.query_params.get('project')
         return SignProject.objects.filter(project=project)
+
+
 
 class signinSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,8 +52,10 @@ class signinView(APIView):
     def post(self, request):
         serializer = signinSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         project = serializer.validated_data['sign_project'].project
         join_record = get_object_or_404(JoinRecord, user=request.user, project=project)
+        
         if SignRecord.objects.filter(join_record=join_record, sign_project=serializer.validated_data['sign_project']).exists():
             return Response(status=409)
         serializer.validated_data['join_record'] = join_record
@@ -73,5 +80,5 @@ class signoutView(APIView):
             sign_record.sign_out_time = timezone.now()
             sign_record.save()
         else:
-            return Response({'error':'already signout'},status=401) 
+            return Response({'error':'already signout'},status=409) 
         return Response(status=200)
