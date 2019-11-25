@@ -11,7 +11,7 @@
                                 时刻：<textarea type = "text" v-model = "deadlineTime"/></p>
 
         <div id = "jobs">
-          <div class = "oneJob" v-for = "(job,index) in jobs">
+          <div class = "oneJob" v-for = "(job,index) in jobs" :key="(job,index)">
             <h2>岗位{{job.job_name}}</h2>
             <p><button :data-index="index" @click="deleteThisJob" > 删除此岗位</button></p>
             <p><label>岗位名称</label> <input type = "text" v-model = "job.job_name"/></p>
@@ -25,7 +25,7 @@
         <p><button @click="addNewJob" > 添加岗位</button></p>
         
         <div id = "form">
-          <div class = "oneQuestion" v-for = "(question,index) in form">
+          <div class = "oneQuestion" v-for = "(question,index) in form"  :key= "(question,index)">
             <h2>问题：{{question.text}}</h2>
             <p><button :data-index="index" @click="deleteThisQuestion" > 删除此问题</button></p>
 
@@ -47,7 +47,7 @@
             </div>
 
             <div v-if="question.type === 'radioBox'">
-              <div class = "oneOption" v-for = "(option,optionIndex) in question.options">
+              <div class = "oneOption" v-for = "(option,optionIndex) in question.options" :key="(option,optionIndex)">
                 <p><label>单选题选项：</label> <input type = "text" v-model = "option.name"/></p>
                 <p><button :data-index="index" data-optionIndex="optionIndex" @click="deleteThisOption" > 删除此选项</button></p>
               </div>
@@ -55,7 +55,7 @@
             </div>
 
             <div v-if="question.type === 'checkBox'">
-              <div class = "oneOption" v-for = "(option,optionIndex) in question.options">
+              <div class = "oneOption" v-for = "(option,optionIndex) in question.options" :key="(option,optionIndex)">
                 <p><label>多选题选项：</label> <input type = "text" v-model = "option.name"/></p>
                 <p><button :data-index="index" data-optionIndex="optionIndex" @click="deleteThisOption" > 删除此选项</button></p>
               </div>
@@ -79,6 +79,7 @@
         
         
         <p><button @click="submit" > 建立新项目</button></p>
+        <p><button @click="back" > 返回主页</button></p>
     </div>   
   </div>
 </template>
@@ -86,6 +87,7 @@
 <script>
 import {Message} from 'element-ui'
 import request from '@/api/request.js'
+import {startProject} from '@/api/project'
 export default {
   name: 'Project',
   
@@ -159,16 +161,13 @@ export default {
         that.submitData.append("form", JSON.stringify(that.form))
         console.log("that.jobs:", that.jobs)
         console.log('LaunchProject中请求数据:that.submitData', JSON.stringify(that.submitData))
-        request({
-            method:"post",
-            url: '/project/detail',
-            headers: {
-            'Content-Type': 'multipart/form-data'
-            },
-            data:that.submitData
-        }).then(res=>{
-            console.log(res)
-            
+        startProject(that.submitData).then(res=>{
+            Message({
+                message: '成功发起项目！',
+                type: 'success',
+                duration: 5 * 1000
+            })
+            setTimeout(function(){that.$router.push('Home')},5000)
         }).catch(err =>{
             console.log('LaunchProject发现错误：', err)
             Message({
@@ -262,6 +261,9 @@ export default {
             "name": "1000"
         })
     },
+    back(){
+      this.$router.push('Home')
+    }
   }
 }
 </script>

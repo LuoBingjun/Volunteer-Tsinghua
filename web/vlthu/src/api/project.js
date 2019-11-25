@@ -44,10 +44,18 @@ export function downloadExcel(projectID){
 
 export function startSign(options)
 {
-    console.log(options)
     return request({
         url:"/sign/project",
         method:"post",
+        data:options
+    })
+}
+
+export function startProject(options)
+{
+    return request({
+        method:"post",
+        url: '/project/detail',
         data:options
     })
 }

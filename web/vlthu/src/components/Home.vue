@@ -26,6 +26,7 @@
         </p>
     </div>
     <button @click="startSign">发起项目</button>
+    <button @click="exit">退出登陆</button>
   </div>
 </template>
 
@@ -50,6 +51,9 @@ export default {
     startSign(){
       console.log("start!")
       this.$router.push("LaunchProject");
+    },
+    exit(){
+      this.$router.push("/")
     }
   },
   
