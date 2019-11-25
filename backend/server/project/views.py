@@ -59,9 +59,11 @@ class detailView(GenericAPIView):
 
         serializer = detailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        # serializer.save()
 
         _title = serializer.validated_data['title']
         _content = serializer.validated_data['content']
+        _cover = serializer.validated_data['cover']
         _requirements=serializer.validated_data['requirements']
         _form=serializer.validated_data['form']
         _deadline=serializer.validated_data['deadline']
@@ -75,7 +77,7 @@ class detailView(GenericAPIView):
 
 
         _project=Project(title=_title, content=_content, requirements=_requirements, 
-                form=_form, deadline=_deadline, webuser=request.user)
+                form=_form, deadline=_deadline, webuser=request.user, cover=_cover)
         
         _project.save()
 
