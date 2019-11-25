@@ -174,3 +174,22 @@ class searchView(ListAPIView):
             if i not in resultlist:
                 resultlist.append(i)
         return resultlist
+
+class cancelprojectSerializer(serializers.Serializer):
+    project_id = serializers.IntegerField(max_value=None, min_value=1)
+    
+
+class cancelView(APIView):
+    @login_required(web=True)
+    def post(self, request):
+        info = cancelprojectSerializer(data=request.data) # 验证数据
+        info.is_valid(raise_exception=True)
+        project_id = info.validated_data['project_id']  
+        queryset = Project.objects.all()
+        if request.user.is_superuser:
+            _project = get_object_or_404(queryset, id=project_id)
+            _project.delete()
+        else:
+            _project = get_object_or_404(queryset, id=project_id, webuser=request.user)
+            _project.delete()
+        return Response(status=200)
