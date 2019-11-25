@@ -154,8 +154,9 @@ export default {
         that.submitData.append("content", that.content)
         that.submitData.append("require_num", parseInt(that.require_num))
         that.submitData.append("requirements", that.requirements)
-        that.submitData.append("deadline", that.deadlineDate + 'T' + that.deadlineTime)
-        that.submitData.append("jobs", that.jobs)
+        that.submitData.append("deadline", that.deadlineDate + ' ' + that.deadlineTime)
+        that.submitData.append("jobs", JSON.stringify(that.jobs))
+        that.submitData.append("form", JSON.stringify(that.form))
         console.log("that.jobs:", that.jobs)
         console.log('LaunchProject中请求数据:that.submitData', JSON.stringify(that.submitData))
         request({
