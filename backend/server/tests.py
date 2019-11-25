@@ -44,44 +44,44 @@ class AuthTestCase(TestCase):
         get_redis_connection("default").flushall()
 
 
-# class ProjectTestCase(TestCase):
-#     # 测试函数执行前执行
-#     def setUp(self):
-#         WebUser.objects.create_user('test1234', password='test1234')
+class ProjectTestCase(TestCase):
+    # 测试函数执行前执行
+    def setUp(self):
+        WebUser.objects.create_user('test1234', password='test1234')
 
-#     def test_create_project(self):
-#         client = APIClient()
-#         response = client.post(
-#             '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
-#         assert response.status_code == 200
-#         # filename = 'cover.jpg'
-#         # file = File(open('media/cover.jpg', 'rb'))
-#         # uploaded_file = SimpleUploadedFile(filename, file.read(), content_type='multipart/form-data')
-#         response = client.post('/project/detail', {
-# 	        "title":"题目",
-# 	        "content":"内容",
-# 	        "requirements":"需求",
-# 	        "form":"{}",
-# 	        "deadline":"2019-12-3 12:00:00",
-# 	        "jobs":[{
-# 				    "job_name":"job1",
-# 				    "job_worktime":2.5,
-# 				    "job_content":"job1content1",
-# 				    "job_require_num":250
-# 			    },
-# 			    {
-# 				    "job_name":"job2",
-# 				    "job_worktime":250.0,
-# 				    "job_content":"job2content2",
-# 				    "job_require_num":25
-# 			    }]	
-#         })
-#         print(response)
-#         assert response.status_code == 200
+    def test_create_project(self):
+        client = APIClient()
+        response = client.post(
+            '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
+        assert response.status_code == 200
+        # filename = 'cover.jpg'
+        # file = File(open('media/cover.jpg', 'rb'))
+        # uploaded_file = SimpleUploadedFile(filename, file.read(), content_type='multipart/form-data')
+        response = client.post('/project/detail', {
+	        "title":"题目",
+	        "content":"内容",
+	        "requirements":"需求",
+	        "form":"{}",
+	        "deadline":"2019-12-3 12:00:00",
+	        "jobs":'''[{
+				    "job_name":"job1", 
+				    "job_worktime":2.5, 
+				    "job_content":"job1content1", 
+				    "job_require_num":250 
+			    }, 
+			    { 
+				    "job_name":"job2", 
+				    "job_worktime":250.0, 
+				    "job_content":"job2content2",
+				    "job_require_num":25
+			    }]'''
+        })
+        print(response)
+        assert response.status_code == 200
 
-#     # 测试函数执行后执行
-#     def tearDown(self):
-#         get_redis_connection("default").flushall()
+    # 测试函数执行后执行
+    def tearDown(self):
+        get_redis_connection("default").flushall()
 
 
 class CheckTestCase(TestCase):

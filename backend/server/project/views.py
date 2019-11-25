@@ -23,7 +23,7 @@ class jobSerializer(serializers.ModelSerializer):
 
 # 用于发起项目
 class detailSerializer(serializers.ModelSerializer):
-    jobs = serializers.ListField(child=jobSerializer())
+    jobs = serializers.CharField()
     class Meta:
         model = Project
         exclude = ['webuser']
@@ -67,12 +67,19 @@ class detailView(GenericAPIView):
         _deadline=serializer.validated_data['deadline']
         _jobs=serializer.validated_data['jobs']
 
+        job_data = json.loads(_jobs)
+        job_serializer = jobSerializer(data=job_data, many=True)
+        job_serializer.is_valid(raise_exception=True)
+
+        # print(job_serializer.validated_data)
+
+
         _project=Project(title=_title, content=_content, requirements=_requirements, 
                 form=_form, deadline=_deadline, webuser=request.user)
         
         _project.save()
 
-        for a_job in _jobs:
+        for a_job in job_serializer.validated_data:
             new_job=Job(project=_project,
                 job_name=a_job["job_name"],
                 job_worktime=a_job["job_worktime"], 

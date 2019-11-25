@@ -11,43 +11,16 @@ from server.utils import login_required
 from django.utils import timezone
 
 class createSerializer(serializers.ModelSerializer):
-    # cover = serializers.ImageField(use_url=True)
     class Meta:
         model = SignProject
-        exclude = ["jobs"]
-
-        
-    def save(self, req, Validated_data):
-        
-        # _data = req.data['jobs']
-        try:
-            jobs = eval(req.data['jobs'])   # 需要修正，暂不支持数据检错
-        except:
-            return 0
-
-        queryset = Job.objects.all()
-        for i in jobs:
-            _job=get_object_or_404(queryset,pk=i)
-        
-        sign_project=SignProject.objects.create(**Validated_data)
-        for i in jobs:
-            _job=get_object_or_404(queryset,pk=i)  #此处报错也会新加项目，考虑修改
-            sign_project.jobs.add(_job)
-
-        sign_project.save()
-        return sign_project
+        fields = '__all__'
 
 class projectView(CreateAPIView):
     @login_required(web=True, wx=False)
     def post(self, request):
         serializer = createSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        
-        sign_project = serializer.save(request,serializer.validated_data)
-
-        if not sign_project:
-            return Response({"error":"格式错误"},status=400)
-
+        sign_project = serializer.save()
         return Response({'id': sign_project.id})
 
 
