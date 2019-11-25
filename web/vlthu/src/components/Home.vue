@@ -25,7 +25,7 @@
           </button>
         </p>
     </div>
-    <button @click="startSign">发起签到</button>
+    <button @click="startSign">发起项目</button>
   </div>
 </template>
 
