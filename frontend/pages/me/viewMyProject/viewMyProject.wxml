@@ -1,29 +1,13 @@
 <view class="page">
-    <view class="page__hd">
-        <view wx:if="{{type=='ALL'}}" class="page__title">所有项目</view>
-        <view wx:if="{{type=='CHECKING'}}" class="page__title">审核中的项目</view>
-        <view wx:if="{{type=='CURRENT'}}" class="page__title">正在进行的项目</view>
-        <view wx:if="{{type=='HISTORY'}}" class="page__title">历史项目</view>
-    </view>
-
-    <view wx:if="{{type=='HISTORY'}}" class="weui-cell">
-        <div class="weui-cell__bd">
-            <p> 项目名称 </p>
+  <view wx:for="{{records}}" class="project-card">
+    <i-card title="{{item.project.title}}" bindtap="enterProject" id="{{item.project.id}}">
+      <view slot="content">{{item.project.content}}</view>
+      <view slot="footer">
+        <div wx:if="{{type=='HISTORY'}}">
+          <view>
+            <i-icon size="16" type="time" />认证工时：{{item.work_time}} </view>
         </div>
-        <div class="weui-cell__ft">
-            <view>工时</view>
-        </div>
-    </view>
-
-
-    <view wx:for="{{projects}}" class="weui-cell">
-        <div class="weui-cell__bd" catchtap="jumpPage" id="{{item.project.id}}">
-            <p> {{item.project.title}} </p>
-        </div>
-        <div wx:if="{{type=='HISTORY'}}" class="weui-cell__ft">
-            <view> {{item.workTime}} </view>
-        </div>
-    </view>
-
-
+      </view>
+    </i-card>
+  </view>
 </view>

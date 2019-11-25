@@ -1,0 +1,19 @@
+<view class="page">
+  <view class="container" wx:if="{{loginStatus == true}}">
+    <i-spin custom fix>
+      <view class="loading"></view>
+      <view>加载中</view>
+    </i-spin>
+  </view>
+
+  <view class="container" wx:if="{{loginStatus == false}}">
+    <view class="page__hd">
+      <view class="page__title">首次登录</view>
+      <view class="page__desc">检测到您在本客户端上首次登录，请点击下方按钮绑定学号</view>
+    </view>
+    <view class="page_bd">
+      <button class="weui-btn" type="primary" id="login" bindtap="onLoginPushed">绑定学号</button>
+    </view>
+  </view>
+
+</view>

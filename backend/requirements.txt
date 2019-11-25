@@ -1,0 +1,9 @@
+xlwt
+xlrd
+django
+djangorestframework
+Pillow
+requests
+redis
+django-redis
+jieba

@@ -7,7 +7,7 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from server.models import User, ApplyRecord, Project, JoinRecord
+from server.models import *
 
 from django.shortcuts import get_object_or_404
 
@@ -26,6 +26,7 @@ class ViewApplyInfoSerializer(serializers.ModelSerializer):
 class ViewApplyInfo(generics.ListAPIView): 
     serializer_class = ViewApplyInfoSerializer 
 
+    @login_required(web=True)
     def get_queryset(self):
         _project_id = self.request.GET.get("project_id")
         #项目存在是否判断
@@ -35,14 +36,14 @@ class ViewApplyInfo(generics.ListAPIView):
 
 
 # 管理员做审核操作
-class CheckSerializer(serializers.Serializer):  
-    apply_id = serializers.IntegerField(max_value=None, min_value=0) 
-    checked = serializers.BooleanField()
+class CheckSerializer(serializers.Serializer):
+    apply_id = serializers.IntegerField(max_value=None, min_value=0)
+    checked = serializers.BooleanField(default=True)
 
 class CheckOp(APIView):
-
+    @login_required(web=True)
     def post(self, request):
-        info = CheckSerializer(data=request.data) # 验证数据
+        info = CheckSerializer(data=request.data) #验证数据
         if info.is_valid():
             _apply_id = info.validated_data['apply_id']
             # 项目存在是否判断
@@ -79,9 +80,8 @@ class CheckOp(APIView):
 class ViewResultSerializer(serializers.Serializer): 
     apply_id = serializers.IntegerField(max_value=None, min_value=0)
     
-class ViewResult(APIView): 
-   
-    @login_required
+class ViewResult(APIView):
+    @login_required(wx=True)
     def get(self, request):
         info = ViewResultSerializer(data=self.request.query_params)
         if info.is_valid():
