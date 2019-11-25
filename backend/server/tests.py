@@ -54,14 +54,14 @@ class ProjectTestCase(TestCase):
         response = client.post(
             '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
         assert response.status_code == 200
-        # filename = 'cover.jpg'
-        # file = File(open('media/cover.jpg', 'rb'))
-        # uploaded_file = SimpleUploadedFile(filename, file.read(), content_type='multipart/form-data')
+        file = File(open('media/cover.jpg', 'rb'))
+        uploaded_file = SimpleUploadedFile(filename, file.read(), content_type='multipart/form-data')
         response = client.post('/project/detail', {
 	        "title":"题目",
 	        "content":"内容",
 	        "requirements":"需求",
 	        "form":"{}",
+            "cover":uploaded_file,
 	        "deadline":"2019-12-3 12:00:00",
 	        "jobs":'''[{
 				    "job_name":"job1", 
