@@ -55,7 +55,7 @@ class ProjectTestCase(TestCase):
             '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
         assert response.status_code == 200
         file = File(open('media/cover.jpg', 'rb'))
-        uploaded_file = SimpleUploadedFile(filename, file.read(), content_type='multipart/form-data')
+        uploaded_file = SimpleUploadedFile('cover.jpg', file.read(), content_type='multipart/form-data')
         response = client.post('/project/detail', {
 	        "title":"题目",
 	        "content":"内容",
