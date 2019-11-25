@@ -24,7 +24,7 @@ export default {
           console.log(this.$data.acc,this.$data.pass)
           login(this.$data.acc,this.$data.pass).then(res=>{
               console.log(res)
-              this.$router.push({name:'Project',query:{projectID:4}})
+              this.$router.push({name:'Project',query:{projectID:1}})
             })
       },
       textChanged(e){
