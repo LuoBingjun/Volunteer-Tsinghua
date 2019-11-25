@@ -23,9 +23,6 @@ class projectView(CreateAPIView):
         sign_project = serializer.save()
         return Response({'id': sign_project.id})
 
-
-
-
 class listSerializer(serializers.ModelSerializer):
     # cover = serializers.ImageField(use_url=True)
     class Meta:
@@ -39,8 +36,6 @@ class listView(ListAPIView):
     def get_queryset(self):
         project = self.request.query_params.get('project')
         return SignProject.objects.filter(project=project)
-
-
 
 class signinSerializer(serializers.ModelSerializer):
     class Meta:
