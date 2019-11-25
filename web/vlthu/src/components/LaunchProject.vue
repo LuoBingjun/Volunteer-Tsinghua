@@ -154,7 +154,6 @@ export default {
         }
         that.submitData.append("title", that.title)
         that.submitData.append("content", that.content)
-        that.submitData.append("require_num", parseInt(that.require_num))
         that.submitData.append("requirements", that.requirements)
         that.submitData.append("deadline", that.deadlineDate + ' ' + that.deadlineTime)
         that.submitData.append("jobs", JSON.stringify(that.jobs))
