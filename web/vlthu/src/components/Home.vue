@@ -3,52 +3,74 @@
     <h1>志愿清华团体版主页</h1>
     <div id="dApplyingProjects"> 
         <h2>正在报名中的项目</h2>     
-        <li v-for="project in applyingProjects">
-          {{ project.name }}
-        </li>
+        <p>
+          <button v-for="project in applyingProjects" :key="project.index" @click="jumpToDetail" :id="project.id"> 
+            {{ project.title }}
+          </button>
+        </p>
     </div>
     <div id="dCurrentProjects">
         <h2>正在进行中的项目</h2>       
-        <li v-for="project in currentProjects">
-          {{ project.name }}
-        </li>
+        <p>
+          <button v-for="project in currentProjects" :key="project.index" @click="jumpToDetail" :id="project.id"> 
+            {{ project.title }}
+          </button>
+        </p>
     </div>
     <div id="dhistoryProjects">
-        <h2>历史项目</h2>       
-        <li v-for="project in historyProjects">
-          {{ project.name }}
-        </li>
+        <h2>历史项目</h2>     
+        <p>
+          <button v-for="project in historyProjects" :key="project.index" @click="jumpToDetail" :id="project.id"> 
+            {{ project.title }}
+          </button>
+        </p>
     </div>
-
-
-    
   </div>
 </template>
 
 <script>
+import {Card} from 'element-ui'
+import {getProjectList} from '@/api/project'
 export default {
   name: 'Project',
+  components:{Card},
   data () {
     return {
-      applyingProjects:[
-        {name: 'proj1'},
-        {name: 'proj2'},
-        {name: 'proj3'},
-      ],
-      currentProjects:[
-        {name: 'cproj1'},
-        {name: 'cproj2'},
-        {name: 'cproj3'},
-      ],
-      historyProjects:[
-        {name: 'hproj1'},
-        {name: 'hproj2'},
-        {name: 'hproj3'},
-      ],
+      applyingProjects:[],
+      currentProjects:[],
+      historyProjects:[]
     }
   },
   methods:{
-    
+    jumpToDetail(e){
+      console.log(e.target.id)
+      this.$router.push({name:'Project',query:{projectID:e.target.id}})
+    }
+  },
+  created(){
+    var that=this
+    this.applyingProjects=[]
+    this.currentProjects=[]
+    this.historyProjects=[]
+    getProjectList().then(res => {
+      console.log("收到了：",res)
+      var data=res.data
+      for(var item in data)
+      {
+        if(data[item].finished)
+        {
+          this.historyProjects.push(data[item])
+        }
+        else 
+        {
+          var start = new Date(data[item].deadline).getTime()
+          var now = new Date().getTime()
+          console.log("(n,s)=",now,start)
+          if(now < start)this.applyingProjects.push(data[item])
+          else this.currentProjects.push(data[item])
+        }
+      }
+    })
   }
 }
 </script>

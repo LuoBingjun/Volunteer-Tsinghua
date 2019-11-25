@@ -11,30 +11,26 @@
         </p>
       </div>
     </div>
-    <div>
+    <div v-if="!finished">
       <p>报名列表：</p>
       <p v-if='applyList && applyList.length == 0'>还没有人报名QAQ</p>
       <table v-if='applyList && applyList.length !=0'>
         <tr>
-          <td><input type='checkBox' id="CA" @input="handleSelect"/></td>
+          <!--<td><Checkbox id="CA" @input="handleSelect"/></td>-->
           <td>报名人</td>
           <td>申请岗位</td>
-          <td> 
+          <!--<td> 
             <button @click="handleRecord" id="YA">统统通过</button>
           </td>
           <td>
             <button @click="handleRecord" id="NA">统统拒绝</button>
-          </td>
+          </td>-->
         </tr>
         <tr v-for='itemm in applyList' :key='itemm.index'>
-          <td><input type='checkBox' :id="'C'+itemm.id" @input="handleSelect" :ref="'C'+itemm.id"/></td>
+          <!--<td><Checkbox type='checkBox' :id="'C'+itemm.id" @input="handleSelect" :ref="'C'+itemm.id"/></td>-->
           <td>{{itemm.user.name}}</td>
           <td>{{itemm.job.job_name}}</td>
           <td> 
-            <!--<button v-if="itemm.status=='W' " @click="handleRecord" :id="'Y'+itemm.id">通过</button>
-            <button v-if="itemm.status=='W' " @click="handleRecord" :id="'N'+itemm.id">拒绝</button>
-            <button v-if="itemm.status=='N' " disabled='true'>已经拒绝</button>
-            <button v-if="itemm.status=='P' " disabled='true'>已经通过</button>-->
             <button v-if="itemm.status!='P'" @click="handleRecord" :id="'Y'+itemm.id">通过</button>
             <button v-if="itemm.status=='P' " disabled='true'>已通过</button>
           </td> 
@@ -45,6 +41,22 @@
         </tr>
       </table>
     </div>
+    已经结项：<button @click="exportExcel">导出为excel</button>
+    <div v-if="finished">
+      <p v-if='applyList && applyList.length == 0'>没有记录~</p>
+      <table v-if='applyList && applyList.length !=0' style="text-align:center">
+        <tr>
+          <td>参加人员</td>
+          <td>岗位</td>
+          <td>工时</td>
+        </tr>
+        <tr v-for='itemm in applyList' :key='itemm.index'>
+          <td>{{itemm.user.name}}</td>
+          <td>{{itemm.job.job_name}}</td>
+          <td>{{itemm.worktime}}</td>
+        </tr>
+      </table>
+    </div>
     <button @click="changeRouter">点击返回</button>
     <label></label>
   </div>
@@ -52,9 +64,12 @@
 
 <script>
 import {getProjectDetails ,getProjectApplyList ,checkApplyRecord} from '@/api/project'
-import {Message} from 'element-ui'
+import {Message, Checkbox} from 'element-ui'
 export default {
   name: 'Project',
+  components: {
+    Checkbox
+  },
   data () {
     return {
       ownername: undefined,
@@ -69,6 +84,7 @@ export default {
       time:undefined,
       deadline:undefined,
       applyList:undefined,
+      finished:undefined,
     }
   },
   methods:{
@@ -121,6 +137,11 @@ export default {
         }
       }
     },
+    exportExcel()
+    {
+      console.log("aha!")
+    }
+    /*
     handleSelect(e)
     {
       var id=e.target.id.substr(1,e.target.id.length)
@@ -133,7 +154,7 @@ export default {
           console.log(this.$refs['C'+this.applyList[item].id])
         }
       }
-    }
+    }*/
   },
   created(){
     console.log('project页面加载完毕,route为',this.$route)
@@ -151,6 +172,7 @@ export default {
       that.form=res.data.form
       that.time=res.data.time
       that.deadline=res.data.deadline
+      that.finished=res.data.finished
       console.log("得到的需求们：",this.requirements)
 
       getProjectApplyList(this.projectID).then(res =>{
