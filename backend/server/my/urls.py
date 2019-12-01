@@ -7,4 +7,5 @@ urlpatterns = [
     path(r'applyrecord', views.applyView.as_view()), 
     path(r'allrecord', views.allView.as_view()), 
     path(r'signrecord', views.signrecordView.as_view()), 
+    path(r'messages', views.messagesView.as_view())
 ]
