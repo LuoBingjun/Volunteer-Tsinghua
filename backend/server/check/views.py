@@ -75,27 +75,27 @@ class CheckOp(APIView):
 
             _apply.save()  # 存储审核状态
 
-            try:
-                if(info.validated_data['checked']):
-                    send_wx_msg(_apply.user, settings.CHECK_TEMPLATE_ID, '',
-                                {
-                                    'phrase1': {"value": '通过'},
-                                    "thing2": {"value": _apply.project.title},
-                                    "time3": {"value": '2019-10-01 15:01'},
-                                    "thing5": {'value': '请持续关注志愿清华小程序，我们将不断发布项目的有关信息'},
-                                    "name4": {'value': '_apply.user.name'}}
-                                )
-                else:
-                    send_wx_msg(_apply.user, settings.CHECK_TEMPLATE_ID, '',
-                                {
-                                    'phrase1': {"value": '不通过'},
-                                    "thing2": {"value": _apply.project.title},
-                                    "time3": {"value": '2019-10-01 15:01'},
-                                    "thing5": {'value': '您可以联系项目负责人以获得审核的详细信息'},
-                                    "name4": {'value': '_apply.user.name'}}
-                                )
-            finally:
-                return Response(status=200)
+            if(info.validated_data['checked']):
+                res = send_wx_msg(_apply.user, settings.CHECK_TEMPLATE_ID, '',
+                            {
+                                'phrase1': {"value": '通过'},
+                                "thing2": {"value": _apply.project.title},
+                                "time3": {"value": '2019-10-01 15:01'},
+                                "thing5": {'value': '请持续关注志愿清华小程序，我们将不断发布项目的有关信息'},
+                                "name4": {'value': '_apply.user.name'}}
+                            )
+                print(res)
+            else:
+                res = send_wx_msg(_apply.user, settings.CHECK_TEMPLATE_ID, '',
+                            {
+                                'phrase1': {"value": '不通过'},
+                                "thing2": {"value": _apply.project.title},
+                                "time3": {"value": '2019-10-01 15:01'},
+                                "thing5": {'value': '您可以联系项目负责人以获得审核的详细信息'},
+                                "name4": {'value': '_apply.user.name'}}
+                            )
+                print(res)
+            return Response(status=200)
         else:
             return Response(info.errors, status=400)  # 数据格式错误
 
