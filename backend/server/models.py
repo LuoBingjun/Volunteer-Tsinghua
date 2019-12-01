@@ -35,7 +35,6 @@ class SignProject(models.Model):
     content = models.TextField('详情')
     begin_time = models.DateTimeField('签到开始时间')
     end_time = models.DateTimeField('签到结束时间')
-    # position = models.CharField(max_length=10)
     
 
 class SignRecord(models.Model):
@@ -55,3 +54,12 @@ class Project(models.Model):
     time = models.DateTimeField('创建时间', auto_now_add=True)
     deadline = models.DateTimeField('报名截止时间')
     finished = models.BooleanField('结项状态', default=False)
+
+class Message(models.Model):
+    type = models.CharField('消息类型', choices=[('P', '模板消息'), ('P', '普通消息')], max_length=1)
+    sender = models.ForeignKey('WebUser', on_delete=models.CASCADE)
+    receiver = models.ForeignKey('WxUser', on_delete=models.CASCADE)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    title = models.CharField('标题', null=True, blank=True, max_length=24)
+    content = models.TextField('内容', null=True, blank=True)
+    # link = models.CharField('链接', blank=True, null=True, max_length=128)
