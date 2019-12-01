@@ -76,7 +76,7 @@ def send_wx_msg(touser, template_id, page, data):
     access_token = get_AccessToken()
     response = requests.post('https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={0}'.format(access_token), json={
         'touser': touser.openid,
-        'template_id': templates[template_id],
+        'template_id': template_id,
         'page': page,
         'data': data
     }).json()
