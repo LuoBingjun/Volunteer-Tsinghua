@@ -56,10 +56,9 @@ class Project(models.Model):
     finished = models.BooleanField('结项状态', default=False)
 
 class Message(models.Model):
-    type = models.CharField('消息类型', choices=[('P', '模板消息'), ('P', '普通消息')], max_length=1)
+    type = models.CharField('消息类型', choices=[('M', '模板消息'), ('P', '普通消息')], max_length=1)
     sender = models.ForeignKey('WebUser', on_delete=models.CASCADE)
     receiver = models.ForeignKey('WxUser', on_delete=models.CASCADE)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     title = models.CharField('标题', null=True, blank=True, max_length=24)
     content = models.TextField('内容', null=True, blank=True)
-    # link = models.CharField('链接', blank=True, null=True, max_length=128)
