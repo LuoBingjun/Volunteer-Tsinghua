@@ -82,7 +82,7 @@ class CheckOp(APIView):
                                 'phrase1': {"value": '通过'},
                                 "thing2": {"value": _apply.project.title},
                                 "time3": {"value": '2019-10-01 15:01'},
-                                "thing5": {'value': '请持续关注志愿清华小程序，我们将不断发布项目的有关信息'},
+                                "thing5": {'value': '请持续关注志愿清华小程序'},
                                 "name4": {'value': '_apply.user.name'}
                             }
                         )
