@@ -1,32 +1,35 @@
 <template>
   <div>
     <h1>志愿清华团体版主页</h1>
-    <div id="dApplyingProjects">
+    <el-card>
       <h2>正在报名中的项目</h2>
-      <p>
-        <el-card v-for="project in applyingProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
-          <a :id="project.id" @click="jumpToDetail">{{ project.title }}</a>
-        </el-card>
-      </p>
-    </div>
-    <div id="dCurrentProjects">
+      <el-card v-for="project in applyingProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
+        <a :id="project.id" @click="jumpToDetail">{{ project.title }}</a>
+      </el-card>
+      <p v-if="applyingProjects.length==0">没有记录~</p>
+    </el-card>
+    <el-card>
       <h2>正在进行中的项目</h2>
-      <p>
-        <el-card v-for="project in currentProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
-          {{ project.title }}
-        </el-card>
-      </p>
-    </div>
-    <div id="dhistoryProjects">
+      <el-card v-for="project in currentProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
+        {{ project.title }}
+      </el-card>
+      <p v-if="currentProjects.length==0">没有记录~</p>
+    </el-card>
+    <el-card>
       <h2>历史项目</h2>
-      <p>
-        <el-card v-for="project in historyProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
-          {{ project.title }}
-        </el-card>
-      </p>
-    </div>
-    <button @click="startSign">发起项目</button>
-    <button @click="exit">退出登陆</button>
+      <el-card v-for="project in historyProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
+        {{ project.title }}
+      </el-card>
+      <p v-if="currentProjects.length==0">没有记录~</p>
+    </el-card>
+    <el-card>
+      <el-button @click="startSign" type="success">
+        <i class="el-icon-plus"></i>发起项目
+      </el-button>
+      <el-button @click="exit" type="success" plain>
+        <i class="el-icon-close"></i>退出登陆
+      </el-button>
+    </el-card>
   </div>
 </template>
 
@@ -54,12 +57,11 @@ export default {
       this.$router.push("LaunchProject");
     },
     exit(){
-      this.$router.push("/")
+      this.$router.push("/login")
     }
   },
   
   created(){
-    console.log("来到了")
     var that=this
     this.applyingProjects=[]
     this.currentProjects=[]

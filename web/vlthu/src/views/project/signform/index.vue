@@ -21,7 +21,7 @@
         <el-checkbox v-for="job in jobs" :label="job.id" :key="job.id" @change="handleJobsCheck">{{job.job_name}}</el-checkbox>
       </el-checkbox-group>
     </el-form-item>
-    <el-button @click="startSign">发起签到</el-button>
+    <el-button @click="startSign" type="primary">发起签到</el-button>
     </el-form>
 </template>
 <script>
@@ -59,13 +59,11 @@ export default {
   },
   methods:{
     handleJobsCheck(value){
-      console.log(this.form.jobs)
       let checkedCount = this.form.jobs.length;
       this.checkAll = (checkedCount === this.jobs.length);
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.jobs.length;
     },
     handleJobsCheckAll(val){
-      console.log(this.jobs)
       this.form.jobs = val ? this.alljobs : [];
       this.isIndeterminate = false;
     },

@@ -45,7 +45,7 @@
 
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
+        <span> password: admin</span>
       </div>
 
     </el-form>
@@ -55,6 +55,7 @@
 <script>
 /* eslint-disable */
 import {login} from '@/api/user'
+import { Message } from 'element-ui'
 export default {
   name: 'Login',
   data() {
@@ -98,7 +99,12 @@ export default {
       login(this.loginForm).then(() => {
         this.$router.push({ path: '/dashboard' })
         this.loading = false
-      }).catch(() => {
+      }).catch(err => {
+        Message({
+          message:"用户名或密码错误",
+          type:"error",
+          duration:5000
+        })
         this.loading = false
       })
     }

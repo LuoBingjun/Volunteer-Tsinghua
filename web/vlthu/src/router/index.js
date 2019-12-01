@@ -59,6 +59,16 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/launchproject',
+    component: Layout,
+    children: [{
+      path: '',
+      name: 'launchproject',
+      component: () => import('@/views/launchproject/index'),
+      meta: { title: 'Launch Project', icon: 'form'}
+    }],
+  },
+  {
     path: '/',
     redirect: '/dashboard'
   },
