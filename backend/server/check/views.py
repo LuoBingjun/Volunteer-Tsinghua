@@ -78,14 +78,14 @@ class CheckOp(APIView):
 
             if(info.validated_data['checked']):
                 res = send_wx_msg(_apply.user, settings.CHECK_TEMPLATE_ID, '',
-                            {
-                                'phrase1': {"value": '通过'},
-                                "thing2": {"value": _apply.project.title},
-                                "time3": {"value": '2019-10-01 15:01'},
-                                "thing5": {'value': '请持续关注志愿清华小程序'},
-                                "name4": {'value': _apply.user.name}
-                            }
-                        )
+                                  {
+                                      'phrase1': {"value": '通过'},
+                                      "thing2": {"value": _apply.project.title},
+                                      "time3": {"value": '2019-10-01 15:01'},
+                                      "thing5": {'value': '请持续关注志愿清华小程序以获取进一步信息'},
+                                      "name4": {'value': _apply.user.name}
+                                  }
+                                  )
                 print(res)
             else:
                 res = send_wx_msg(_apply.user, settings.CHECK_TEMPLATE_ID, '',
@@ -93,8 +93,9 @@ class CheckOp(APIView):
                                       'phrase1': {"value": '不通过'},
                                       "thing2": {"value": _apply.project.title},
                                       "time3": {"value": '2019-10-01 15:01'},
-                                      "thing5": {'value': '您可以联系项目负责人以获得审核的详细信息'},
-                                      "name4": {'value': _apply.user.name}}
+                                      "thing5": {'value': '您可以联系项目负责人获得审核的详细信息'},
+                                      "name4": {'value': _apply.user.name}
+                                  }
                                   )
                 print(res)
             return Response(status=200)
