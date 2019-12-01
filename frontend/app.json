@@ -1,15 +1,15 @@
 {
   "pages": [
-    "pages/initPage/initPage",
     "pages/login/login",
     "pages/fillUserInfo/fillUserInfo",
     "pages/me/me",
     "pages/me/viewMyProject/viewMyProject",
-    "pages/message/message",
     "pages/home/home",
+    "pages/message/message",
     "pages/project/project",
     "pages/project/submit/submit",
-    "pages/project/sign/sign"
+    "pages/project/sign/sign",
+    "pages/homepage/homepage"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -26,18 +26,6 @@
   "style": "v2",
   "debug": true,
   "sitemapLocation": "sitemap.json",
-  "tabBar": {
-    "list": [{
-      "pagePath": "pages/home/home",
-      "text": "主页"
-    }, {
-      "pagePath": "pages/message/message",
-      "text": "消息"
-    }, {
-      "pagePath": "pages/me/me",
-      "text": "我"
-    }]
-  },
   "navigateToMiniProgramAppIdList": [
     "wx1ebe3b2266f4afe0"
   ]

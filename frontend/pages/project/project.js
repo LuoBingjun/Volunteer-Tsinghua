@@ -3,11 +3,11 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "projectID": 123,
-        "cover":"/src/img1.jpg",
-        "title":"项目1",
-        "description":"这里有很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多总之非常多的描述",
-        "requirement":["需求1","需求2","需求3"],
+        "projectID": 0,
+        "cover":"",
+        "title":"",
+        "description":"",
+        "requirement":[],
         "status":"A"
     },
 
@@ -29,7 +29,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-        console.log("烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫")
+        // console.log("烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫")
         var app=getApp();
         const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${this.data.projectID}`
         console.log("从project跳转到URL：",getUrl)
