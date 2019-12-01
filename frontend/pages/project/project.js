@@ -112,7 +112,9 @@ Page({
     signin:function(){
         wx.navigateTo({"url":"submit/submit?projectID="+this.data.projectID});
     },
-
+    gotoCurrentProject:function(){
+        wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + this.data.projectID })
+    },
     sign:function(){
         wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
     }
