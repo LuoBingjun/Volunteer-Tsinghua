@@ -5,7 +5,12 @@ Page({
    */
   data: {
     current: "message",
-    "name": "FTP server"
+    "name": "FTP server",
+    "messages":[
+      {"projectName": "献血志愿者", "messageTitle": "8点开始献血！！！"},
+      {"projectName": "校园讲解志愿者", "messageTitle": "后天培训会取消！！！"},
+      {"projectName": "pn1rqwr", "messageTitle": "please qiandao3!"},
+    ]
   },
   handleChange({ detail }) {
     if (detail.key != this.data.current) {
@@ -23,30 +28,8 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    /*
-    wx.request({
-        url: 'http://localhost:8000/image',// 我自己测试时用的接口地址
-        method: 'post',// 请求方式
-        data: { // 想接口提交的数据
-            page: 1,
-            pageSize: 2
-        },
-        header: {
-            'content-type': 'application/json'// 提交的数据类型
-        },
-        success(res) {  // 成功回调
-            console.log(res.data.result);
-            that.setData({
-            arrays: res.data.result,
-            })
-        },
-        fail() { // 失败回调
-            console.log('error');
-        }
 
-    })
-    */
-  },
+    },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -95,5 +78,10 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  enterProject: function (e) {
+    //console.log("-------"+e.currentTarget.id)
+    wx.navigateTo({ "url": "/pages/project/project?projectID=" + e.currentTarget.id })
+  },
 })

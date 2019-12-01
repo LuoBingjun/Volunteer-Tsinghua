@@ -59,6 +59,8 @@ App({
   globalData: {
     hasLogin: false,
     backEndUrl: "https://2019-a15.iterator-traits.com/api",
+    tmplIds: ['JRmcDj_rRLknyYVevU-iNgosYQ7cm88cs2UTS89B2-o', 
+      'z7xt4wI2pFXsbFsI3pdDhzJ5LYcQh9KU5EaiOKg1aRM'],
     userInfo: {
       department: "",
       id: "",
