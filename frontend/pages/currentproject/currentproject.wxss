@@ -1,0 +1,5 @@
+/* pages/current_project/index.wxss */
+.buttons{
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+}
