@@ -11,9 +11,7 @@
       <p>
         <i class="el-icon-star-off"></i> 需求：
       </p>
-      <p v-for='item in requirements' :key='item.index'> 
-         <i class="el-icon-circle-check"></i> {{item}}
-      </p>
+      {{requirements}}
     </el-card>
     <el-card v-if="!finished && !started">       <!--  审核  -->
       <p>报名列表：</p>

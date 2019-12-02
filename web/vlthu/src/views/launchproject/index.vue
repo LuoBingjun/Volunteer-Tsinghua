@@ -5,8 +5,11 @@
         <i class="el-icon-circle-plus"> 发起新项目</i>
       </h1>
     </el-card>
-    
-    <div>
+    <el-card>
+      <launchform />
+    </el-card>
+    <!--
+      <div>
         <p><label>项目名称</label> <input type = "text" v-model = "title"/></p>
         <p><label>项目详情</label> <textarea type = "text" v-model = "content"/></p>
         <p><label>封面图片</label> <input type="file" id = "coverFile" @change="uploadCover"/></p>
@@ -84,7 +87,8 @@
         
         <p><button @click="submit" > 建立新项目</button></p>
         <p><button @click="back" > 返回主页</button></p>
-    </div>   
+      </div>   
+    -->
   </div>
 </template>
 
@@ -92,9 +96,10 @@
 import {Message} from 'element-ui'
 import request from '@/utils/request.js'
 import {startProject} from '@/api/project'
+import launchform from "./launchform"
 export default {
   name: 'Project',
-  
+  components: {launchform},
   data () {
     return {
         submitData: undefined,

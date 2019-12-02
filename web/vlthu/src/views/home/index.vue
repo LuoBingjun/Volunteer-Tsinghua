@@ -34,12 +34,9 @@
 </template>
 
 <script>
-/* eslint-disable */
-import {Card} from 'element-ui'
 import {getProjectList} from '@/api/project'
 export default {
   name: 'Project',
-  components:{Card},
   data () {
     return {
       applyingProjects:[],
