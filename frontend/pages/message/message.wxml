@@ -4,18 +4,32 @@
   </view>
 
   <view wx:for="{{messages}}" class="message-card">
-    <i-card title="{{item.messageTitle}}" bindtap="enterProject" id="{{item.id}}">
-      <view slot="content">{{item.projectName}}</view>
+    <i-card title="{{item.title}}" extra="{{item.project.title}}" thumb="https://i.loli.net/2017/08/21/599a521472424.jpg" i-class="card-demo"
+    bindtap="enterProject" projectID="{{item.project.id}}">
+      <view slot="content">
+        <view wx:if="{{item.type=='P'}}">
+          {{item.content}}
+        </view>
+
+        <view wx:if="{{item.type=='M'}}">  
+          <view wx:for="{{item.content}}" wx:for-item="inf">
+            <i-row>
+              <i-col span="2" i-class="col-icon">
+                <i-icon size="16" type="document" />
+              </i-col>
+              <i-col span="8" i-class="col-class">{{inf.key}}</i-col>
+              <i-col span="14" i-class="col-content">{{inf.value}}</i-col>
+            </i-row>
+          </view>
+        </view>
+      </view>
+
+      <view slot="footer">{{item.sender.description}}</view>
     </i-card>
 
   </view>
 
-
-
-
-
-
-
+  
 
 
 
