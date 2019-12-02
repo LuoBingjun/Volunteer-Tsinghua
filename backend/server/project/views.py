@@ -34,7 +34,7 @@ class detail_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ['id', 'title', 'webuser', 'content', 'cover', 'requirements',
-            'form', 'time', 'deadline', 'finished', 'job_set']
+            'form', 'time', 'deadline', 'finished', 'job_set', 'begin_datetime', 'end_datetime']
         # fields = ['__all__', 'job_set'] #failed
         depth = 1
 
@@ -59,13 +59,18 @@ class detailView(GenericAPIView):
 
         serializer = detailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        # serializer.save()
 
         _title = serializer.validated_data['title']
         _content = serializer.validated_data['content']
+        _cover = serializer.validated_data['cover']
         _requirements=serializer.validated_data['requirements']
         _form=serializer.validated_data['form']
         _deadline=serializer.validated_data['deadline']
+        _begin_datetime=serializer.validated_data['begin_datetime']
+        _end_datetime=serializer.validated_data['end_datetime']
         _jobs=serializer.validated_data['jobs']
+        
 
         job_data = json.loads(_jobs)
         job_serializer = jobSerializer(data=job_data, many=True)
@@ -75,7 +80,8 @@ class detailView(GenericAPIView):
 
 
         _project=Project(title=_title, content=_content, requirements=_requirements, 
-                form=_form, deadline=_deadline, webuser=request.user)
+                form=_form, deadline=_deadline, webuser=request.user, cover=_cover,
+                begin_datetime=_begin_datetime, end_datetime=_end_datetime)
         
         _project.save()
 
@@ -89,6 +95,7 @@ class detailView(GenericAPIView):
 
         return Response({'id': _project.id})
     
+    # 项目详情
     @login_required(wx=True, web=True)
     def get(self, request):
         id = self.request.query_params.get('id')
@@ -118,7 +125,7 @@ class listSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ['id', 'title', 'webuser', 'content', 'cover', 'requirements',
-            'form', 'time', 'deadline', 'finished', 'require_num']
+            'form', 'time', 'deadline', 'finished', 'require_num', 'begin_datetime', 'end_datetime']
         depth = 0
 
     def get_require_num(self,obj):
@@ -129,7 +136,7 @@ class listSerializer(serializers.ModelSerializer):
         
         return require_num
 
-
+# 查看项目列表
 class listView(ListAPIView):
     serializer_class = listSerializer
 
@@ -172,3 +179,22 @@ class searchView(ListAPIView):
             if i not in resultlist:
                 resultlist.append(i)
         return resultlist
+
+class cancelprojectSerializer(serializers.Serializer):
+    project_id = serializers.IntegerField(max_value=None, min_value=1)
+    
+
+class cancelView(APIView):
+    @login_required(web=True)
+    def post(self, request):
+        info = cancelprojectSerializer(data=request.data) # 验证数据
+        info.is_valid(raise_exception=True)
+        project_id = info.validated_data['project_id']  
+        queryset = Project.objects.all()
+        if request.user.is_superuser:
+            _project = get_object_or_404(queryset, id=project_id)
+            _project.delete()
+        else:
+            _project = get_object_or_404(queryset, id=project_id, webuser=request.user)
+            _project.delete()
+        return Response(status=200)
