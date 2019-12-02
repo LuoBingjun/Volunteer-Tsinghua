@@ -282,6 +282,7 @@ class ApplyTestCase(TestCase):
         assert response.status_code == 200
 
         response = client.post('/apply/fillform', {'job_id':1, 'form':'{json文本}'})
+        print(response.json())
         assert response.status_code == 200
 
     def tearDown(self):
