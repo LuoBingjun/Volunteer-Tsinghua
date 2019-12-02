@@ -338,7 +338,10 @@ class signprojectTestCase(TestCase):
             "begin_time": "2019-12-01 12:00:00",
             "end_time": "2019-12-01 13:00:00",
             "project": 1,
-            "jobs": [3,2]   
+            "jobs": [3,2],
+            "position":"清华学堂",
+            "longitude":116.320002393781,
+            "latitude":40.0011853
         })
         assert response.status_code == 200
 
@@ -373,7 +376,8 @@ class signinTestCase(TestCase):
 
         _join_record = JoinRecord.objects.create(user=_user,project=_project)
         _join_record.job.add(_job)
-        _sign_project=SignProject.objects.create(project=_project, title='第一次活动', content='content', begin_time=timezone.now() + datetime.timedelta(minutes=1), end_time=timezone.now())
+        _sign_project=SignProject.objects.create(project=_project, title='第一次活动', content='content', begin_time="2019-12-01 12:00:00", end_time="2035-12-01 12:00:00", 
+                position = "清华学堂", longitude=116.320002393781, latitude=40.0011853)
         _sign_project.jobs.add(_job)
 
     # 签到
@@ -382,11 +386,11 @@ class signinTestCase(TestCase):
         response = client.post('/auth/login', {'token':'null'})
         assert response.status_code == 200
 
-        response = client.post('/sign/signin', {'sign_project':1})
+        response = client.post('/sign/signin', {'sign_project_id':1,
+                                                'longitude':116.320002393781,
+                                                'latitude':40.0011853})
         assert response.status_code == 200
 
-        response = client.post('/sign/signin', {'sign_project':1})
-        assert response.status_code == 409
 
     def tearDown(self):
         get_redis_connection("default").flushall()
@@ -406,7 +410,8 @@ class signoutTestCase(TestCase):
         _join_record = JoinRecord.objects.create(user=_user,project=_project)
         _join_record.job.add(_job)
         _join_record.save()
-        _sign_project=SignProject.objects.create(project=_project, title='第一次活动', content='content', begin_time=timezone.now() + datetime.timedelta(minutes=1), end_time=timezone.now())
+        _sign_project=SignProject.objects.create(project=_project, title='第一次活动', content='content', begin_time=timezone.now() + datetime.timedelta(minutes=1), end_time=timezone.now(), 
+                position = "清华学堂", longitude=116.320002393781, latitude=40.0011853)
         _sign_project.jobs.add(_job)
         _sign_project.save()
 
