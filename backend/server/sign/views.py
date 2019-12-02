@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 import datetime
+import json
 
 from backend import settings
 from server.models import *
@@ -39,7 +40,7 @@ class projectView(CreateAPIView):
                         "thing4": {"value": '签到地点'},
                         "time3": {'value': datetime.datetime.strftime(sign_project.begin_time, "%H:%M")},
                     })
-            Message.objects.create(type='M', sender=request.user, receiver=_apply.user, project=_apply.project,
+            Message.objects.create(type='M', sender=request.user, receiver=user, project=sign_project.project,
                                        title='签到活动通知', content=json.dumps([
                                            {'key':'活动名称', 'value': sign_project.title},
                                            {'key':'签到开始时间', 'value': datetime.datetime.strftime(sign_project.begin_time, "%Y-%m-%d %H:%M")},
