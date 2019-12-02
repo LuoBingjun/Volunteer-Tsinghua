@@ -101,7 +101,7 @@ class CheckOp(APIView):
                                            {'key':'审核结果', 'value':'通过'},
                                            {'key':'审核岗位', 'value':_apply.job.job_name},
                                        ], ensure_ascii=False))
-                res = send_wx_msg(_apply.user, settings.CHECK_TEMPLATE_ID, '',
+                send_wx_msg.delay(_apply.user.openid, settings.CHECK_TEMPLATE_ID, '',
                                   {
                                       'phrase1': {"value": '通过'},
                                       "thing2": {"value": _apply.project.title},
@@ -115,7 +115,7 @@ class CheckOp(APIView):
                                            {'key':'审核结果', 'value':'不通过'},
                                            {'key':'审核岗位', 'value':_apply.job.job_name}
                                        ], ensure_ascii=False))
-                res = send_wx_msg(_apply.user, settings.CHECK_TEMPLATE_ID, '',
+                send_wx_msg.delay(_apply.user.openid, settings.CHECK_TEMPLATE_ID, '',
                                   {
                                       'phrase1': {"value": '不通过'},
                                       "thing2": {"value": _apply.project.title},

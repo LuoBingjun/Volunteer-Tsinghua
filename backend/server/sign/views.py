@@ -33,7 +33,7 @@ class projectView(CreateAPIView):
             receivers = receivers | users
 
         for user in receivers:
-            res = send_wx_msg(user, settings.SIGN_TEMPLATE_ID, '',
+            send_wx_msg.delay(user.openid, settings.SIGN_TEMPLATE_ID, '',
                     {
                         'thing1': {"value": sign_project.title},
                         "date2": {"value": datetime.datetime.strftime(sign_project.begin_time, "%Y-%m-%d")},
@@ -46,7 +46,6 @@ class projectView(CreateAPIView):
                                            {'key':'签到开始时间', 'value': datetime.datetime.strftime(sign_project.begin_time, "%Y-%m-%d %H:%M")},
                                            {'key':'签到截止时间', 'value': datetime.datetime.strftime(sign_project.end_time, "%Y-%m-%d %H:%M")}
                                        ], ensure_ascii=False))
-            print(res)
         return Response({'id': sign_project.id})
 
 class listSerializer(serializers.ModelSerializer):
