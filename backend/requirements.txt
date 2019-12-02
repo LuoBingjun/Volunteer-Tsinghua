@@ -1,6 +1,6 @@
 xlwt
 xlrd
-django
+django==2.2.8
 djangorestframework
 Pillow
 requests
