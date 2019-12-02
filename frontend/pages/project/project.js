@@ -8,7 +8,25 @@ Page({
         "title":"",
         "description":"",
         "requirement":[],
-        "status":"A"
+        "status":"A",
+        "job_set": [
+            {
+                "id": 1,
+                "job_name": "job1",
+                "job_worktime": 2.5,
+                "job_content": "job1content1",
+                "job_require_num": 250,
+                "project": 1
+            },
+            {
+                "id": 2,
+                "job_name": "job2",
+                "job_worktime": 250.0,
+                "job_content": "job2content2",
+                "job_require_num": 25,
+                "project": 1
+            }
+        ]
     },
 
     /**
@@ -53,7 +71,8 @@ Page({
                         'title':res.data.title,
                         'description':res.data.content,
                         'requirement':reqs,
-                        'status':res.data.status
+                        'status':res.data.status,
+                        "job_set":res.data.job_set
                     });
                     console.log("Status为：",that.data.status)
                 }
@@ -110,7 +129,7 @@ Page({
     },
 
     signin:function(){
-        wx.navigateTo({"url":"submit/submit?projectID="+this.data.projectID});
+        wx.navigateTo({"url":"submit/submit?"+"projectID="+this.data.projectID+"&jobID="+this.data.job_set[0].id});
     },
     gotoCurrentProject:function(){
         wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + this.data.projectID })

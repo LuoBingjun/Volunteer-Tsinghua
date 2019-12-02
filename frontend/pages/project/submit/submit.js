@@ -17,8 +17,10 @@ Page({
   onLoad: function (options) {
     console.log("submit.js onLoad函数开始,options:", options)
     var app = getApp();
+    console.log("submit页面onload:",options)
     const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${options.projectID}`
-    this.setData({ 'projectID': options.projectID })
+    this.setData({ 'jobID': options.jobID,
+                    'projectID': options.projectID })
     console.log("从project跳转到URL：", getUrl)
     var that = this;
     wx.request({
@@ -32,7 +34,7 @@ Page({
         console.log("得到的数据为", res);
         if (res.statusCode == 200) {
           that.setData({
-            "projectID": options.projectID,
+            "projectID": res.data.id,
             "status": "not_joined",
             "title": res.data.title,
             "form": JSON.parse(res.data.form.replace(/\s+/g, "")),
@@ -227,7 +229,8 @@ Page({
           },
           data: {
             'project_id': that.data.projectID,
-            'form': JSON.stringify(values)
+            'form': JSON.stringify(values),
+            'job_id': that.data.jobID   // TODO:tmp
           },
           success(res) {  // 成功回调
             console.log("得到的数据为", res);
