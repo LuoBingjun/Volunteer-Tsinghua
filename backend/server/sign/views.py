@@ -4,11 +4,13 @@ from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
-
-from server.models import *
-from server.utils import login_required
-
 from django.utils import timezone
+
+import datetime
+
+from backend import settings
+from server.models import *
+from server.utils import login_required, send_wx_msg
 
 class createSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,6 +23,24 @@ class projectView(CreateAPIView):
         serializer = createSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         sign_project = serializer.save()
+        
+        jobs = sign_project.jobs.all()
+
+        receivers = set()
+        for job in jobs:
+            users = set([i.user for i in job.joinrecord_set.all()])
+            receivers = receivers | users
+
+        for user in receivers:
+            res = send_wx_msg(user, settings.SIGN_TEMPLATE_ID, '',
+                    {
+                        'thing1': {"value": sign_project.title},
+                        "date2": {"value": datetime.datetime.strftime(sign_project.begin_time, "%Y-%m-%d")},
+                        "thing4": {"value": '签到地点'},
+                        "time3": {'value': datetime.datetime.strftime(sign_project.begin_time, "%H:%M")},
+                    }
+                )
+            print(res)
         return Response({'id': sign_project.id})
 
 class listSerializer(serializers.ModelSerializer):
@@ -61,7 +81,6 @@ class signoutSerializer(serializers.Serializer):
     sign_record_id = serializers.IntegerField(max_value=None, min_value=0)
 
 class signoutView(APIView):
-
     @login_required(wx=True)
     def post(self,request):
         info = signoutSerializer(data=request.data)
