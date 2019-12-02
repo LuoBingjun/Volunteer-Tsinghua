@@ -62,7 +62,7 @@ class ProjectTestCase(TestCase):
 	        "content":"内容",
 	        "requirements":"需求",
 	        "form":"{}",
-	        "deadline":"2019-12-3 12:00:00",
+	        "deadline":"2035-12-3 12:00:00",
 	        "jobs":'''[{
 				    "job_name":"job1", 
 				    "job_worktime":2.5, 
@@ -91,7 +91,7 @@ class CheckTestCase(TestCase):
         # 在ApplyRecord中创建一条记录
         _user = WxUser(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
         _user.save()
-        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', requirements='req', deadline=datetime.datetime(2019,12,1,23,59,59))
+        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', requirements='req', deadline=datetime.datetime(2035,12,1,23,59,59))
         _project.save()
         _job = Job(id=1, project=_project, job_name='test_job', job_worktime=5.0, job_content='content_test', job_require_num=10)
         _job.save()
@@ -126,7 +126,7 @@ class ApplyTestCase(TestCase):
         # 在ApplyRecord中创建一条记录
         _user = WxUser(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
         _user.save()
-        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', requirements='req', deadline=datetime.datetime(2019,12,1,23,59,59))
+        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', requirements='req', deadline=datetime.datetime(2035,12,1,23,59,59))
         _project.save()
         _job = Job(id=1, project=_project, job_name='test_job', job_worktime=5.0, job_content='content_test', job_require_num=10)
         _job.save()
@@ -148,7 +148,7 @@ class CancelApplyTestCase(TestCase):
         # 在ApplyRecord中创建一条记录
         _user = WxUser(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
         _user.save()
-        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', requirements='req', deadline=datetime.datetime(2019,12,1,23,59,59))
+        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', requirements='req', deadline=datetime.datetime(2035,12,1,23,59,59))
         _project.save()
         _job = Job(id=1, project=_project, job_name='test_job', job_worktime=5.0, job_content='content_test', job_require_num=10)
         _job.save()
@@ -173,7 +173,7 @@ class signinTestCase(TestCase):
         # 在ApplyRecord中创建一条记录
         _user = WxUser(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
         _user.save()
-        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', requirements='req', deadline=datetime.datetime(2019,12,1,23,59,59))
+        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', requirements='req', deadline=datetime.datetime(2035,12,1,23,59,59))
         _project.save()
         _job = Job(id=1, project=_project, job_name='test_job', job_worktime=5.0, job_content='content_test', job_require_num=10)
         _job.save()
@@ -202,7 +202,7 @@ class signoutTestCase(TestCase):
         # 在ApplyRecord中创建一条记录
         _user = WxUser(id=2017011111,name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
         _user.save()
-        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', requirements='req', deadline=datetime.datetime(2019,12,1,23,59,59))
+        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', requirements='req', deadline=datetime.datetime(2035,12,1,23,59,59))
         _project.save()
         _job = Job(id=1, project=_project, job_name='test_job', job_worktime=5.0, job_content='content_test', job_require_num=10)
         _job.save()
