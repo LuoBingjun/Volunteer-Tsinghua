@@ -26,21 +26,9 @@
     </i-row>
 
     <i-row i-class="buttons">
-      <view wx:if="{{status=='F'}}">
-        <button class="weui-btn" type="primary" disabled="true">已经结束</button>
-      </view>
-      <view wx:elif="{{status=='W'}}">
-        <button class="weui-btn" type="primary" disabled="true">正在审核</button>
-      </view>
-      <view wx:elif="{{status=='P'}}">
-        <button class="weui-btn" type="primary" bindtap="gotoCurrentProject">正在进行</button>
-      </view>
-      <view wx:elif="{{status=='N'}}">
-        <button class="weui-btn" type="primary" disabled="true">无法报名</button>
-      </view>
-      <view wx:elif="{{status=='A'}}">
-        <button class="weui-btn" type="primary" bindtap="signin">我要报名</button>
-      </view>
+      
+        <button class="weui-btn" type="primary" bindtap="sign">查看签到</button>
+
     </i-row>
   </view>
 </view>

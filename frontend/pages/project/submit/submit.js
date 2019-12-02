@@ -17,8 +17,10 @@ Page({
   onLoad: function (options) {
     console.log("submit.js onLoad函数开始,options:", options)
     var app = getApp();
+    console.log("submit页面onload:",options)
     const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${options.projectID}`
-    this.setData({ 'projectID': options.projectID })
+    this.setData({ 'jobID': options.jobID,
+                    'projectID': options.projectID })
     console.log("从project跳转到URL：", getUrl)
     var that = this;
     wx.request({
@@ -32,7 +34,7 @@ Page({
         console.log("得到的数据为", res);
         if (res.statusCode == 200) {
           that.setData({
-            "projectID": options.projectID,
+            "projectID": res.data.id,
             "status": "not_joined",
             "title": res.data.title,
             "form": JSON.parse(res.data.form.replace(/\s+/g, "")),
@@ -199,45 +201,88 @@ Page({
     var app = getApp();
     const postUrl = `${app.globalData.backEndUrl}/apply/fillform`
     var that = this;
-    console.log("index是", this.data.projectID)
-    wx.request({
-      url: postUrl,
-      method: 'post',
-      header: {
-        'content-type': 'application/json', // 提交的数据类型
-        'cookie': app.globalData.cookies, //读取cookie
-      },
-      data: {
-        'project_id': this.data.projectID,
-        'form': JSON.stringify(values)
-      },
-      success(res) {  // 成功回调
-        console.log("得到的数据为", res);
-        if (res.statusCode == 200) {
-          wx.showToast({
-            title: "报名成功",
-            icon: "success",
-            duration: 2000
-          });
-          that.setData({ "status": "joined" });
-          setTimeout(function () {
-            console.log("返回主界面");
-            wx.navigateBack();
-          }, 2000);
+    
+    wx.requestSubscribeMessage({
+      tmplIds: app.globalData.tmplIds,
+      success (res) { 
+        console.log("request 消息成功,res:",res)
+        
+        for(var key in res){
+          if(res[key] == "reject")
+          {
+            $Message({
+              content: `报名失败，您可能收不到消息提醒`,
+              type: 'error'
+            });
+            return
+          }
         }
-        else {
-          wx.showModal({
-            title: '错误',
-            content: JSON.stringify(res.data),
-          });
-        }
+
+
+        console.log("index是", that.data.projectID)
+        wx.request({
+          url: postUrl,
+          method: 'post',
+          header: {
+            'content-type': 'application/json', // 提交的数据类型
+            'cookie': app.globalData.cookies, //读取cookie
+          },
+          data: {
+            'project_id': that.data.projectID,
+            'form': JSON.stringify(values),
+            'job_id': that.data.jobID   // TODO:tmp
+          },
+          success(res) {  // 成功回调
+            console.log("得到的数据为", res);
+            if (res.statusCode == 200) {
+              wx.showToast({
+                title: "报名成功",
+                icon: "success",
+                duration: 2000
+              });
+              that.setData({ "status": "joined" });
+              setTimeout(function () {
+                console.log("返回主界面");
+                wx.navigateBack();
+              }, 2000);
+            }
+            else {
+              wx.showModal({
+                title: '错误',
+                content: JSON.stringify(res.data),
+              });
+            }
+          },
+          fail() { // 失败回调
+            wx.showModal({
+              title: '错误',
+              content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+            });
+          }
+        })
+
+
+
       },
-      fail() { // 失败回调
-        wx.showModal({
-          title: '错误',
-          content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
-        });
+      fail(res){
+        console.log("request 消息fail")
+      },
+      complete(res){
+        console.log("request 消息complete")
       }
     })
+
+
+
+
+
+
+
+
+
+
+
+    
+
   }
 })
