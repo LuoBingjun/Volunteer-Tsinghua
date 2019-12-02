@@ -37,7 +37,9 @@ class SignProject(models.Model):
     begin_time = models.DateTimeField('签到开始时间')
     end_time = models.DateTimeField('签到结束时间')
     jobs = models.ManyToManyField('Job')
-    # position = models.CharField(max_length=10)
+    position = models.CharField(max_length=32)
+    longitude = models.FloatField('经度')
+    latitude = models.FloatField('纬度')
     
 
 class SignRecord(models.Model):
