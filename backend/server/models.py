@@ -57,6 +57,8 @@ class Project(models.Model):
     form = models.TextField('报名表单', blank=True)
     time = models.DateTimeField('创建时间', auto_now_add=True)
     deadline = models.DateTimeField('报名截止时间')
+    begin_datetime = models.DateTimeField('项目开始时间')
+    end_datetime = models.DateTimeField('项目结束时间')
     finished = models.BooleanField('结项状态', default=False)
 
 class Message(models.Model):
