@@ -98,7 +98,7 @@ class CheckOp(APIView):
             if(info.validated_data['checked']):
                 Message.objects.create(type='M', sender=request.user, receiver=_apply.user, project=_apply.project,
                                        title='审核结果通知', content=json.dumps([
-                                           {'key':'审核结果', 'value':'不通过'},
+                                           {'key':'审核结果', 'value':'通过'},
                                            {'key':'审核岗位', 'value':_apply.job.job_name},
                                        ], ensure_ascii=False))
                 res = send_wx_msg(_apply.user, settings.CHECK_TEMPLATE_ID, '',
@@ -112,7 +112,7 @@ class CheckOp(APIView):
             else:
                 Message.objects.create(type='M', sender=request.user, receiver=_apply.user, project=_apply.project,
                                        title='审核结果通知', content=json.dumps([
-                                           {'key':'审核结果', 'value':'通过'},
+                                           {'key':'审核结果', 'value':'不通过'},
                                            {'key':'审核岗位', 'value':_apply.job.job_name}
                                        ], ensure_ascii=False))
                 res = send_wx_msg(_apply.user, settings.CHECK_TEMPLATE_ID, '',
