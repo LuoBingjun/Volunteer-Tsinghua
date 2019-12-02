@@ -8,8 +8,7 @@ import time
 
 from server.models import WxUser, WebUser
 from backend import settings
-
-# from django.contrib.auth import decorators
+from backend import celery_app
 
 
 def login_required(web=False, wx=False):
@@ -71,11 +70,13 @@ def get_AccessToken():
             raise ImproperlyConfigured()
     return access_token['access_token']
 
+from celery import task
 
+@celery_app.task
 def send_wx_msg(touser, template_id, page, data):
     access_token = get_AccessToken()
     response = requests.post('https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={0}'.format(access_token), json={
-        'touser': touser.openid,
+        'touser': touser,
         'template_id': template_id,
         'page': page,
         'data': data
