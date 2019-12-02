@@ -136,6 +136,19 @@ class signrecordView(generics.RetrieveAPIView):
         id = self.request.query_params.get('signproject')
         sign_project = get_object_or_404(SignProject, pk=id)
         return get_object_or_404(sign_project.signrecord_set, join_record__user=self.request.user)
+
+class messagesSerializer(serializers.ModelSerializer):     
+    class Meta: 
+        model = Message
+        exclude = ['receiver']
+        depth = 1
+
+class messagesView(generics.ListAPIView):
+    serializer_class = messagesSerializer
+    @login_required(wx=True)
+    def get_queryset(self):
+        return Message.objects.filter(receiver=self.request.user)
+        
         
 # 管理员查询自己发起的项目
 class allprojectSerializer(serializers.ModelSerializer):
