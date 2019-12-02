@@ -38,8 +38,13 @@ class projectView(CreateAPIView):
                         "date2": {"value": datetime.datetime.strftime(sign_project.begin_time, "%Y-%m-%d")},
                         "thing4": {"value": '签到地点'},
                         "time3": {'value': datetime.datetime.strftime(sign_project.begin_time, "%H:%M")},
-                    }
-                )
+                    })
+            Message.objects.create(type='M', sender=request.user, receiver=_apply.user, project=_apply.project,
+                                       title='签到活动通知', content=json.dumps([
+                                           {'key':'活动名称', 'value': sign_project.title},
+                                           {'key':'签到开始时间', 'value': datetime.datetime.strftime(sign_project.begin_time, "%Y-%m-%d %H:%M")},
+                                           {'key':'签到截止时间', 'value': datetime.datetime.strftime(sign_project.end_time, "%Y-%m-%d %H:%M")}
+                                       ], ensure_ascii=False))
             print(res)
         return Response({'id': sign_project.id})
 

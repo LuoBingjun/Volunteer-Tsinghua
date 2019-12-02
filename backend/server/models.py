@@ -66,6 +66,8 @@ class Message(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     title = models.CharField('标题', null=True, blank=True, max_length=24)
     content = models.TextField('内容', null=True, blank=True)
+
+
 class Job(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     job_name = models.CharField('岗位', max_length=128)
