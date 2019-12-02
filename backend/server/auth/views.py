@@ -174,7 +174,6 @@ class userView(APIView):
 class unbundlingView(APIView):
     @login_required(wx=True)
     def post(self,request):
-        _user = WxUser.objects.filter(id=request.user.id)[0]
-        _user.openid = None
-        _user.save()
+        request.user.openid = None
+        request.user.save()
         return Response(status=200)
