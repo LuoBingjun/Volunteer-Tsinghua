@@ -10,7 +10,7 @@
       </i-panel>
     </i-row>
     <i-row>
-      <i-panel title="简介" hide-border="{{ true }}">
+      <i-panel title="详情" hide-border="{{ true }}">
         <view style="padding: 15px;">{{description}}</view>
       </i-panel>
     </i-row>
@@ -18,17 +18,45 @@
     <i-row>
       <i-panel title="要求" hide-border="{{ true }}">
         <view style="padding: 15px;">
-          <view wx:for="{{requirement}}">
-            {{index+1}}: {{item}}
-          </view>
+          {{requirement}}
         </view>
       </i-panel>
     </i-row>
 
-    <i-row i-class="buttons">
-      
-        <button class="weui-btn" type="primary" bindtap="sign">查看签到</button>
-
-    </i-row>
   </view>
+
+
+  <!-- 签到模块 -->
+  <van-collapse value="{{ activeNames }}" bind:change="onChange">
+    <van-collapse-item wx:for="{{ signList }}" title="{{item.title}}" name="{{item.id}}">
+      <i-row>
+        <i-col span="2" i-class="col-icon">
+          <i-icon size="16" type="document" />
+        </i-col>
+        <i-col span="8" i-class="col-class">简介</i-col>
+        <i-col span="14" i-class="col-content">{{item.content}}</i-col>
+      </i-row>
+      <i-row>
+        <i-col span="2" i-class="col-icon">
+          <i-icon size="16" type="time" />
+        </i-col>
+        <i-col span="8">开始时间</i-col>
+        <i-col span="14" i-class="col-content">{{item.begin_time}}</i-col>
+      </i-row>
+      <i-row>
+        <i-col span="2" i-class="col-icon">
+          <i-icon size="16" type="time_fill" />
+        </i-col>
+        <i-col span="8" i-class="col-class">结束时间</i-col>
+        <i-col span="14" i-class="col-content">{{item.end_time}}</i-col>
+      </i-row>
+      <view class="buttons">
+        <button class="weui-button" wx:if="{{item.status==0}}" disabled='{{true}}'>签到已结束</button>
+        <button class="weui-button" wx:if="{{item.status==1}}" catchtap='sign' id="{{item.id}}">点击签到</button>
+        <button class="weui-button" wx:if="{{item.status==2}}" disabled='{{true}}'>已签到</button>
+        <button class="weui-button" wx:if="{{item.status==3}}" disabled='{{true}}'>签到未开始</button>
+      </view>
+    </van-collapse-item>
+  </van-collapse>
+
 </view>

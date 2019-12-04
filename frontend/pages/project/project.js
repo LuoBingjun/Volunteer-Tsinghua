@@ -7,8 +7,8 @@ Page({
         "cover":"",
         "title":"",
         "description":"",
-        "requirement":[],
-        "status":"A",
+        "requirement":"",
+        "status": 'A',
         "job_set": [
             {
                 "id": 1,
@@ -132,7 +132,7 @@ Page({
     gotoCurrentProject:function(){
         wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + this.data.projectID })
     },
-    sign:function(){
-        wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
-    }
+    // sign:function(){
+    //     wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
+    // }
 })
