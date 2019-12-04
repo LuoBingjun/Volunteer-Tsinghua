@@ -65,7 +65,18 @@ class listView(ListAPIView):
     @login_required(wx=True)
     def get_queryset(self):
         project = self.request.query_params.get('project')
-        return SignProject.objects.filter(project=project)
+        
+        join_record = get_object_or_404(JoinRecord, user=self.request.user, project=project)
+        join_record_jobs_set = join_record.job.all()
+        result = []
+
+        sign_project_set = SignProject.objects.filter(project=project)
+        for i in sign_project_set:
+            sign_project_jobs_set = i.jobs.all()
+            if (sign_project_jobs_set & join_record_jobs_set):
+                result.append(i)
+
+        return result
 
 class signinSerializer(serializers.Serializer):
     longitude = serializers.FloatField()
@@ -95,10 +106,14 @@ class signinView(APIView):
         join_record = get_object_or_404(JoinRecord, user=request.user, project=sign_project.project)
         
         if SignRecord.objects.filter(join_record=join_record, sign_project=sign_project).exists():
-            return Response(status=409)
+            return Response({"error":"info already exists"},status=409)
         
         # 判断job有没有交集
-
+        join_record_jobs_set = join_record.job.all()
+        sign_project_jobs_set = sign_project.jobs.all()
+        if not (sign_project_jobs_set & join_record_jobs_set):
+            return Response({"error":"不可签到"},status=406)
+        
         # 判断地理位置
         long1, la1, long2, la2 = map(radians, [float(sign_project.longitude), float(sign_project.latitude), float(longitude), float(latitude)]) # 经纬度转换成弧度
         dlon=long2-long1
