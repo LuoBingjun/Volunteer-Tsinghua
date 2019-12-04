@@ -12,7 +12,11 @@ class WxUser(models.Model):
     join_time = models.DateTimeField('创建时间', auto_now_add=True)
 
 class WebUser(AbstractUser):
-    description = models.CharField('描述', blank=True, null=True, max_length=128)
+    name = models.CharField('组织名称', max_length=128)
+    description = models.CharField('简介', max_length=256)
+    manager = models.CharField('负责人', max_length=16)
+    email = models.EmailField('电子邮箱', blank=True, null=True)
+    phone = models.DecimalField('电话', null=True, blank=True, max_digits=11, decimal_places=0)
 
 class ApplyRecord(models.Model):
     user = models.ForeignKey('WxUser', on_delete=models.CASCADE)
@@ -52,9 +56,9 @@ class SignRecord(models.Model):
 class Project(models.Model):
     webuser = models.ForeignKey('WebUser', on_delete=models.CASCADE)
     title = models.CharField('项目', max_length=128)
+    introduction = models.CharField('简介', max_length=32)
     content = models.TextField('详情')
     cover = models.ImageField('封面图片', blank=True)
-    # require_num = models.PositiveIntegerField('需求人数')# 删掉
     requirements = models.TextField('需求')
     form = models.TextField('报名表单', blank=True)
     time = models.DateTimeField('创建时间', auto_now_add=True)

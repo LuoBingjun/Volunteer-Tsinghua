@@ -33,7 +33,7 @@ class detailSerializer(serializers.ModelSerializer):
 class detail_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ['id', 'title', 'webuser', 'content', 'cover', 'requirements',
+        fields = ['id', 'title', 'webuser', 'content', 'introduction', 'cover', 'requirements',
             'form', 'time', 'deadline', 'finished', 'job_set', 'begin_datetime', 'end_datetime']
         # fields = ['__all__', 'job_set'] #failed
         depth = 1
@@ -124,7 +124,7 @@ class listSerializer(serializers.ModelSerializer):
     require_num = serializers.SerializerMethodField()
     class Meta:
         model = Project
-        fields = ['id', 'title', 'webuser', 'content', 'cover', 'requirements',
+        fields = ['id', 'title', 'webuser', 'content', 'introduction', 'cover', 'requirements',
             'form', 'time', 'deadline', 'finished', 'require_num', 'begin_datetime', 'end_datetime']
         depth = 0
 

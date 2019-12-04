@@ -119,9 +119,9 @@ class webloginView(APIView):
         if user:
             auth.logout(request)
             auth.login(request, user)
-            response = Response(status=200)
-            # response['Set-Cookie'] = 'sessionid={0}; Path=/'.format(
-            #     request.session.session_key)
+            response = Response({
+                'is_superuser':user.is_superuser
+            }, status=200)
             return response
         else:
             return Response('Login failed.', status=406)
@@ -168,6 +168,65 @@ class userView(APIView):
     @login_required(wx=True)
     def get(self, request):
         serializer = getUserSerializer(request.user)
+        return Response(serializer.data)
+
+class postWebuserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WebUser
+        fields = ['username', 'password', 'name', 'description', 'manager', 'email', 'phone']
+
+class putWebuserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WebUser
+        fields = ['name', 'description', 'manager', 'email', 'phone']
+
+class getWebuserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WebUser
+        fields = ['name', 'description', 'manager', 'email', 'phone']
+
+class webuserView(APIView):
+    @login_required(web=True)
+    def post(self, request):
+        if not request.user.is_superuser:
+            raise PermissionDenied()
+        serializer = postWebuserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        WebUser.objects.create_user(**serializer.validated_data)
+        return Response(status=200)
+
+    @login_required(web=True)
+    def delete(self, request):
+        if not request.user.is_superuser:
+            raise PermissionDenied()
+        id = request.query_params.get('id')
+        user = get_object_or_404(WebUser, pk=id)
+        user.delete()
+        return Response(status=200)
+
+
+    @login_required(web=True)
+    def put(self, request):
+        id = request.query_params.get('id')
+        if id:
+            if not request.user.is_superuser:
+                raise PermissionDenied()
+            user = get_object_or_404(WebUser, pk=id)
+        else:
+            user = request.user
+        serializer = putWebuserSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    @login_required(web=True)
+    def get(self, request):
+        id = request.query_params.get('id')
+        if id:
+            user = get_object_or_404(WebUser, pk=id)
+        else:
+            user = request.user
+        serializer = getWebuserSerializer(user)
         return Response(serializer.data)
 
 
