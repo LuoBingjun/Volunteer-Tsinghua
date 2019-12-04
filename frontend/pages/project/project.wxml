@@ -18,9 +18,7 @@
     <i-row>
       <i-panel title="要求" hide-border="{{ true }}">
         <view style="padding: 15px;">
-          <view wx:for="{{requirement}}">
-            {{index+1}}: {{item}}
-          </view>
+          {{requirement}}
         </view>
       </i-panel>
     </i-row>
