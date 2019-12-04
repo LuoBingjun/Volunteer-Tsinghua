@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework import serializers
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -199,7 +200,8 @@ class processdetailSerializer(serializers.ModelSerializer):
         fields = ['project','job','signrecord_set','signproject']
         depth = 1
 
-class processdetailView(APIView):
+class processdetailView(GenericAPIView):
+    serializer_class = processdetailSerializer
     
     @login_required(wx=True)
     def get(self,request):
@@ -216,6 +218,6 @@ class processdetailView(APIView):
             signproject_set=signproject_set|i.signproject_set.all()
 
         join_record.signproject = signproject_set.distinct()
-        result = processdetailSerializer(join_record)
+        result = self.get_serializer(join_record)
         
         return Response(result.data)
