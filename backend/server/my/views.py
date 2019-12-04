@@ -41,7 +41,7 @@ class historyView(generics.ListAPIView):
 class processSerializer(serializers.ModelSerializer):     
     class Meta: 
         model = JoinRecord
-        exclude = ['user']
+        fields = ['project']
         depth = 1
 
 class processView(generics.ListAPIView):
@@ -58,6 +58,7 @@ class processView(generics.ListAPIView):
             _end_time = _end_time.replace(day=_end_time.day+1)
             return JoinRecord.objects.filter(user=self.request.user, project__finished=False, 
                     project__begin_datetime__gte=_begin_time, project__end_datetime__lte=_end_time)
+            
         else:
             return JoinRecord.objects.filter(user=self.request.user, project__finished=False)
 
@@ -181,4 +182,40 @@ class allprojectView(generics.ListAPIView):
         else:
             return Project.objects.filter(webuser=self.request.user)
 
+
+class processdetailinSerializer(serializers.Serializer):
+    project_id = serializers.IntegerField(max_value=None, min_value=0)
+
+class signprojectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SignProject
+        exclude = ['project']
+        depth = 0
+
+class processdetailSerializer(serializers.ModelSerializer):
+    signproject=serializers.ListField(child=signprojectSerializer())
+    class Meta: 
+        model = JoinRecord
+        fields = ['project','job','signrecord_set','signproject']
+        depth = 1
+
+class processdetailView(APIView):
     
+    @login_required(wx=True)
+    def get(self,request):
+        serializer = processdetailinSerializer(data=request.query_params)
+        
+        serializer.is_valid(raise_exception=True)
+        project_id = serializer.validated_data['project_id']
+
+        join_record = get_object_or_404(JoinRecord, user=self.request.user, project__id=project_id, project__finished=False)
+        
+        
+        signproject_set=SignProject.objects.none()
+        for i in join_record.job.all():
+            signproject_set=signproject_set|i.signproject_set.all()
+
+        join_record.signproject = signproject_set.distinct()
+        result = processdetailSerializer(join_record)
+        
+        return Response(result.data)
