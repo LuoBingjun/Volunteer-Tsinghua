@@ -1,29 +1,20 @@
 <template>
-  <div>
-    <el-card>
-      <h1><i class="el-icon-s-home"></i> 志愿清华团体版主页</h1>
-    </el-card>
-    <el-card>
-      <h2><i class="el-icon-s-data"/> 正在报名中的项目</h2>
+  <div style="margin:40px;">
+    <h2><i class="el-icon-news"/> 正在报名中的项目</h2>
       <el-card v-for="project in applyingProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
         <a :id="project.id" @click="jumpToDetail">{{ project.title }}</a>
       </el-card>
-      <p v-if="applyingProjects.length==0">没有记录~</p>
+    <p v-if="applyingProjects.length==0">暂无记录</p>
+    <h2><i class="el-icon-s-data"/> 正在进行中的项目</h2>
+    <el-card v-for="project in currentProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
+      <a :id="project.id" @click="jumpToDetail">{{ project.title }}</a>
     </el-card>
-    <el-card>
-      <h2><i class="el-icon-s-data"/> 正在进行中的项目</h2>
-      <el-card v-for="project in currentProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
-        <a :id="project.id" @click="jumpToDetail">{{ project.title }}</a>
-      </el-card>
-      <p v-if="currentProjects.length==0">没有记录~</p>
+    <p v-if="currentProjects.length==0">暂无记录</p>
+    <h2><i class="el-icon-time"/> 历史项目</h2>
+    <el-card v-for="project in historyProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
+      <a :id="project.id" @click="jumpToDetail">{{ project.title }}</a>
     </el-card>
-    <el-card>
-      <h2><i class="el-icon-s-data"/> 历史项目</h2>
-      <el-card v-for="project in historyProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
-        <a :id="project.id" @click="jumpToDetail">{{ project.title }}</a>
-      </el-card>
-      <p v-if="currentProjects.length==0">没有记录~</p>
-    </el-card>
+    <p v-if="currentProjects.length==0">暂无记录</p>
     <el-card>
       <el-button @click="startSign" type="success">
         <i class="el-icon-plus"></i>发起项目

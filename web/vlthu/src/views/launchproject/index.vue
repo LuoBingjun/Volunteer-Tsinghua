@@ -1,13 +1,6 @@
 <template>
-  <div>
-    <el-card>
-      <h1>
-        <i class="el-icon-circle-plus"> 发起新项目</i>
-      </h1>
-    </el-card>
-    <el-card>
+  <div style="margin:40px;">
       <launchform />
-    </el-card>
     <!--
       <div>
         <p><label>项目名称</label> <input type = "text" v-model = "title"/></p>
