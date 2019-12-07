@@ -5,35 +5,7 @@ Page({
    */
   data: {
     current: "message",
-    "name": "FTP server",
-  //   "messages":[
-  //     {
-  //         "id": 1,
-  //         "type": "P", // ('M', '模板消息'), ('P', '普通消息')
-  //         "title": "测试项目",
-  //         "content": "测试内容内容内容内容内容内容内容内容",
-  //         "sender": {
-  //             "description": '组织名称'
-  //         },
-  //         "project": {
-  //             "id": 1,
-  //             "title": "测试项目",
-  //         }
-  //     },
-  //     {
-  //         "id": 1,
-  //         "type": "M", // ('M', '模板消息'), ('P', '普通消息')
-  //         "title": "测试项目",
-  //         "content": [{"key":"签到时间", "value":"2019-12-02"},{"key":"签到地点", "value":"6A305"}],
-  //         "sender": {
-  //             "description": '组织名称'
-  //         },
-  //         "project": {
-  //             "id": 1,
-  //             "title": "测试项目",
-  //         }
-  //     }
-  // ]
+    "name": "FTP server"
   },
   handleChange({ detail }) {
     if (detail.key != this.data.current) {
@@ -50,40 +22,31 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this
-    var app = getApp()
-
+    var that = this;
+    /*
     wx.request({
-      url: `${app.globalData.backEndUrl}/my/messages`,
-      method: 'get',
-      header: {
-        'content-type': 'application/json', // 提交的数据类型
-        'cookie': app.globalData.cookies //读取cookie
-      },
-      success(res) {  // 成功回调
-        console.log("得到的数据为", res)
-
-        for(var item of res.data)
-        {
-          if(item.type == 'M')
-          {
-            item.content = JSON.parse(item.content.replace(/\s+/g, ""))
-          }
+        url: 'http://localhost:8000/image',// 我自己测试时用的接口地址
+        method: 'post',// 请求方式
+        data: { // 想接口提交的数据
+            page: 1,
+            pageSize: 2
+        },
+        header: {
+            'content-type': 'application/json'// 提交的数据类型
+        },
+        success(res) {  // 成功回调
+            console.log(res.data.result);
+            that.setData({
+            arrays: res.data.result,
+            })
+        },
+        fail() { // 失败回调
+            console.log('error');
         }
 
-        that.setData({
-          "messages": res.data
-        })
-        
-
-        console.log("解析后的messages请求：",that.data.messages)
-      },
-      fail() { // 失败回调
-        console.log('向后端发送数据失败！');
-      }
     })
-
-    },
+    */
+  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -132,10 +95,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-
-  enterProject: function (e) {
-    console.log("-------"+e.currentTarget.projectID)
-    wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + e.currentTarget.projectID })
-  },
+  }
 })

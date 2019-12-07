@@ -6,5 +6,4 @@ urlpatterns = [
     path(r'login', views.loginView.as_view()),
     path(r'weblogin', views.webloginView.as_view()),
     path(r'user', views.userView.as_view()),
-    path(r'unbundling', views.unbundlingView.as_view()),
 ]

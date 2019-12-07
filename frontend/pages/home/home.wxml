@@ -20,7 +20,7 @@
   <!-- <view class="page_bd"> -->
       <view wx:for="{{projects}}" class="project-card">
         <i-card title="{{item.title}}" extra="{{item.require_num}}人" bindtap="enterProject" id="{{item.id}}">
-          <view slot="content">{{item.introduction}}</view>
+          <view slot="content">{{item.content}}</view>
           <view slot="footer">截止时间：{{item.deadline}}</view>
         </i-card>
 
@@ -31,6 +31,4 @@
     <i-tab-bar-item key="message" icon="remind" current-icon="remind_fill" count="3" title="通知"></i-tab-bar-item>
     <i-tab-bar-item key="me" icon="mine" current-icon="mine_fill" dot title="我的"></i-tab-bar-item>
   </i-tab-bar>
-  
 </view>
-<view class="footer" style="margin-bottom: {{isIphoneX ? '68rpx' : '0rpx'}};"></view>

@@ -1,26 +1,13 @@
 <view class="page">
   <view wx:for="{{records}}" class="project-card">
-    <div wx:if="{{type=='HISTORY'}}">
-      <i-card title="{{item.project.title}}" bindtap="enterProject" id="{{item.project.id}}">
-        <view slot="content">{{item.project.introduction}}</view>
-        <view slot="footer">
-          
-            <view>
-              <i-icon size="16" type="time" />认证工时：{{item.work_time}} 
-            </view>
-          
-        </view>
-      </i-card>
-    </div>
-
-    <div wx:else>
-      <i-card title="{{item.title}}" bindtap="enterProject" id="{{item.id}}">
-        <view slot="content">{{item.introduction}}</view>
-        <view slot="footer">
-                    
-        </view>
-      </i-card>
-    </div>
-
+    <i-card title="{{item.project.title}}" bindtap="enterProject" id="{{item.project.id}}">
+      <view slot="content">{{item.project.content}}</view>
+      <view slot="footer">
+        <div wx:if="{{type=='HISTORY'}}">
+          <view>
+            <i-icon size="16" type="time" />认证工时：{{item.work_time}} </view>
+        </div>
+      </view>
+    </i-card>
   </view>
 </view>
