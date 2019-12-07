@@ -31,4 +31,6 @@
     <i-tab-bar-item key="message" icon="remind" current-icon="remind_fill" count="3" title="通知"></i-tab-bar-item>
     <i-tab-bar-item key="me" icon="mine" current-icon="mine_fill" dot title="我的"></i-tab-bar-item>
   </i-tab-bar>
+  
 </view>
+<view class="footer" style="margin-bottom: {{isIphoneX ? '68rpx' : '0rpx'}};"></view>

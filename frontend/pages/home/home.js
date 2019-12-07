@@ -42,6 +42,11 @@ Page({
   onLoad: function (options) {
     var that = this
     var app = getApp()
+    let isIphoneX = app.globalData.isIphoneX;
+    console.log("主页：isIphoneX:", isIphoneX)
+    this.setData({
+      isIphoneX: isIphoneX
+    })
 
     wx.request({
       url: `${app.globalData.backEndUrl}/project/list`,

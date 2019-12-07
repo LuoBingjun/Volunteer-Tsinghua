@@ -183,7 +183,8 @@ Page({
             var latitude = res.latitude
             var longitude = res.longitude
             var accuracy = res.accuracy
-            console.log("获得地理位置1：latitude", latitude, "longitude",longitude, "accuracy", accuracy)
+            var horizontalAccuracy = res.horizontalAccuracy
+            console.log("获得地理位置1：latitude", latitude, "longitude",longitude, "accuracy", accuracy, "horizontalAccuracy", horizontalAccuracy)
 
             wx.request({
               url: `${app.globalData.backEndUrl}/sign/signin`,
