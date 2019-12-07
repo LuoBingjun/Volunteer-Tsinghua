@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, ListAPIView
 
 from django.shortcuts import get_object_or_404
 
@@ -229,6 +229,19 @@ class webuserView(APIView):
         serializer = getWebuserSerializer(user)
         return Response(serializer.data)
 
+
+class listWebuserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WebUser
+        fields = ['name', 'description', 'manager', 'email', 'phone']
+
+class listwebuserView(ListAPIView):
+    serializer_class = listWebuserSerializer
+    @login_required(web=True)
+    def get_queryset(self):
+        if not self.request.user.is_superuser:
+            raise PermissionDenied()
+        return WebUser.objects.all()
 
 class unbundlingView(APIView):
     @login_required(wx=True)
