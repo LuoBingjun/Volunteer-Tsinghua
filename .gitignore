@@ -11,6 +11,7 @@ web/vlthu/node_modules/*
 # Distribution / packaging
 .Python
 build/
+dist/
 develop-eggs/
 downloads/
 eggs/

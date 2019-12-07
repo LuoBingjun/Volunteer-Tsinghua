@@ -44,7 +44,7 @@ export const constantRoutes = [
       path: '',
       name: 'home',
       component: () => import('@/views/home/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '主页', icon: 'dashboard' }
     }]
   },
   {
@@ -54,7 +54,7 @@ export const constantRoutes = [
       path: '',
       name: 'project',
       component: () => import('@/views/project/index'),
-      meta: { title: 'All Projects', icon: 'tree'}
+      meta: { title: '查看项目', icon: 'tree'}
     }],
     hidden: true
   },
@@ -65,7 +65,7 @@ export const constantRoutes = [
       path: '',
       name: 'launchproject',
       component: () => import('@/views/launchproject/index'),
-      meta: { title: 'Launch Project', icon: 'form'}
+      meta: { title: '发起项目', icon: 'form'}
     }],
   },
   {
@@ -75,12 +75,12 @@ export const constantRoutes = [
       path: '',
       name: 'info',
       component: () => import('@/views/info/index'),
-      meta: { title: 'info', icon: 'user'}
+      meta: { title: '用户管理', icon: 'user'}
     }],
   },
   {
     path: '/',
-    redirect: '/dashboard'
+    redirect: '/login'
   },
   {
     path: '/404',

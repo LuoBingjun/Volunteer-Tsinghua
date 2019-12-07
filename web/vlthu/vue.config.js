@@ -42,10 +42,7 @@ module.exports = {
       '/api': {
         // target: 'https://2019-a15.iterator-traits.com/',
         target: 'http://62.234.0.237/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
+        changeOrigin: true
       }
     },
     after: require('./mock/mock-server.js')
