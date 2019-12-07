@@ -5,7 +5,6 @@ const state = {
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false,
   },
-  isSuperUser:false,
   device: 'desktop'
 }
 
@@ -27,9 +26,6 @@ const mutations = {
   TOGGLE_DEVICE: (state, device) => {
     state.device = device
   },
-  SET_SUPER_PERMISSION: (state, superuser) => {
-    state.isSuperUser=superuser
-  }
 }
 
 const actions = {
@@ -42,10 +38,6 @@ const actions = {
   toggleDevice({ commit }, device) {
     commit('TOGGLE_DEVICE', device)
   },
-  setSuperPermission({commit}, superuser){
-    console.log("------",superuser)
-    commit('SET_SUPER_PERMISSION',superuser)
-  }
 }
 
 export default {

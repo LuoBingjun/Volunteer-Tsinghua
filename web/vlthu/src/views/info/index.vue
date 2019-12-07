@@ -7,6 +7,7 @@
 <script>
 import user from './user'
 import superuser from './superuser'
+import { isSuperUser } from '@/api/user'
 export default {
     name:"info",
     components:{user,superuser},
@@ -19,7 +20,7 @@ export default {
 
     },
     created(){
-        this.isSuperUser=this.$store.getters.isSuperUser
+        this.isSuperUser=isSuperUser()
         console.log(this.isSuperUser)
     }
 }

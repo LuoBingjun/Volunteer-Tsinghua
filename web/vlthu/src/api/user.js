@@ -1,4 +1,7 @@
 import request from '@/utils/request'
+import Cookies from 'js-cookie'
+
+const key_isSuperUser='isSuperUser'
 
 export function login(data) {
   console.log(data)
@@ -26,11 +29,33 @@ export function getUserInfo(id)
   }
 }
 
-export function modifyUserInfo(id,options)
+export function modifyUserInfo(options,id)
 {
-  return request({
-    url:`/auth/webuser?id=${id}`,
-    method:'put',
-    data:options
-  })
+  if(id!==undefined)
+  {
+    return request({
+      url:`/auth/webuser?id=${id}`,
+      method:'put',
+      data:options
+    })
+  }
+  else
+  {
+    console.log(options)
+    return request({
+      url:`/auth/webuser`,
+      method:'put',
+      data:options
+    })
+  }
+}
+
+export function setSuperUser(value)
+{
+  Cookies.set(key_isSuperUser,value)
+}
+
+export function isSuperUser()
+{
+  return Cookies.get(key_isSuperUser)
 }

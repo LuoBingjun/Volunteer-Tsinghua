@@ -43,28 +43,23 @@ export default {
                 phone:undefined
             },
             rules:{
-                name:{required:true,message:"团体名称不能为空",trigger:"blur"},
-                description:{required:true,message:"团体描述不能为空",trigger:"blur"},
-                manager:{required:true,message:"团体名称不能为空",trigger:"blur"},
                 email:[
-                    {required:true,message:"邮箱不能为空",trigger:"blur"},
                     {validator:emailValidator,message:"邮箱不符合格式",trigger:"blur"}
                 ],
                 phone:[
-                    {required:true,message:"手机号不能为空",trigger:"blur"},
                     {validator:phoneValidator,message:"手机号不符合格式",trigger:"blur"}
                 ]
             }
         }
     },
     methods:{
-
         updateInfo(){
+            var that=this
             this.$refs.form.validate().then( (valid)=>{
                 if(valid)
                 {
-                    modifyUserInfo(self.form).then(()=>{
-                        this.oldname=this.form.name
+                    modifyUserInfo(that.form).then(()=>{
+                        that.oldname=that.form.name
                     })
                 }
             }).catch(err=>{})
@@ -79,8 +74,15 @@ export default {
     created(){
         getUserInfo().then(res=>{
             this.form=res.data
+            console.log(this.form)
             this.oldname=res.data.name
         })
     }
 }
 </script>
+
+<style>
+.short{
+    width:60%
+}
+</style>
