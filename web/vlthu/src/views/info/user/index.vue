@@ -24,6 +24,7 @@
 </template>
 <script>
 import {getUserInfo,modifyUserInfo} from '@/api/user'
+import { Message } from 'element-ui'
 export default {
     name: "user",
     data(){
@@ -55,19 +56,31 @@ export default {
     methods:{
         updateInfo(){
             var that=this
-            this.$refs.form.validate().then( (valid)=>{
+            this.$refs.form.validate().then((valid)=>{
                 if(valid)
                 {
                     modifyUserInfo(that.form).then(()=>{
                         that.oldname=that.form.name
                     })
                 }
-            }).catch(err=>{})
+            }).catch(err=>{
+                Message({
+                    message: 'Error: '+err,
+                    type: 'error',
+                    duration: 5 * 1000
+                })
+            })
         },
         resetInfo(){
             getUserInfo().then(res=>{
                 this.form=res.data
                 this.oldname=res.data.name
+            }).catch(err=>{
+                Message({
+                    message: 'Error: '+err,
+                    type: 'error',
+                    duration: 5 * 1000
+                })
             })
         }
     },
@@ -76,6 +89,12 @@ export default {
             this.form=res.data
             console.log(this.form)
             this.oldname=res.data.name
+        }).catch(err=>{
+            Message({
+                message: 'Error: '+err,
+                type: 'error',
+                duration: 5 * 1000
+            })
         })
     }
 }

@@ -3,11 +3,14 @@
     <el-form-item label="项目标题" prop="title" class="short">
       <el-input v-model="form.title"></el-input>
     </el-form-item>
-    <el-form-item label="项目详情" prop="content" class="short">
-      <el-input v-model="form.content"></el-input>
+    <el-form-item label="项目简介" prop="introduction">
+      <el-input v-model="form.introduction"></el-input>
+    </el-form-item>
+    <el-form-item label="项目详情" prop="content">
+      <el-input v-model="form.content" type="textarea" :rows="6"></el-input>
     </el-form-item>
     <el-form-item label="项目需求" prop="requirements">
-      <el-input type="textarea" v-model="form.requirements"></el-input>
+      <el-input type="textarea" v-model="form.requirements" :rows="6"></el-input>
     </el-form-item>
     <el-form-item label="封面图片" prop="cover" ref="upload_item">
       <el-upload action="#" 
@@ -137,6 +140,7 @@ export default {
         content:undefined,
         requirements:undefined,
         cover:undefined,
+        introduction:undefined,
         form:[
           {
             text:"姓名",
@@ -175,6 +179,7 @@ export default {
       rules:{
         title:[{required:true,message:'请输入项目标题', trigger:'blur'}],
         content:{required:true,message:'请输入项目详情', trigger:'blur'},
+        introduction:{required:true,message:'请输入项目简介', trigger:'blur'},
         requirements:{required:true,message:'请输入项目需求', trigger:'blur'},
         deadline:{required:true,message:'请选择报名截止时间', trigger:'blur'},
         time_range:{required:true,message:'请选择活动起止时间',trigger:'blur'},
@@ -246,6 +251,7 @@ export default {
           var newform=new FormData()
           newform.append("title",this.form.title)
           newform.append("content",this.form.content)
+          newform.append("introduction",this.form.introduction)
           newform.append("requirements",this.form.requirements)
           newform.append("cover",this.form.cover)
           newform.append("deadline",new Date(this.form.deadline).toISOString())

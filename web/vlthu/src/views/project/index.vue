@@ -145,7 +145,7 @@ export default {
     var that=this;
     getProjectDetails(this.projectID).then(res =>{
       console.log('项目详情',res)
-      this.ownername=res.data.webuser.username
+      this.ownername=res.data.webuser
       that.title=res.data.title
       that.content=res.data.content
       that.cover=res.data.cover

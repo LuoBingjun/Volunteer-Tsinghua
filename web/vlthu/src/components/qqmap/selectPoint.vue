@@ -5,7 +5,7 @@
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
           <el-form :inline="true">
             <el-form-item >
-              <el-input v-model="inputVal" placeholder="城市名称" @keyup.native="inputChange"
+              <el-input v-model="inputVal" placeholder="请输入签到地点" @keyup.native="inputChange"
                         style="width: 300px;"></el-input>
             </el-form-item>
             <!--<el-form-item>

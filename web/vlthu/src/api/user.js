@@ -50,6 +50,23 @@ export function modifyUserInfo(options,id)
   }
 }
 
+export function getUserList()
+{
+  return request({
+    url:'/auth/listwebuser',
+    method:'get',
+  })
+}
+
+export function deleteUser(id)
+{
+  return request({
+    url:`/auth/webuser?id=${id}`,
+    method:'delete',
+  })
+}
+
+
 export function setSuperUser(value)
 {
   Cookies.set(key_isSuperUser,value)
@@ -59,3 +76,5 @@ export function isSuperUser()
 {
   return Cookies.get(key_isSuperUser)
 }
+
+

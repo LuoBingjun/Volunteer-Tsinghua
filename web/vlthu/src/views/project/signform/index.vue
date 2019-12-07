@@ -21,7 +21,7 @@
         <el-checkbox v-for="job in jobs" :label="job.id" :key="job.id" @change="handleJobsCheck">{{job.job_name}}</el-checkbox>
       </el-checkbox-group>
     </el-form-item>
-    <el-form-item label="签到位置" prop="pos">
+    <el-form-item label="签到地点" prop="pos">
       <qqmap @input="handleMapInput" />
     </el-form-item>
     <el-button @click="startSign" type="primary" style="margin:10px 0px">发起签到</el-button>
