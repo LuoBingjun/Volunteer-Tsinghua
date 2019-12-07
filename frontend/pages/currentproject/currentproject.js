@@ -51,7 +51,8 @@ Page({
                         'cover':res.data.project.cover,
                         'title':res.data.project.title,
                         'description':res.data.project.content,
-                        'requirement':res.data.project.requirements
+                        'requirement':res.data.project.requirements,
+                        'introduction':res.data.project.introduction
                     });
                     let signList = {}
                     that.reslen = res.data.signproject.length

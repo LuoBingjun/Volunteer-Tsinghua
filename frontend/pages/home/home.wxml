@@ -20,7 +20,7 @@
   <!-- <view class="page_bd"> -->
       <view wx:for="{{projects}}" class="project-card">
         <i-card title="{{item.title}}" extra="{{item.require_num}}人" bindtap="enterProject" id="{{item.id}}">
-          <view slot="content">{{item.content}}</view>
+          <view slot="content">{{item.introduction}}</view>
           <view slot="footer">截止时间：{{item.deadline}}</view>
         </i-card>
 

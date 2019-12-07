@@ -69,6 +69,7 @@ Page({
                         'title':res.data.title,
                         'description':res.data.content,
                         'requirement':res.data.requirements,
+                        'introduction':res.data.introduction,
                         'status':res.data.status,
                         "job_set":res.data.job_set
                     });

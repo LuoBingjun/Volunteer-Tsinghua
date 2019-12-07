@@ -1,0 +1,34 @@
+[
+    {
+        "text":"姓名",
+        "required":"true",
+        "type":"text",
+        "value":"",
+        "bind":"name"
+    },{
+        "text":"献血量",
+        "required":"true",
+        "type":"radioBox",
+        "options":[
+                {"name": "100"},
+                {"name": "200"}
+        ],
+        "value":""
+    },{
+        "text":"献血量",
+        "required":"true",
+        "type":"checkBox",
+        "options":[
+                {"name": "100"},
+                {"name": "200"}
+        ],
+        "value":""
+    },{
+        "text":"献血量",
+        "type":"radioBox",
+        "options":[
+                {"name": "100"},
+                {"name": "200"}
+        ]
+    }
+]

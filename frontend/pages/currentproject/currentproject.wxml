@@ -9,6 +9,13 @@
         <view style="padding: 15px;">{{title}}</view>
       </i-panel>
     </i-row>
+
+    <i-row>
+      <i-panel title="简介" hide-border="{{ true }}">
+        <view style="padding: 15px;">{{introduction}}</view>
+      </i-panel>
+    </i-row>
+
     <i-row>
       <i-panel title="详情" hide-border="{{ true }}">
         <view style="padding: 15px;">{{description}}</view>
@@ -26,6 +33,7 @@
   </view>
 
 
+  <h2>签到模块</h2>
   <!-- 签到模块 -->
   <van-collapse value="{{ activeNames }}" bind:change="onChange">
     <van-collapse-item wx:for="{{ signList }}" title="{{item.title}}" name="{{item.id}}">

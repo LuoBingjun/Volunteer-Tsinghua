@@ -12,6 +12,7 @@ Page({
         "cover": "封面图片url",
         "title": "标题",
         "content": "内容",
+        "introduction":"简介",
         "require_num": 5, // "需求人数"
         "requirements": "需求",
         "form": "表单",

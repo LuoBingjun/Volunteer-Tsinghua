@@ -39,6 +39,7 @@ Page({
             "title": res.data.title,
             "form": JSON.parse(res.data.form.replace(/\s+/g, "")),
           });
+          console.log("报名问卷界面请求得到的数据：", that.form)
         }
         else {
           wx.showModal({
