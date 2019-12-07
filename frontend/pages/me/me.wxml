@@ -1,41 +1,41 @@
 <view class="page">
-    <view class="page__hd">
-        <view class="page__title">{{userInfo.name}}的主页</view>
+  <i-row i-class="name-row">
+    <i-col span="6" i-class="name-col">
+        <i-avatar size="large">{{userInfo.name[0]}}</i-avatar>
+    </i-col>
+    <i-col span="18">
+      <i-row>
+        <view class="page__title">{{userInfo.name}}</view>
+      </i-row>
+      <i-row>
+        <view class="page__desc">{{userInfo.department}}</view>
+      </i-row>
+    </i-col>
+  </i-row>
+  <i-row>
+    <view class="weui-cells weui-cells_after-title">
+      <navigator url="/pages/me/viewMyProject/viewMyProject?type=ALL" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">所有项目</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="/pages/me/viewMyProject/viewMyProject?type=CHECKING" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">审核中的项目</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+            <navigator url="/pages/me/viewMyProject/viewMyProject?type=CURRENT" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">正在进行的项目</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+                  <navigator url="/pages/me/viewMyProject/viewMyProject?type=HISTORY" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">历史项目</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
     </view>
-
-    <view class="weui-cell" catchtap="test" id="ALL">
-        <div class="weui-cell__bd">
-            <p>所有项目</p>
-        </div>
-        <div class="weui-cell__ft">
-            <view> > </view>
-        </div>
-    </view>
-
-    <view class="weui-cell" catchtap="test" id="CHECKING">
-        <div class="weui-cell__bd">
-            <p>审核中的项目</p>
-        </div>
-        <div class="weui-cell__ft">
-            <view> > </view>
-        </div>
-    </view>
-
-    <view class="weui-cell" catchtap="test" id="CURRENT">
-        <div class="weui-cell__bd">
-            <p>正在进行的项目</p>
-        </div>
-        <div class="weui-cell__ft">
-            <view> > </view>
-        </div>
-    </view>
-
-    <view class="weui-cell" catchtap="test" id="HISTORY">
-        <div class="weui-cell__bd">
-            <p>历史项目</p>
-        </div>
-        <div class="weui-cell__ft">
-            <view> > </view>
-        </div>
-    </view>
+  </i-row>
+  
+  <i-tab-bar current="me" bindchange="handleChange" fixed="true">
+    <i-tab-bar-item key="home" icon="homepage" current-icon="homepage_fill" title="项目广场"></i-tab-bar-item>
+    <i-tab-bar-item key="message" icon="remind" current-icon="remind_fill" count="3" title="通知"></i-tab-bar-item>
+    <i-tab-bar-item key="me" icon="mine" current-icon="mine_fill" dot title="我的"></i-tab-bar-item>
+  </i-tab-bar>
 </view>

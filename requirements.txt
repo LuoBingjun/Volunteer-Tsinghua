@@ -1,6 +1,0 @@
-xlwt
-xlrd
-django
-djangorestframework
-Pillow
-requests

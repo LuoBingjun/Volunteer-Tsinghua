@@ -1,0 +1,10 @@
+xlwt
+xlrd
+django==2.2.8
+djangorestframework
+Pillow
+requests
+redis
+django-redis
+jieba
+celery

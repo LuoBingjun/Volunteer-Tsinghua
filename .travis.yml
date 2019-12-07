@@ -3,19 +3,19 @@ jobs:
     - stage: test
       language: python
       python:
-        - '3.7'
+        - '3.6.8'
       sudo: enabled
-      env:
-          global:
-           - TRAVIS=true
+      services:
+        - redis-server
       install:
+        - cd backend
         - pip install -r requirements.txt   
       before_script:
-        - cd backend
         - python manage.py makemigrations
         - python manage.py migrate
       script:
         - python manage.py test
+
     - stage: test
       language: node_js
       node_js:

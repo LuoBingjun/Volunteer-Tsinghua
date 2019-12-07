@@ -3,12 +3,30 @@ Page({
      * 页面的初始数据
      */
     data: {
-        "projectID": 123,
-        "cover":"/src/img1.jpg",
-        "title":"项目1",
-        "description":"这里有很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多很多总之非常多的描述",
-        "requirement":["需求1","需求2","需求3"],
-        "status":"A"
+        "projectID": 0,
+        "cover":"",
+        "title":"",
+        "description":"",
+        "requirement":[],
+        "status":"A",
+        "job_set": [
+            {
+                "id": 1,
+                "job_name": "job1",
+                "job_worktime": 2.5,
+                "job_content": "job1content1",
+                "job_require_num": 250,
+                "project": 1
+            },
+            {
+                "id": 2,
+                "job_name": "job2",
+                "job_worktime": 250.0,
+                "job_content": "job2content2",
+                "job_require_num": 25,
+                "project": 1
+            }
+        ]
     },
 
     /**
@@ -29,7 +47,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-        console.log("烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫")
+        // console.log("烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫")
         var app=getApp();
         const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${this.data.projectID}`
         console.log("从project跳转到URL：",getUrl)
@@ -53,7 +71,8 @@ Page({
                         'title':res.data.title,
                         'description':res.data.content,
                         'requirement':reqs,
-                        'status':res.data.status
+                        'status':res.data.status,
+                        "job_set":res.data.job_set
                     });
                     console.log("Status为：",that.data.status)
                 }
@@ -110,9 +129,11 @@ Page({
     },
 
     signin:function(){
-        wx.navigateTo({"url":"submit/submit?projectID="+this.data.projectID});
+        wx.navigateTo({"url":"submit/submit?"+"projectID="+this.data.projectID+"&jobID="+this.data.job_set[0].id});
     },
-
+    gotoCurrentProject:function(){
+        wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + this.data.projectID })
+    },
     sign:function(){
         wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
     }

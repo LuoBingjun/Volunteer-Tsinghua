@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "登录中",
+  "usingComponents": {
+    "i-spin": "../../dist/spin/index",
+    "i-icon": "../../dist/icon/index"
+  }
+}
