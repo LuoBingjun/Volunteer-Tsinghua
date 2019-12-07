@@ -31,6 +31,7 @@ class detailSerializer(serializers.ModelSerializer):
 
 # 用于返回项目详情
 class detail_Serializer(serializers.ModelSerializer):
+    webuser = serializers.ReadOnlyField(source='webuser.name')
     class Meta:
         model = Project
         fields = ['id', 'title', 'webuser', 'content', 'introduction', 'cover', 'requirements',
@@ -104,19 +105,16 @@ class detailView(GenericAPIView):
         serializer = self.get_serializer(project)
         res = dict(serializer.data)
 
-        # 项目的状态有待改正
-        # if project.finished:
-        #     res['status'] = 'F'
-        # else:
-        #     apply_records = ApplyRecord.objects.filter(user=request.user, project=project)
-        #     if apply_records.exists():
-        #         apply_record = apply_records[0]
-        #         res['status'] = apply_record.status
-        #     else:
-        #         if project.deadline >= datetime.now(timezone.utc):
-        #             res['status'] = 'A'
-        #         else:
-        #             res['status'] = 'N'
+
+        if request.session.get('wx_user'):
+            apply_records = ApplyRecord.objects.filter(user=request.user, project=project)
+            applied_job = [record.job.id for record in apply_records]
+            for item in res['job_set']:
+                if item['id'] in applied_job:
+                    item['job_status'] = apply_records.get(job=item['id']).status
+                else:
+                    item['job_status'] = 'A'
+
         return Response(res)
 
 
