@@ -112,15 +112,6 @@ Page({
   
   enterProject: function (e) {
     //console.log("-------"+e.currentTarget.id)
-    console.log("viewMyProject this.data.type:",this.data.type)
-    if(this.data.type == "CURRENT")
-    {
-      wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + e.currentTarget.id })
-    }
-    else
-    {
-      wx.navigateTo({ "url": "/pages/project/project?projectID=" + e.currentTarget.id })
-    }
-    
+    wx.navigateTo({ "url": "/pages/project/project?projectID=" + e.currentTarget.id })
   },
 })

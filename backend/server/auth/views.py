@@ -169,11 +169,3 @@ class userView(APIView):
     def get(self, request):
         serializer = getUserSerializer(request.user)
         return Response(serializer.data)
-
-
-class unbundlingView(APIView):
-    @login_required(wx=True)
-    def post(self,request):
-        request.user.openid = None
-        request.user.save()
-        return Response(status=200)
