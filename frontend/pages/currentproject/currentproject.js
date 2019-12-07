@@ -171,49 +171,68 @@ Page({
     onShareAppMessage: function () {
   
     },
-
     sign: function (e) {
         if (this.data.disabled) return;
         var app = getApp();
         console.log(e.currentTarget)
         var that = this
-        wx.request({
-          url: `${app.globalData.backEndUrl}/sign/signin`,
-          method: 'post',
-          header: {
-            'content-type': 'application/json', // 提交的数据类型
-            'cookie': app.globalData.cookies //读取cookie
+        wx.getLocation({
+          type: 'wgs84',
+          isHighAccuracy: false,
+          success (res) {
+            var latitude = res.latitude
+            var longitude = res.longitude
+            var accuracy = res.accuracy
+            console.log("获得地理位置1：latitude", latitude, "longitude",longitude, "accuracy", accuracy)
+
+            wx.request({
+              url: `${app.globalData.backEndUrl}/sign/signin`,
+              method: 'post',
+              header: {
+                'content-type': 'application/json', // 提交的数据类型
+                'cookie': app.globalData.cookies //读取cookie
+              },
+              data: {
+                'sign_project_id': e.currentTarget.id,
+                "longitude":longitude,
+                "latitude":latitude
+              },
+              success(res) {  // 成功回调
+                console.log("得到的数据为", res);
+                if (res.statusCode == 200) {
+                  that.setData({ 'disabled': true })
+                  wx.showToast({
+                    title: "签到成功",
+                    icon: "success",
+                    duration: 2000
+                  });
+                  setTimeout(function () {
+                    console.log("返回主界面");
+                    wx.navigateBack();
+                  }, 2000);
+                }
+                else {
+                  wx.showModal({
+                    title: '错误',
+                    content: JSON.stringify(res.data),
+                  });
+                }
+              },
+              fail() { // 失败回调
+                wx.showModal({
+                  title: '错误',
+                  content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+                });
+              }
+            })
           },
-          data: {
-            'sign_project': e.currentTarget.id
-          },
-          success(res) {  // 成功回调
-            console.log("得到的数据为", res);
-            if (res.statusCode == 200) {
-              that.setData({ 'disabled': true })
-              wx.showToast({
-                title: "签到成功",
-                icon: "success",
-                duration: 2000
-              });
-              setTimeout(function () {
-                console.log("返回主界面");
-                wx.navigateBack();
-              }, 2000);
-            }
-            else {
-              wx.showModal({
-                title: '错误',
-                content: JSON.stringify(res.data),
-              });
-            }
-          },
-          fail() { // 失败回调
+          fail(res){
             wx.showModal({
               title: '错误',
-              content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
-            });
+              content: '无法获得您的地理位置，请打开手机定位'
+              });
+              return
           }
-        })
+         }) 
       }
 })
