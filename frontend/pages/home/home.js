@@ -12,6 +12,7 @@ Page({
         "cover": "封面图片url",
         "title": "标题",
         "content": "内容",
+        "introduction":"简介",
         "require_num": 5, // "需求人数"
         "requirements": "需求",
         "form": "表单",
@@ -41,6 +42,11 @@ Page({
   onLoad: function (options) {
     var that = this
     var app = getApp()
+    let isIphoneX = app.globalData.isIphoneX;
+    console.log("主页：isIphoneX:", isIphoneX)
+    this.setData({
+      isIphoneX: isIphoneX
+    })
 
     wx.request({
       url: `${app.globalData.backEndUrl}/project/list`,

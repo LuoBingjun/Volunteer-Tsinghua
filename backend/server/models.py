@@ -17,6 +17,7 @@ class WebUser(AbstractUser):
 class ApplyRecord(models.Model):
     user = models.ForeignKey('WxUser', on_delete=models.CASCADE)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    job = models.ForeignKey('Job', on_delete=models.CASCADE)
     form = models.TextField('报名表单')
     submit_time = models.DateTimeField('提交时间',auto_now_add=True)
     status = models.CharField('审核状态', max_length=1, default='W', choices=[('W', '待审核'), ('P', '审核通过'), ('N', '审核不通过')])
@@ -25,8 +26,8 @@ class ApplyRecord(models.Model):
 class JoinRecord(models.Model):
     user = models.ForeignKey('WxUser', on_delete=models.CASCADE)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    job = models.ManyToManyField('Job')
     work_time = models.FloatField('工时', blank=True, null=True)
-    sign_record = models.ManyToManyField('SignRecord', blank=True)
 
 # 项目签到
 class SignProject(models.Model):
@@ -35,7 +36,10 @@ class SignProject(models.Model):
     content = models.TextField('详情')
     begin_time = models.DateTimeField('签到开始时间')
     end_time = models.DateTimeField('签到结束时间')
-    # position = models.CharField(max_length=10)
+    jobs = models.ManyToManyField('Job')
+    position = models.CharField(max_length=32)
+    longitude = models.FloatField('经度')
+    latitude = models.FloatField('纬度')
     
 
 class SignRecord(models.Model):
@@ -46,12 +50,31 @@ class SignRecord(models.Model):
 
 
 class Project(models.Model):
+    webuser = models.ForeignKey('WebUser', on_delete=models.CASCADE)
     title = models.CharField('项目', max_length=128)
     content = models.TextField('详情')
     cover = models.ImageField('封面图片', blank=True)
-    require_num = models.PositiveIntegerField('需求人数')
+    # require_num = models.PositiveIntegerField('需求人数')# 删掉
     requirements = models.TextField('需求')
     form = models.TextField('报名表单', blank=True)
     time = models.DateTimeField('创建时间', auto_now_add=True)
     deadline = models.DateTimeField('报名截止时间')
+    begin_datetime = models.DateTimeField('项目开始时间')
+    end_datetime = models.DateTimeField('项目结束时间')
     finished = models.BooleanField('结项状态', default=False)
+
+class Message(models.Model):
+    type = models.CharField('消息类型', choices=[('M', '模板消息'), ('P', '普通消息')], max_length=1)
+    sender = models.ForeignKey('WebUser', on_delete=models.CASCADE)
+    receiver = models.ForeignKey('WxUser', on_delete=models.CASCADE)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    title = models.CharField('标题', null=True, blank=True, max_length=24)
+    content = models.TextField('内容', null=True, blank=True)
+
+
+class Job(models.Model):
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    job_name = models.CharField('岗位', max_length=128)
+    job_worktime = models.FloatField('工时')
+    job_content = models.TextField('详情')
+    job_require_num = models.PositiveIntegerField('需求人数')
