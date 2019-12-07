@@ -183,7 +183,7 @@ class putWebuserSerializer(serializers.ModelSerializer):
 class getWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['name', 'description', 'manager', 'email', 'phone']
+        fields = ['id', 'name', 'description', 'manager', 'email', 'phone']
 
 class webuserView(APIView):
     @login_required(web=True)
@@ -233,7 +233,7 @@ class webuserView(APIView):
 class listWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['name', 'description', 'manager', 'email', 'phone']
+        fields = ['id', 'name', 'description', 'manager', 'email', 'phone']
 
 class listwebuserView(ListAPIView):
     serializer_class = listWebuserSerializer
