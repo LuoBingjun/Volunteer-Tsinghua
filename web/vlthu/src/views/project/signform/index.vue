@@ -21,15 +21,20 @@
         <el-checkbox v-for="job in jobs" :label="job.id" :key="job.id" @change="handleJobsCheck">{{job.job_name}}</el-checkbox>
       </el-checkbox-group>
     </el-form-item>
-    <el-button @click="startSign" type="primary">发起签到</el-button>
+    <el-form-item label="签到位置" prop="pos">
+      <qqmap @input="handleMapInput" />
+    </el-form-item>
+    <el-button @click="startSign" type="primary" style="margin:10px 0px">发起签到</el-button>
     </el-form>
 </template>
 <script>
 import {startSign} from '@/api/project'
 import {Message} from 'element-ui'
+import qqmap from '@/components/qqmap'
 export default {
   name:'signform',
   props:["jobs","projectID"],
+  components:{qqmap},
   created(){
     this.alljobs=[]
     for(var i in this.jobs)
@@ -39,21 +44,28 @@ export default {
     console.log(this.alljobs)
   },
   data(){
+    var validatepos=(rule,value,callback)=>{
+      if(!value||!value.text)callback(new Error('请在上方输入框填写活动地址'))
+      else callback()
+    }
     return {
       form:{
         title: undefined,
         content: undefined,
         time_range:undefined,
-        jobs:[]
+        jobs:[],
+        pos:{pos:"40.0024431613261,116.3263320",text:undefined}
       },
       alljobs:undefined,
       isIndeterminate:undefined,
       checkAll:undefined,
+
       rules:{
         title: {required: true, message:'请输入签到标题', trigger:'blur'},
         content: {required: true, message:'请输入签到描述', trigger:'blur'},
         time_range: {required: true, message: '请输入起止时间', trigger:'blur'},
-        jobs: {required: true, message: '请至少安排一个岗位', trigger:'blur'}
+        jobs: {required: true, message: '请至少安排一个岗位', trigger:'blur'},
+        pos: {required:true,validator:validatepos,trigger:'blur'}
       }
     }
   },
@@ -79,6 +91,9 @@ export default {
             end_time:new Date(this.form.time_range[1]).toISOString(),
             jobs:this.form.jobs,
             project:this.projectID,
+            longitude:this.form.pos.pos.lng,
+            latitude:this.form.pos.pos.lat,
+            position:this.form.pos.text
           }
           console.log(newForm)
           startSign(newForm).then(res=>{
@@ -97,6 +112,12 @@ export default {
         }
       })
     },
+    handleMapInput(ev){
+      this.form.pos.text=ev.text
+      if(ev.pos)this.form.pos.pos=ev.pos
+      if(ev.text)this.$refs.form.clearValidate("pos")
+      console.log("收到了",this.form.pos)
+    }
   }
 }
 </script>

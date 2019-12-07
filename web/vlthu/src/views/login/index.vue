@@ -96,7 +96,9 @@ export default {
     },
     handleLogin() {
       this.loading = true
-      login(this.loginForm).then(() => {
+      login(this.loginForm).then(res => {
+        console.log("出现了",res.data.is_superuser===undefined?false:res.data.is_superuser)
+        this.$store.dispatch('app/setSuperPermission',res.data.is_superuser===undefined?false:res.data.is_superuser)
         this.$router.push({ path: '/dashboard' })
         this.loading = false
       }).catch(err => {

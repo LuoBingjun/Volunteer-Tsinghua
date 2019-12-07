@@ -123,7 +123,6 @@
     </div>
     <el-button type="primary" @click="submitform">发起项目</el-button>
   </el-form>
-        
 </template>
 
 <script>
@@ -188,9 +187,6 @@ export default {
       },
     }
   },
-  created(){
-    this.form.requirements="需求"
-  },
   methods:{
     rmjob(item){
       console.log(item)
@@ -240,6 +236,7 @@ export default {
       }
     },
     submitform(){
+      var that=this
       this.$refs.uploader.submit()  //getfile
       console.log(this.form)
       this.$refs.mainform.validate((valid)=>{
@@ -263,6 +260,7 @@ export default {
               type:"success",
               duration: 5000
             })
+            that.$router.push({path:'/'})
           }).catch(err=>{
             Message({
               message:"错误："+err,

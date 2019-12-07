@@ -9,9 +9,8 @@
     </el-card>
     <el-card  v-if="requirements">
       <p>
-        <i class="el-icon-star-off"></i> 需求：
+        <i class="el-icon-star-off"></i> 需求：{{requirements}}
       </p>
-      {{requirements}}
     </el-card>
     <el-card v-if="!finished && !started">       <!--  审核  -->
       <p>报名列表：</p>
@@ -152,7 +151,7 @@ export default {
       that.cover=res.data.cover
       that.require_num=res.data.require_num
       that.status=res.data.status
-      that.requirements=JSON.parse(res.data.requirements)
+      that.requirements=res.data.requirements
       that.form=res.data.form
       that.time=res.data.time
       that.deadline=res.data.deadline

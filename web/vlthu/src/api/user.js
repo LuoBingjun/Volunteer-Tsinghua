@@ -8,3 +8,29 @@ export function login(data) {
     data
   })
 }
+
+export function getUserInfo(id)
+{
+  if(id!==undefined)
+  {
+    return request({
+      url:`/auth/webuser?id=${id}`,
+      method:"get"
+    })
+  }
+  else{
+    return request({
+      url:`/auth/webuser`,
+      method:"get"
+    })
+  }
+}
+
+export function modifyUserInfo(id,options)
+{
+  return request({
+    url:`/auth/webuser?id=${id}`,
+    method:'put',
+    data:options
+  })
+}
