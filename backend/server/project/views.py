@@ -111,7 +111,7 @@ class detailView(GenericAPIView):
             applied_job = [record.job.id for record in apply_records]
             for item in res['job_set']:
                 if item['id'] in applied_job:
-                    item['job_status'] = apply_records.get(pk=item['id']).status
+                    item['job_status'] = apply_records.get(job=item['id']).status
                 else:
                     item['job_status'] = 'A'
 
