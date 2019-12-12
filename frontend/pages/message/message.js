@@ -135,7 +135,6 @@ Page({
   },
 
   enterProject: function (e) {
-    console.log("-------"+e.currentTarget.projectID)
-    wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + e.currentTarget.projectID })
+    wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + e.currentTarget.dataset.projectid })
   },
 })
