@@ -25,7 +25,7 @@ SECRET_KEY = 'zlwes(qp_fflk%5yi%#d@w%^1fqi@zx9ai@6j755$f9jg895+('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '62.234.0.237', '2019-a15.iterator-traits.com']
+ALLOWED_HOSTS = ['62.234.0.237', '2019-a15.iterator-traits.com']
 
 
 # Application definition
@@ -146,19 +146,8 @@ CACHES = {
     }
 }
 
-# Celery application definition
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-
-
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
 APPID = 'wxc8b9330a6cba4b05'
 APPSECRET = '20f089254aea198ca071c774dfc55572'
-
-CHECK_TEMPLATE_ID = 'JRmcDj_rRLknyYVevU-iNgosYQ7cm88cs2UTS89B2-o'
-SIGN_TEMPLATE_ID = 'z7xt4wI2pFXsbFsI3pdDhzJ5LYcQh9KU5EaiOKg1aRM'

@@ -130,7 +130,7 @@ def export_excel(request):
         response.write(output.getvalue())
         return response
     else:
-        return Response({"error": 'method wrong'},status=405)
+        return Response({"error": 'method wrong'},status=401)
 
 
 class importSerializer(serializers.Serializer): 
