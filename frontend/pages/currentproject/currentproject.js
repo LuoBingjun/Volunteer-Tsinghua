@@ -123,10 +123,7 @@ Page({
                 }
                 else 
                 {
-                    wx.showModal({
-                        title: '错误',
-                        content: JSON.stringify(res.data),
-                        });
+                    wx.navigateTo({"url":"/pages/project/project?projectID="+that.data.projectID})
                 }
             },
             fail() { // 失败回调
