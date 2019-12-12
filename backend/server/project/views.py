@@ -71,6 +71,7 @@ class detailView(GenericAPIView):
         _begin_datetime=serializer.validated_data['begin_datetime']
         _end_datetime=serializer.validated_data['end_datetime']
         _jobs=serializer.validated_data['jobs']
+        _introduction=serializer.validated_data['introduction']
         
 
         job_data = json.loads(_jobs)
@@ -82,7 +83,7 @@ class detailView(GenericAPIView):
 
         _project=Project(title=_title, content=_content, requirements=_requirements, 
                 form=_form, deadline=_deadline, webuser=request.user, cover=_cover,
-                begin_datetime=_begin_datetime, end_datetime=_end_datetime)
+                begin_datetime=_begin_datetime, end_datetime=_end_datetime,introduction=_introduction)
         
         _project.save()
 

@@ -120,7 +120,7 @@ class signinView(APIView):
         distance=2*asin(sqrt(a))*6371393 # 地球平均半径，6371km
         distance=round(distance,3)
         print(distance)
-        if distance > 100:
+        if distance > 800:
             return Response({"error":"请前往指定地点签到"},status=406)
     
         sign_record = SignRecord.objects.create(sign_project=sign_project,join_record=join_record)
