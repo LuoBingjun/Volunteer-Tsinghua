@@ -5,6 +5,8 @@ Page({
    */
   data: {
     current: 'home',
+    projectsKind: 0,
+    showLeft1: false,
     "username": "FTP server",
     "projects": [
       {
@@ -160,6 +162,20 @@ Page({
   inputTyping: function (e) {
     this.setData({
       inputVal: e.detail.value
+    });
+  },
+  showKinds() {
+    this.setData({
+        showLeft1: !this.data.showLeft1
+    });
+  },
+  kindChange(event) {
+    this.setData({
+      showLeft1: false
+    });
+    wx.showToast({
+      icon: 'none',
+      title: `切换至第${event.detail}项`
     });
   }
 })

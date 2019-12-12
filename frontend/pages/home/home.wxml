@@ -17,15 +17,28 @@
     <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
   </view>
 
-  <!-- <view class="page_bd"> -->
-      <view wx:for="{{projects}}" class="project-card">
-        <i-card title="{{item.title}}" extra="{{item.require_num}}人" bindtap="enterProject" id="{{item.id}}">
-          <view slot="content">{{item.introduction}}</view>
-          <view slot="footer">截止时间：{{item.deadline}}</view>
-        </i-card>
+  <view class="page_bd">
+    <i-drawer mode="left" visible="{{showLeft1}}" bind:close="showKinds">
+      <van-sidebar active-key="{{ projectsKind }}" bind:change="kindChange">
+        <van-sidebar-item title="所有种类" />
+        <van-sidebar-item title="文化教育" />
+        <van-sidebar-item title="赛会服务" />
+        <van-sidebar-item title="社区服务" />
+        <van-sidebar-item title="医疗卫生" />
+        <van-sidebar-item title="健康残障" />
+        <van-sidebar-item title="其他活动" />      
+      </van-sidebar>
+    </i-drawer>
+    <button class="weui-btn" type="primary" bindtap="showKinds">选择种类</button>
+    
+    <view wx:for="{{projects}}" class="project-card">
+      <i-card title="{{item.title}}" extra="{{item.require_num}}人" bindtap="enterProject" id="{{item.id}}">
+        <view slot="content">{{item.introduction}}</view>
+        <view slot="footer">截止时间：{{item.deadline}}</view>
+      </i-card>
 
-      </view>
-  <!-- </view> -->
+    </view>
+  </view>
   <i-tab-bar current="home" bindchange="handleChange" fixed="true">
     <i-tab-bar-item key="home" icon="homepage" current-icon="homepage_fill" title="项目广场"></i-tab-bar-item>
     <i-tab-bar-item key="message" icon="remind" current-icon="remind_fill" count="3" title="通知"></i-tab-bar-item>
