@@ -56,7 +56,6 @@
       <p v-if="applyList && applyList.length == 0">没有记录~</p>
       <table v-if="applyList && applyList.length !=0" style="text-align:center">
         <tr>
-          jie
           <td>参加人员</td>
           <td>岗位</td>
         </tr>

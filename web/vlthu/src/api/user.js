@@ -66,6 +66,16 @@ export function deleteUser(id)
   })
 }
 
+export function addUser(options)
+{
+  return request({
+    url:"/auth/webuser",
+    method:"post",
+    data:options
+  })
+}
+
+
 
 export function setSuperUser(value)
 {
@@ -74,7 +84,7 @@ export function setSuperUser(value)
 
 export function isSuperUser()
 {
-  return Cookies.get(key_isSuperUser)
+  return Cookies.get(key_isSuperUser)=='false'?false:true
 }
 
 

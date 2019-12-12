@@ -309,7 +309,6 @@ export default {
           );
           newform.append("jobs", JSON.stringify(this.form.jobs));
           newform.append("form", JSON.stringify(this.form.form));
-          console.log("新：", newform);
           startProject(newform)
             .then(res => {
               Message({
@@ -317,7 +316,7 @@ export default {
                 type: "success",
                 duration: 5000
               });
-              that.$router.push({ path: "/" });
+              that.$router.push({ path: "/dashboard" });
             })
             .catch(err => {
               Message({

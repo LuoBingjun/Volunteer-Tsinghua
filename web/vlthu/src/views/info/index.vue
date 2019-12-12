@@ -1,6 +1,6 @@
 <template>
     <div>
-        <superuser v-if="isSuperUser"/>
+        <superuser v-if="superUser"/>
         <user v-else/>
     </div>
 </template>
@@ -13,15 +13,14 @@ export default {
     components:{user,superuser},
     data(){
         return {
-            isSuperUser:true
+            superUser:undefined
         }
     },
     methods:{
 
     },
     created(){
-        this.isSuperUser=isSuperUser()
-        console.log(this.isSuperUser)
+        this.superUser=isSuperUser()
     }
 }
 </script>
