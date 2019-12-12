@@ -7,7 +7,8 @@ class WxUser(models.Model):
     name = models.CharField('姓名', max_length=32)
     department = models.CharField('单位', max_length=32)
     email = models.EmailField('邮箱')
-    phone = models.DecimalField('电话', null=True, blank=True, max_digits=11, decimal_places=0)
+    phone = models.DecimalField('电话', max_digits=11, decimal_places=0)
+    id_card = models.CharField('身份证号', max_length=64)
     openid = models.CharField('OpenID', null=True, blank=True, unique=True, max_length=64)
     join_time = models.DateTimeField('创建时间', auto_now_add=True)
 

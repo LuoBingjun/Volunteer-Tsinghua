@@ -1,3 +1,6 @@
+from Crypto.Cipher import AES
+import base64
+from Crypto import Random
 from django.contrib import auth
 from django.core.exceptions import PermissionDenied
 from rest_framework import serializers
@@ -15,8 +18,10 @@ from backend import settings
 from server.models import *
 from server.utils import login_required
 
+
 class preloginSerializer(serializers.Serializer):
     code = serializers.CharField()
+
 
 class preloginView(APIView):
     def post(self, request):
@@ -26,13 +31,14 @@ class preloginView(APIView):
 
         errcode = -1
         while errcode == -1:
-            response = requests.get('https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code'.format(settings.APPID, settings.APPSECRET, code)).json()
+            response = requests.get('https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code'.format(
+                settings.APPID, settings.APPSECRET, code)).json()
             errcode = response.get('errcode')
-        
+
         openid = response.get('openid')
         if not openid:
             return Response(status=400)
-        
+
         request.session.cycle_key()
         request.session['openid'] = openid
 
@@ -46,9 +52,8 @@ class preloginView(APIView):
             login_status = False
 
         return Response({
-            'login_status':login_status
+            'login_status': login_status
         })
-
 
 
 class loginSerializer(serializers.Serializer):
@@ -83,7 +88,7 @@ class loginView(APIView):
                 'id': userinfo['card'],
                 'department': userinfo['department']
             })
-            
+
             return response
         else:
             return Response(info.errors, status=400)
@@ -105,9 +110,11 @@ class loginView(APIView):
         userinfo = response.get('user')
         return userinfo
 
+
 class webloginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=128)
     password = serializers.CharField(max_length=128)
+
 
 class webloginView(APIView):
     def post(self, request):
@@ -120,7 +127,7 @@ class webloginView(APIView):
             auth.logout(request)
             auth.login(request, user)
             response = Response({
-                'is_superuser':user.is_superuser
+                'is_superuser': user.is_superuser
             }, status=200)
             return response
         else:
@@ -128,21 +135,46 @@ class webloginView(APIView):
 
 
 class postUserSerializer(serializers.ModelSerializer):
+    id_card = serializers.RegexField(r'\d{17}[0-9Xx]')
+
     class Meta:
         model = WxUser
-        fields = ['id', 'name', 'department', 'email', 'phone']
+        fields = ['id', 'name', 'department', 'email', 'phone', 'id_card']
 
 
 class getUserSerializer(serializers.ModelSerializer):
+    id_card = serializers.SerializerMethodField()
+
     class Meta:
         model = WxUser
         exclude = ['join_time']
+
+    def get_id_card(self, obj):
+        key = settings.SECRET_KEY.encode('utf-8')[:32]
+        cipher = AES.new(key, AES.MODE_ECB)
+        return decode(cipher, obj.id_card)
 
 
 class putUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WxUser
         fields = ['department', 'email', 'phone']
+
+
+BLOCK_SIZE = 32
+PADDING = '{'
+
+
+def pad(s): 
+    return s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
+
+
+def encode(c, s):
+    return base64.b64encode(c.encrypt(pad(s).encode('utf-8'))).decode('utf-8')
+
+
+def decode(c, e): 
+    return c.decrypt(base64.b64decode(e.encode('utf-8'))).decode('utf-8').rstrip(PADDING)
 
 
 class userView(APIView):
@@ -152,6 +184,12 @@ class userView(APIView):
             raise PermissionDenied()
         serializer = postUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        key = settings.SECRET_KEY.encode('utf-8')[:32]
+        cipher = AES.new(key, AES.MODE_ECB)
+        encoded = encode(cipher, serializer.validated_data['id_card'])
+        # s = decode(cipher, encoded)
+        # assert serializer.validated_data['id_card'] == s
+        serializer.validated_data['id_card'] = encode(cipher, serializer.validated_data['id_card']) 
         user = serializer.save()
         user.openid = request.session.get('openid')
         user.save()
@@ -170,20 +208,25 @@ class userView(APIView):
         serializer = getUserSerializer(request.user)
         return Response(serializer.data)
 
+
 class postWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['username', 'password', 'name', 'description', 'manager', 'email', 'phone']
+        fields = ['username', 'password', 'name',
+                  'description', 'manager', 'email', 'phone']
+
 
 class putWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
         fields = ['name', 'description', 'manager', 'email', 'phone']
 
+
 class getWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
         fields = ['id', 'name', 'description', 'manager', 'email', 'phone']
+
 
 class webuserView(APIView):
     @login_required(web=True)
@@ -204,7 +247,6 @@ class webuserView(APIView):
         user.delete()
         return Response(status=200)
 
-
     @login_required(web=True)
     def put(self, request):
         id = request.query_params.get('id')
@@ -214,7 +256,8 @@ class webuserView(APIView):
             user = get_object_or_404(WebUser, pk=id)
         else:
             user = request.user
-        serializer = putWebuserSerializer(user, data=request.data, partial=True)
+        serializer = putWebuserSerializer(
+            user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
@@ -235,6 +278,7 @@ class listWebuserSerializer(serializers.ModelSerializer):
         model = WebUser
         fields = ['id', 'name', 'description', 'manager', 'email', 'phone']
 
+
 class listwebuserView(ListAPIView):
     serializer_class = listWebuserSerializer
     @login_required(web=True)
@@ -243,9 +287,10 @@ class listwebuserView(ListAPIView):
             raise PermissionDenied()
         return WebUser.objects.all()
 
+
 class unbundlingView(APIView):
     @login_required(wx=True)
-    def post(self,request):
+    def post(self, request):
         request.user.openid = None
         request.user.save()
         return Response(status=200)

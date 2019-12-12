@@ -45,8 +45,11 @@ class AuthTestCase(TestCase):
             'id': 2017011111,
             'department': '软件学院',
             'email': 'xxh17@mails.tsinghua.edu.cn',
-            'phone': '13888888888'
+            'phone': '13888888888',
+            'id_card':'11111119990000000x'
         })
+        assert response.status_code == 200
+        response = client.get('/auth/user')
         assert response.status_code == 200
 
     # 管理员登录
@@ -110,7 +113,7 @@ class ProjectTestCase(TestCase):
         admin1 = WebUser.objects.create_user(
             id=1, username='admin1', password='admin1')
         _user = WxUser.objects.create(
-            id=2017011111, name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233)
+            id=2017011111, name='清小华', department='软件学院', email='lixiaojia@163.com', phone=12233, id_card='11111119990000000X')
         # 在ApplyRecord中创建一条记录
         _project = Project.objects.create(id=1, webuser=admin1, title='test', content='testcontent', introduction='intro', requirements='req', deadline=datetime.datetime(2035, 12, 1, 23, 59, 59),
                                           begin_datetime=datetime.datetime(2019, 12, 4, 0, 0, 0), end_datetime=datetime.datetime(2035, 12, 5, 23, 59, 59))
@@ -240,7 +243,7 @@ class CheckTestCase(TestCase):
         _webuser = WebUser.objects.create_user('test1234', password='test1234')
         # 在ApplyRecord中创建一条记录
         _user = WxUser(id=2017011111, name='清小华', department='软件学院',
-                       email='lixiaojia@163.com', phone=12233)
+                       email='lixiaojia@163.com', phone=12233, id_card='11111119990000000X')
         _user.save()
         _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', introduction='intro', requirements='req', deadline=datetime.datetime(2035, 12, 1, 23, 59, 59),
                            begin_datetime=datetime.datetime(2019, 12, 4, 0, 0, 0), end_datetime=datetime.datetime(2035, 12, 5, 23, 59, 59))
@@ -284,7 +287,7 @@ class ApplyTestCase(TestCase):
         _webuser = WebUser.objects.create_user('test1234', password='test1234')
         # 在ApplyRecord中创建一条记录
         _user = WxUser(id=2017011111, name='清小华', department='软件学院',
-                       email='lixiaojia@163.com', phone=12233)
+                       email='lixiaojia@163.com', phone=12233, id_card='11111119990000000X')
         _user.save()
         _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', introduction='intro', requirements='req', deadline=datetime.datetime(2035, 12, 1, 23, 59, 59),
                            begin_datetime=datetime.datetime(2019, 12, 4, 0, 0, 0), end_datetime=datetime.datetime(2035, 12, 5, 23, 59, 59))
@@ -394,7 +397,7 @@ class signinTestCase(TestCase):
         _webuser = WebUser.objects.create_user('test1234', password='test1234')
         # 在ApplyRecord中创建一条记录
         _user = WxUser(id=2017011111, name='清小华', department='软件学院',
-                       email='lixiaojia@163.com', phone=12233)
+                       email='lixiaojia@163.com', phone=12233, id_card='11111119990000000X')
         _user.save()
         _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', introduction='intro', requirements='req', begin_datetime=datetime.datetime(2019, 12, 4, 0, 0, 0),
                            end_datetime=datetime.datetime(2035, 12, 5, 23, 59, 59), deadline=datetime.datetime(2035, 12, 1, 23, 59, 59))
@@ -429,7 +432,7 @@ class signoutTestCase(TestCase):
         _webuser = WebUser.objects.create_user('test1234', password='test1234')
         # 在ApplyRecord中创建一条记录
         _user = WxUser(id=2017011111, name='清小华', department='软件学院',
-                       email='lixiaojia@163.com', phone=12233)
+                       email='lixiaojia@163.com', phone=12233, id_card='11111119990000000X')
         _user.save()
         _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', introduction='intro', requirements='req', begin_datetime=datetime.datetime(2019, 12, 4, 0, 0, 0),
                            end_datetime=datetime.datetime(2035, 12, 5, 23, 59, 59), deadline=datetime.datetime(2035, 12, 1, 23, 59, 59))
