@@ -88,6 +88,7 @@ class signinView(APIView):
     @login_required(wx=True)
     def post(self, request):
         serializer = signinSerializer(data=request.data)
+        print(request.data)
         serializer.is_valid(raise_exception=True)
         sign_project_id = serializer.validated_data['sign_project_id'] 
         longitude = serializer.validated_data['longitude']
