@@ -41,6 +41,18 @@ Date.prototype.Format = function (fmt) {
 App({
   onLaunch: function () {
     console.log('App Launch')
+
+    let that = this;
+    wx.getSystemInfo({
+      success: res => {
+        let modelmes = res.model;
+        if (modelmes.search('iPhone X') != -1 || modelmes.search('iPhone 11') != -1 || modelmes.search('unknown') != -1) {
+          that.globalData.isIphoneX = true
+        }
+        wx.setStorageSync('modelmes', modelmes)
+      }
+    })
+
   },
   onShow: function (options) {
     if (options.referrerInfo.extraData) {
@@ -59,6 +71,8 @@ App({
   globalData: {
     hasLogin: false,
     backEndUrl: "https://2019-a15.iterator-traits.com/api",
+    tmplIds: ['JRmcDj_rRLknyYVevU-iNgosYQ7cm88cs2UTS89B2-o', 
+      'z7xt4wI2pFXsbFsI3pdDhzJ5LYcQh9KU5EaiOKg1aRM'],
     userInfo: {
       department: "",
       id: "",
