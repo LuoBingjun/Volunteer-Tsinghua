@@ -112,8 +112,11 @@ class signinView(APIView):
         if not (sign_project_jobs_set & join_record_jobs_set):
             return Response({"error":"不可签到"},status=406)
         
+        print(sign_project.longitude,sign_project.latitude,longitude,latitude)
+        print(float(sign_project.longitude), float(sign_project.latitude), float(longitude), float(latitude))
         # 判断地理位置
         long1, la1, long2, la2 = map(radians, [float(sign_project.longitude), float(sign_project.latitude), float(longitude), float(latitude)]) # 经纬度转换成弧度
+        print(long1, la1, long2, la2)
         dlon=long2-long1
         dlat=la2-la1
         a=sin(dlat/2)**2 + cos(la1) * cos(la2) * sin(dlon/2)**2 
@@ -123,6 +126,8 @@ class signinView(APIView):
         if distance > 800:
             return Response({"error":"请前往指定地点签到"},status=406)
     
+        
+
         sign_record = SignRecord.objects.create(sign_project=sign_project,join_record=join_record)
 
         return Response({'sign_record_id': sign_record.id})
