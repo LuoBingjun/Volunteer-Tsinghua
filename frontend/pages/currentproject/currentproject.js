@@ -178,7 +178,7 @@ Page({
         var that = this
         wx.getLocation({
           type: 'wgs84',
-          isHighAccuracy: false,
+          isHighAccuracy: true,
           success (res) {
             var latitude = res.latitude
             var longitude = res.longitude

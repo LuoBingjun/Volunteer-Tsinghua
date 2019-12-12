@@ -8,7 +8,6 @@ Page({
         "title":"",
         "description":"",
         "requirement":"",
-        "status": 'A',
         "job_set": [
             {
                 "id": 1,
@@ -70,10 +69,17 @@ Page({
                         'description':res.data.content,
                         'requirement':res.data.requirements,
                         'introduction':res.data.introduction,
-                        'status':res.data.status,
-                        "job_set":res.data.job_set
+                        "job_set":res.data.job_set,
+                        "deadline": res.data.deadline,
+                        "finished": false,
+
+                        "begin_datetime": res.data.begin_datetime,
+                        "end_datetime": res.data.end_datetime
                     });
-                    console.log("Status为：",that.data.status)
+                    let now = new Date()
+                    let deadline = new Date(that.data.deadline)
+                    that.setData({"beforedeadline": now.getTime() < deadline.getTime()})
+                    console.log("now:",now, "deadline:",deadline,"beforedeadline:",that.data.beforedeadline)
                 }
                 else 
                 {

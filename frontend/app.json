@@ -8,7 +8,6 @@
     "pages/message/message",
     "pages/project/project",
     "pages/project/submit/submit",
-    "pages/project/sign/sign",
     "pages/homepage/homepage",
     "pages/currentproject/currentproject"
   ],
