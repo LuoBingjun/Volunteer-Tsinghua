@@ -7,6 +7,7 @@
   <i-panel title="请补充联系方式">
     <i-input value="{{ phone }}" type="number" title="联系电话" placeholder="请输入手机号" data-item="phone" bind:change="onValueChanged"/>
     <i-input value="{{ email }}" title="电子邮箱" placeholder="请输入电子邮箱地址" data-item="email" bind:change="onValueChanged"/>
+    <i-input value="{{ realid }}" title="身份证号" placeholder="请输入您的身份证号" data-item="realid" bind:change="onValueChanged"/>
   </i-panel>
   <view>
     <button class="weui-btn buttons" type="primary" bindtap="onSubmit">提交</button>

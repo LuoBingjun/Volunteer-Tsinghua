@@ -9,7 +9,8 @@ Page({
     'name': "",
     input:{
       'phone': '',
-      'email': ''
+      'email': '',
+      'realid': ''
     }
   },
 
@@ -103,7 +104,8 @@ Page({
           'id': that.data.id,
           'department': that.data.department,
           'email': that.data.input.email,
-          'phone': that.data.input.phone
+          'phone': that.data.input.phone,
+          'realid': that.data.input.realid
         },
         header: {
           'content-type': 'application/json',// 提交的数据类型
