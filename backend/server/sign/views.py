@@ -114,19 +114,28 @@ class signinView(APIView):
             return Response({"error":"不可签到"},status=406)
         
         print(sign_project.longitude,sign_project.latitude,longitude,latitude)
-        print(float(sign_project.longitude), float(sign_project.latitude), float(longitude), float(latitude))
+        
         # 判断地理位置
         long1, la1, long2, la2 = map(radians, [float(sign_project.longitude), float(sign_project.latitude), float(longitude), float(latitude)]) # 经纬度转换成弧度
-        print(long1, la1, long2, la2)
+        
         dlon=long2-long1
         dlat=la2-la1
         a=sin(dlat/2)**2 + cos(la1) * cos(la2) * sin(dlon/2)**2 
         distance=2*asin(sqrt(a))*6371393 # 地球平均半径，6371km
         distance=round(distance,3)
         print(distance)
-        if distance > 800:
+        if distance > 2000:
             return Response({"error":"请前往指定地点签到"},status=406)
-    
+
+        _file = open("record.txt", 'a', encoding='utf-8')
+        print('签到人:'+str(request.user.name)+'\n\r', file=_file)
+        print('(sign_project.longitude,sign_project.latitude):('
+            +str(sign_project.longitude)+','+str(sign_project.latitude)+')\n\r',file=_file)
+        print('(longitude,latitude):('
+            +str(longitude)+','+str(latitude)+')'+'\n\r',file=_file)
+        print('distance:'+str(distance)+'\n\r',file=_file)
+        print('\n\r',file=_file)
+        _file.close()
         
 
         sign_record = SignRecord.objects.create(sign_project=sign_project,join_record=join_record)
