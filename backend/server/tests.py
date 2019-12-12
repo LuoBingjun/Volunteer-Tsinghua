@@ -12,6 +12,21 @@ from server.models import *
 
 # Django的单元测试基于unittest库
 
+# 14
+# 普通用户登录
+# 管理员登录
+# 发起项目
+# 查看项目详情
+# 查看项目列表
+# 搜索项目
+# 取消项目
+# 查看报名信息
+# 审核操作
+# 报名
+# 取消报名
+# 发起签到
+# 签到
+# 签退
 
 
 class AuthTestCase(TestCase):
@@ -19,6 +34,7 @@ class AuthTestCase(TestCase):
     def setUp(self):
         WebUser.objects.create_user('test1234', password='test1234')
 
+    # 普通用户登录
     def test_first_wx_login(self):
         client = APIClient()
         response = client.post('/auth/login', {'token': 'null'})
@@ -31,9 +47,9 @@ class AuthTestCase(TestCase):
             'email': 'xxh17@mails.tsinghua.edu.cn',
             'phone': '13888888888'
         })
-        print(response.json())
         assert response.status_code == 200
 
+    # 管理员登录
     def test_web_login(self):
         client = APIClient()
         response = client.post(
@@ -45,11 +61,12 @@ class AuthTestCase(TestCase):
         get_redis_connection("default").flushall()
 
 
-class ProjectTestCase(TestCase):
+class ProjectCreateTestCase(TestCase):
     # 测试函数执行前执行
     def setUp(self):
         WebUser.objects.create_user('test1234', password='test1234')
     # 发起项目
+
     def test_create_project(self):
         client = APIClient()
         response = client.post(
@@ -81,12 +98,12 @@ class ProjectTestCase(TestCase):
 				    "job_require_num":25
 			    }]'''
         })
-        # print(response)
         assert response.status_code == 200
 
     # 测试函数执行后执行
     def tearDown(self):
         get_redis_connection("default").flushall()
+
 
 class ProjectTestCase(TestCase):
     def setUp(self):
@@ -216,11 +233,11 @@ class ProjectCancelTestCase(TestCase):
     def tearDown(self):
         get_redis_connection("default").flushall()
 
+
 class CheckTestCase(TestCase):
     # 测试函数执行前执行
     def setUp(self):
-        WebUser.objects.create_user('test1234', password='test1234')
-
+        _webuser = WebUser.objects.create_user('test1234', password='test1234')
         # 在ApplyRecord中创建一条记录
         _user = WxUser(id=2017011111, name='清小华', department='软件学院',
                        email='lixiaojia@163.com', phone=12233)
@@ -235,6 +252,7 @@ class CheckTestCase(TestCase):
         ApplyRecord.objects.create(
             id=1, user=_user, job=_job, project=_project, form='{json文本}', status='W')
 
+    # 查看报名信息
     def test_viewapplyinfo(self):
         client = APIClient()
         response = client.post(
@@ -245,6 +263,7 @@ class CheckTestCase(TestCase):
         assert response.status_code == 200
 
     # 审核操作
+
     def test_checkop(self):
         client = APIClient()
         response = client.post(
@@ -319,6 +338,7 @@ class CancelApplyTestCase(TestCase):
     def tearDown(self):
         get_redis_connection("default").flushall()
 
+
 class signprojectTestCase(TestCase):
     # 测试函数执行前执行
     def setUp(self):
@@ -389,14 +409,17 @@ class signinTestCase(TestCase):
                                                    position="清华学堂", longitude=116.320002393781, latitude=40.0011853)
         _sign_project.jobs.add(_job)
 
+    # 签到
     def test_signin(self):
         client = APIClient()
         response = client.post('/auth/login', {'token': 'null'})
         assert response.status_code == 200
+
         response = client.post('/sign/signin', {'sign_project_id': 1,
                                                 'longitude': 116.320002393781,
                                                 'latitude': 40.0011853})
         assert response.status_code == 200
+
     def tearDown(self):
         get_redis_connection("default").flushall()
 
@@ -426,6 +449,7 @@ class signoutTestCase(TestCase):
         SignRecord.objects.create(
             id=1, join_record=_join_record, sign_project=_sign_project)
     # 签退
+
     def test_signout(self):
         client = APIClient()
         response = client.post('/auth/login', {'token': 'null'})

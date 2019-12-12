@@ -11,6 +11,10 @@ from django.shortcuts import get_object_or_404
 from server.models import *
 from server.utils import login_required
 
+class filterbydate(serializers.Serializer):
+    begin_time = serializers.DateField()
+    end_time = serializers.DateField()
+
 class historySerializer(serializers.ModelSerializer):     
     class Meta: 
         model = JoinRecord
@@ -23,8 +27,18 @@ class historyView(generics.ListAPIView):
     
     @login_required(wx=True)
     def get_queryset(self):
-        return JoinRecord.objects.filter(user=self.request.user, project__finished=True)
+        if self.request.query_params.get('begin_time') and self.request.query_params.get('end_time'):
+            filterinfo = filterbydate(data=self.request.query_params)
+            filterinfo.is_valid(raise_exception=True)
+            _begin_time = filterinfo.validated_data['begin_time']
+            _end_time = filterinfo.validated_data['end_time']
 
+            _end_time = _end_time.replace(day=_end_time.day+1)
+            return JoinRecord.objects.filter(user=self.request.user, project__finished=True, 
+                    project__begin_datetime__gte=_begin_time, project__end_datetime__lte=_end_time)
+        else:
+            return JoinRecord.objects.filter(user=self.request.user, project__finished=True)
+        
 class processSerializer(serializers.ModelSerializer):     
     class Meta: 
         model = Project
@@ -59,34 +73,72 @@ class processView(generics.ListAPIView):
             result=[]
             for i in joinrecord_set:
                 result.append(i.project)
+            
             return result
 
+# 已报名项目
 class applySerializer(serializers.ModelSerializer):     
     class Meta: 
-        model = ApplyRecord
-        exclude = ['user']
-        depth = 2 
+        model = Project
+        fields = "__all__"
+        depth = 0
 
 class applyView(generics.ListAPIView):
     serializer_class = applySerializer
     
     @login_required(wx=True)
     def get_queryset(self):
-        return ApplyRecord.objects.filter(user=self.request.user, project__finished=False).exclude(status='P')
+        
+        if self.request.query_params.get('begin_time') and self.request.query_params.get('end_time'):
+            filterinfo = filterbydate(data=self.request.query_params)
+            filterinfo.is_valid(raise_exception=True)
+            _begin_time = filterinfo.validated_data['begin_time']
+            _end_time = filterinfo.validated_data['end_time']
 
+            _end_time = _end_time.replace(day=_end_time.day+1)
+            project_set = ApplyRecord.objects.filter(user=self.request.user, project__finished=False, 
+                                project__begin_datetime__gte=_begin_time, project__end_datetime__lte=_end_time).exclude(status='P')
+        else:
+            project_set = ApplyRecord.objects.filter(user=self.request.user, project__finished=False).exclude(status='P')
+
+        # 上一步有可能出现重复的结果，筛除重复
+        result_set=set()
+
+        for i in project_set:
+            result_set.add(i.project)
+        return result_set
+
+# 我的所有项目
 class allSerializer(serializers.ModelSerializer):     
     class Meta: 
-        model = ApplyRecord
-        exclude = ['user']
-        depth = 2 
+        model = Project
+        fields = "__all__"
+        depth = 0
 
 class allView(generics.ListAPIView):
     serializer_class = allSerializer
     
     @login_required(wx=True)
     def get_queryset(self):
-        return ApplyRecord.objects.filter(user=self.request.user)
+        if self.request.query_params.get('begin_time') and self.request.query_params.get('end_time'):
+            filterinfo = filterbydate(data=self.request.query_params)
+            filterinfo.is_valid(raise_exception=True)
+            _begin_time = filterinfo.validated_data['begin_time']
+            _end_time = filterinfo.validated_data['end_time']
+            _end_time = _end_time.replace(day=_end_time.day+1)
+            project_set = ApplyRecord.objects.filter(user=self.request.user, project__finished=False, 
+                                project__begin_datetime__gte=_begin_time, project__end_datetime__lte=_end_time).exclude(status='P')
+        else:
+            project_set = ApplyRecord.objects.filter(user=self.request.user)
 
+        # 上一步有可能出现重复的结果，筛除重复
+        result_set=set()
+
+        for i in project_set:
+            result_set.add(i.project)
+        return result_set
+
+# 签到记录
 class signrecordSerializer(serializers.ModelSerializer):     
     class Meta: 
         model = SignRecord

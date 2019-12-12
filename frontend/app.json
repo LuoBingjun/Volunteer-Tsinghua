@@ -9,7 +9,8 @@
     "pages/project/project",
     "pages/project/submit/submit",
     "pages/project/sign/sign",
-    "pages/homepage/homepage"
+    "pages/homepage/homepage",
+    "pages/currentproject/currentproject"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -28,5 +29,10 @@
   "sitemapLocation": "sitemap.json",
   "navigateToMiniProgramAppIdList": [
     "wx1ebe3b2266f4afe0"
-  ]
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于基于地理位置的签到"
+    }
+  }
 }
