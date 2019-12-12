@@ -29,5 +29,10 @@
   "sitemapLocation": "sitemap.json",
   "navigateToMiniProgramAppIdList": [
     "wx1ebe3b2266f4afe0"
-  ]
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于基于地理位置的签到"
+    }
+  }
 }

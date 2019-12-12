@@ -7,8 +7,8 @@ Page({
         "cover":"",
         "title":"",
         "description":"",
-        "requirement":[],
-        "status":"A",
+        "requirement":"",
+        "status": 'A',
         "job_set": [
             {
                 "id": 1,
@@ -63,14 +63,13 @@ Page({
                 console.log("得到的数据为",res);
                 if(res.statusCode==200)
                 {
-                    var reqs=JSON.parse(res.data.requirements)
-                    reqs.push(`最大报名人数为${res.data.require_num}人，报完即止。`);
                     that.setData({
                         'projectID':res.data.id,
                         'cover':res.data.cover,
                         'title':res.data.title,
                         'description':res.data.content,
-                        'requirement':reqs,
+                        'requirement':res.data.requirements,
+                        'introduction':res.data.introduction,
                         'status':res.data.status,
                         "job_set":res.data.job_set
                     });
@@ -134,7 +133,7 @@ Page({
     gotoCurrentProject:function(){
         wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + this.data.projectID })
     },
-    sign:function(){
-        wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
-    }
+    // sign:function(){
+    //     wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
+    // }
 })

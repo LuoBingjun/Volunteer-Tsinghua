@@ -4,13 +4,15 @@ Page({
      */
     data: {
         "projectID": 0,
-        "cover":"",
-        "title":"",
-        "description":"",
-        "requirement":[],
-        "status":"A"
+        signList: {},
+        activeNames: []
     },
-
+    onChange(event) {
+        this.setData({
+          activeNames: event.detail
+        });
+      },
+    
     /**
      * 生命周期函数--监听页面加载
      */
@@ -31,8 +33,7 @@ Page({
     onShow: function () {
         // console.log("烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫烫")
         var app=getApp();
-        const getUrl = `${app.globalData.backEndUrl}/project/detail?id=${this.data.projectID}`
-        console.log("从project跳转到URL：",getUrl)
+        const getUrl = `${app.globalData.backEndUrl}/my/processrecorddetail?project_id=${this.data.projectID}`
         var that=this;
         wx.request({
             url: getUrl,
@@ -45,17 +46,79 @@ Page({
                 console.log("得到的数据为",res);
                 if(res.statusCode==200)
                 {
-                    var reqs=JSON.parse(res.data.requirements)
-                    reqs.push(`最大报名人数为${res.data.require_num}人，报完即止。`);
                     that.setData({
-                        'projectID':res.data.id,
-                        'cover':res.data.cover,
-                        'title':res.data.title,
-                        'description':res.data.content,
-                        'requirement':reqs,
-                        'status':res.data.status
+                        'projectID':res.data.project.id,
+                        'cover':res.data.project.cover,
+                        'title':res.data.project.title,
+                        'description':res.data.project.content,
+                        'requirement':res.data.project.requirements,
+                        'introduction':res.data.project.introduction
                     });
-                    console.log("Status为：",that.data.status)
+                    let signList = {}
+                    that.reslen = res.data.signproject.length
+                    for (let item of res.data.signproject) {
+                        signList[item.id] = item
+
+                        let now = new Date()
+                        item.begin_time = new Date(item.begin_time)
+                        item.end_time = new Date(item.end_time)
+                        if (now.getTime() < item.begin_time.getTime()) {
+                        item.status = 3
+                        }
+                        else if (now.getTime() > item.end_time.getTime()) {
+                        item.status = 0
+                        }
+                        else {
+                        that.data.activeNames.push(item.id)
+                        that.setData({
+                            activeNames: that.data.activeNames
+                        })
+
+                        item.status = 1
+
+
+                        // wx.request({
+                        //     url: `${app.globalData.backEndUrl}/my/signrecord?signproject=${item.id}`,
+                        //     method: 'get',
+                        //     header: {
+                        //     'content-type': 'application/json', // 提交的数据类型
+                        //     'cookie': app.globalData.cookies //读取cookie
+                        //     },
+                        //     success(res2) {
+                        //     console.log(res2)
+                        //     if (res2.statusCode == 200) {
+                        //         signList[res2.data.sign_project].status = 2  
+                        //         //that.setData({ 'signList': signsList })
+                        //     }
+                        //     else if (res2.statusCode != 404) {
+                        //         wx.showModal({
+                        //         title: '错误',
+                        //         content: JSON.stringify(res2.data),
+                        //         });
+                        //     }
+                            
+                        //     },
+                        //     fail() { // 失败回调
+                        //     wx.showModal({
+                        //         title: '错误',
+                        //         content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+                        //     });
+                        //     that.setData({ 'signList': {} })
+                        //     }
+                        // })
+                        }
+                        item.begin_time = item.begin_time.Format("yyyy-MM-dd HH:mm:ss")
+                        item.end_time = item.end_time.Format("yyyy-MM-dd HH:mm:ss")
+                    }
+
+                    for (let item of res.data.signrecord_set){
+                        signList[item.sign_project].status = 2  
+                    }
+
+
+                    that.setData({
+                        'signList': signList
+                    });
                 }
                 else 
                 {
@@ -108,8 +171,69 @@ Page({
     onShareAppMessage: function () {
   
     },
+    sign: function (e) {
+        if (this.data.disabled) return;
+        var app = getApp();
+        console.log(e.currentTarget)
+        var that = this
+        wx.getLocation({
+          type: 'wgs84',
+          isHighAccuracy: false,
+          success (res) {
+            var latitude = res.latitude
+            var longitude = res.longitude
+            var accuracy = res.accuracy
+            var horizontalAccuracy = res.horizontalAccuracy
+            console.log("获得地理位置1：latitude", latitude, "longitude",longitude, "accuracy", accuracy, "horizontalAccuracy", horizontalAccuracy)
 
-    sign:function(){
-        wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
-    }
+            wx.request({
+              url: `${app.globalData.backEndUrl}/sign/signin`,
+              method: 'post',
+              header: {
+                'content-type': 'application/json', // 提交的数据类型
+                'cookie': app.globalData.cookies //读取cookie
+              },
+              data: {
+                'sign_project_id': e.currentTarget.id,
+                "longitude":longitude,
+                "latitude":latitude
+              },
+              success(res) {  // 成功回调
+                console.log("得到的数据为", res);
+                if (res.statusCode == 200) {
+                  that.setData({ 'disabled': true })
+                  wx.showToast({
+                    title: "签到成功",
+                    icon: "success",
+                    duration: 2000
+                  });
+                  setTimeout(function () {
+                    console.log("返回主界面");
+                    wx.navigateBack();
+                  }, 2000);
+                }
+                else {
+                  wx.showModal({
+                    title: '错误',
+                    content: JSON.stringify(res.data),
+                  });
+                }
+              },
+              fail() { // 失败回调
+                wx.showModal({
+                  title: '错误',
+                  content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+                });
+              }
+            })
+          },
+          fail(res){
+            wx.showModal({
+              title: '错误',
+              content: '无法获得您的地理位置，请打开手机定位'
+              });
+              return
+          }
+         }) 
+      }
 })
