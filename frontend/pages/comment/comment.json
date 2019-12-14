@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "填写用户信息",
+  "navigationBarTitleText": "项目评价",
   "usingComponents": {
         "i-input": "/dist/input/index",
         "i-button": "/dist/button/index",

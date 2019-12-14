@@ -4,7 +4,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    
+    input:{
+      'starIndex': 0,
+      'textcomment':''      
+    }
   },
 
   /**
@@ -12,6 +15,8 @@ Page({
    */
   onLoad: function (options) {
     console.log("comment获取传来的信息：", options)
+    // joinrecordid: "10"
+    // title: "北京南站志愿项目志愿者"
     this.setData(options)
   },
 
@@ -40,7 +45,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log("ok2!!!")
+
   },
 
   /**
@@ -68,7 +73,14 @@ Page({
   //     wx.navigateTo({"url":"/pages/project/project?projectID="+e.currentTarget.id})
 
   // },
-
+  onRateChange(e){
+    const index = e.detail.index;
+    this.data.input.starIndex = index
+    this.setData({
+      input: this.data.input
+    })
+    console.log("用户进行了评分：",this.data.input.starIndex)
+},
   onValueChanged: function (e) {
     let dataset = e.currentTarget.dataset
     //data-开头的是自定义属性，可以通过dataset获取到，dataset是一个json对象，有obj和item属性，可以通过这两个实现双向数据绑定，通过更改这两个值，对不同name的变量赋值
@@ -83,66 +95,47 @@ Page({
     var that = this
     // console.log("fillUserInfo.js: formSubmit函数开始", e.detail.value)
 
-    // 检测用户是否填写完全信息
-    if (this.data.input.phone.length && this.data.input.email.length) {
-      let app = getApp();
-      const userUrl = `${app.globalData.backEndUrl}/auth/user`
-      console.log('fillUserInfo中formSubmit函数，cookie为：', app.globalData.cookies)
-      // 向后端发送填写信息请求
-      wx.request({
-        url: userUrl,
-        method: 'post',// 请求方式
-        data: { // 想接口提交的数据
-          'name': that.data.name,
-          'id': that.data.id,
-          'department': that.data.department,
-          'email': that.data.input.email,
-          'phone': that.data.input.phone,
-          'id_card': that.data.input.realid
-        },
-        header: {
-          'content-type': 'application/json',// 提交的数据类型
-          'cookie': app.globalData.cookies //读取cookie
-        },
-        success(res) {  // 成功回调
-          console.log('填写用户信息向后端发送请求成功', res.data);
-          if (res.statusCode == 200) {
-            wx.reLaunch({
-              url: '/pages/home/home',
-            })
-          }
-          else{
-            wx.showModal({
-              title: '错误',
-              content: '手机号或邮箱格式有误',
-              success(res) {
-                if (res.confirm) {
-                  console.log('用户点击确定')
-                } else if (res.cancel) {
-                  console.log('用户点击取消')
-                }
-              }
-            })
-          }
-
-        },
-        fail() { // 失败回调
-          console.log('填写用户信息向后端发送数据失败！');
+    let app = getApp();
+    const commentUrl = `${app.globalData.backEndUrl}/my/comment`
+    wx.request({
+      url: commentUrl,
+      method: 'post',// 请求方式
+      data: { // 想接口提交的数据
+        "join_record_id":this.data.joinrecordid,
+        "comment":this.data.input.textcomment,
+        "comment_rank":this.data.input.starIndex
+      },
+      header: {
+        'content-type': 'application/json',// 提交的数据类型
+        'cookie': app.globalData.cookies //读取cookie
+      },
+      success(res) {  // 成功回调
+        console.log("得到的数据为", res);
+        if (res.statusCode == 200) {
+          wx.showToast({
+            title: "评价成功",
+            icon: "success",
+            duration: 2000
+          });
+          setTimeout(function () {
+            console.log("返回主界面");
+            wx.navigateBack();
+          }, 2000);
         }
-      })
-    }
-    else {
-      wx.showModal({
-        title: '提示',
-        content: '请输入手机号和邮箱',
-        success(res) {
-          if (res.confirm) {
-            console.log('用户点击确定')
-          } else if (res.cancel) {
-            console.log('用户点击取消')
-          }
+        else {
+          wx.showModal({
+            title: '错误',
+            content: JSON.stringify(res.data),
+          });
         }
-      })
-    }
+      },
+      fail() { // 失败回调
+        wx.showModal({
+          title: '错误',
+          content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+        });
+      }
+    })
+    
   }
 })
