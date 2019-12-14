@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 
 from django.shortcuts import get_object_or_404
 
@@ -34,7 +35,7 @@ class detail_Serializer(serializers.ModelSerializer):
     webuser = serializers.ReadOnlyField(source='webuser.name')
     class Meta:
         model = Project
-        fields = ['id', 'title', 'webuser', 'content', 'introduction', 'cover', 'requirements',
+        fields = ['id', 'title', 'type', 'webuser', 'content', 'introduction', 'cover', 'requirements',
             'form', 'time', 'deadline', 'finished', 'job_set', 'begin_datetime', 'end_datetime']
         # fields = ['__all__', 'job_set'] #failed
         depth = 1
@@ -62,16 +63,17 @@ class detailView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         # serializer.save()
 
-        _title = serializer.validated_data['title']
-        _content = serializer.validated_data['content']
-        _cover = serializer.validated_data['cover']
-        _requirements=serializer.validated_data['requirements']
-        _form=serializer.validated_data['form']
-        _deadline=serializer.validated_data['deadline']
-        _begin_datetime=serializer.validated_data['begin_datetime']
-        _end_datetime=serializer.validated_data['end_datetime']
+        # _title = serializer.validated_data['title']
+        # _content = serializer.validated_data['content']
+        # _cover = serializer.validated_data['cover']
+        # _requirements=serializer.validated_data['requirements']
+        # _form=serializer.validated_data['form']
+        # _deadline=serializer.validated_data['deadline']
+        # _begin_datetime=serializer.validated_data['begin_datetime']
+        # _end_datetime=serializer.validated_data['end_datetime']
         _jobs=serializer.validated_data['jobs']
-        _introduction=serializer.validated_data['introduction']
+        del serializer.validated_data['jobs']
+        # _introduction=serializer.validated_data['introduction']
         
 
         job_data = json.loads(_jobs)
@@ -79,12 +81,10 @@ class detailView(GenericAPIView):
         job_serializer.is_valid(raise_exception=True)
 
         # print(job_serializer.validated_data)
+        serializer.validated_data['webuser'] = request.user
 
 
-        _project=Project(title=_title, content=_content, requirements=_requirements, 
-                form=_form, deadline=_deadline, webuser=request.user, cover=_cover,
-                begin_datetime=_begin_datetime, end_datetime=_end_datetime,introduction=_introduction)
-        
+        _project=Project(**serializer.validated_data)
         _project.save()
 
         for a_job in job_serializer.validated_data:
@@ -118,12 +118,15 @@ class detailView(GenericAPIView):
 
         return Response(res)
 
+class listPagination(PageNumberPagination):
+    page_query_param = 'page'
+    page_size = 10
 
 class listSerializer(serializers.ModelSerializer):
     require_num = serializers.SerializerMethodField()
     class Meta:
         model = Project
-        fields = ['id', 'title', 'webuser', 'content', 'introduction', 'cover', 'requirements',
+        fields = ['id', 'title', 'webuser', 'type', 'content', 'introduction', 'cover', 'requirements',
             'form', 'time', 'deadline', 'finished', 'require_num', 'begin_datetime', 'end_datetime']
         depth = 0
 
@@ -138,10 +141,31 @@ class listSerializer(serializers.ModelSerializer):
 # 查看项目列表
 class listView(ListAPIView):
     serializer_class = listSerializer
+    pagination_class = listPagination
 
     @login_required(wx=True, web=True)
     def get_queryset(self):
-        return Project.objects.all()
+        queryset = Project.objects.all()
+        search = self.request.GET.get("search")
+        _type = self.request.GET.get('type')
+
+        if _type:
+            queryset = queryset.filter(type=_type)
+
+        if search:
+            key_iter=jieba.cut_for_search(search) #分词
+            keywords=list(key_iter)
+
+            resultset = queryset.filter(title__icontains=search)
+
+            for i in keywords:
+                resultset |= queryset.filter(title__icontains=i)
+
+            for i in keywords:
+                resultset |= queryset.filter(content__icontains=i)
+        else:
+            resultset = queryset
+        return resultset
 
 
 # class searchSerializer(serializers.ModelSerializer):
@@ -149,39 +173,15 @@ class listView(ListAPIView):
 #         model=Project
 #         fields='__all__'
 
-class searchView(ListAPIView):
-    serializer_class = listSerializer
+# class searchView(ListAPIView):
+#     serializer_class = listSerializer
 
-    @login_required(wx=True,web=True)
-    def get_queryset(self):
-        search = self.request.GET.get("search")
-
-        key_iter=jieba.cut_for_search(search) #分词
-        queryset = Project.objects.all()
+#     @login_required(wx=True,web=True)
+#     def get_queryset(self):
         
-        keywords=[]
-        for i in key_iter:
-            keywords.append(i)
-
-        resultset=queryset.filter(title__icontains=search)
-
-        for i in keywords:
-            a_set=queryset.filter(title__icontains=i)
-            resultset=chain(resultset, a_set)
-
-        for i in keywords:
-            a_set=queryset.filter(content__icontains=i)
-            resultset=chain(resultset, a_set)
-    
-        resultlist=[]
-        for i in resultset:
-            if i not in resultlist:
-                resultlist.append(i)
-        return resultlist
 
 class cancelprojectSerializer(serializers.Serializer):
     project_id = serializers.IntegerField(max_value=None, min_value=1)
-    
 
 class cancelView(APIView):
     @login_required(web=True)
