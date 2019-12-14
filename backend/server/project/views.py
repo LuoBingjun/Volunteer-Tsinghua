@@ -65,6 +65,10 @@ class web_detail_Serializer(serializers.ModelSerializer):
         else:
             return expanded_fields
 
+class putDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['title', 'content', 'introduction', 'requirements', 'qrcode_1', 'qrcode_2', 'success_note', 'type', 'begin_datetime', 'end_datetime', 'finished']
         
 
 class detailView(GenericAPIView):
@@ -127,11 +131,9 @@ class detailView(GenericAPIView):
     # 项目详情
     @login_required(wx=True, web=True)
     def get(self, request):
-        id = self.request.query_params.get('id')
-        project = get_object_or_404(Project, id=id)
-
+        project = get_object_or_404(Project, id=request.query_params.get('id'))
         if request.session.get('wx_user'):
-            serializer = self.get_serializer(data=project)
+            serializer = self.get_serializer(project)
             res = dict(serializer.data)
 
             apply_records = ApplyRecord.objects.filter(user=request.user, project=project)
@@ -145,6 +147,16 @@ class detailView(GenericAPIView):
         else:
             serializer = web_detail_Serializer(project)
             return Response(serializer.data)
+
+    @login_required(web=True)
+    def put(self, request):
+        id = request.query_params.get('id')
+        project = get_object_or_404(Project, id=id)
+        serializer = putDetailSerializer(
+            project, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 class listPagination(PageNumberPagination):
