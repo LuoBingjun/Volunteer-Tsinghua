@@ -133,10 +133,11 @@ Page({
   
     },
 
-    signin:function(){
-        wx.navigateTo({"url":"submit/submit?"+"projectID="+this.data.projectID+"&jobID="+this.data.job_set[0].id});
+    signin:function(e){
+        let dataset = e.currentTarget.dataset
+        wx.navigateTo({"url":"submit/submit?"+"projectID="+this.data.projectID+"&jobID="+dataset.jobindex});
     },
-    gotoCurrentProject:function(){
+    gotoCurrentProject:function(e){
         wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + this.data.projectID })
     },
     // sign:function(){

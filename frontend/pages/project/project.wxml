@@ -42,7 +42,7 @@
           </view>
           <view wx:elif="{{item.job_status=='A'}}">
             <view wx:if="{{beforedeadline}}">
-              <button class="weui-btn" type="primary" bindtap="signin">我要报名</button>
+              <button class="weui-btn" type="primary" bindtap="signin" data-jobindex="{{item.id}}">我要报名</button>
             </view>
             <view wx:else>
               <button class="weui-btn" type="primary" disabled="true">已过报名时间</button>
