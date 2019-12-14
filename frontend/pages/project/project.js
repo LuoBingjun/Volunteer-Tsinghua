@@ -143,4 +143,7 @@ Page({
     // sign:function(){
     //     wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
     // }
+    cancelApply:function(e){
+        
+    }
 })
