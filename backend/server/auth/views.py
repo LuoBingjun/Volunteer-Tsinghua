@@ -147,7 +147,7 @@ class getUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WxUser
-        exclude = ['join_time']
+        exclude = ['join_time', 'id_card']
 
     def get_id_card(self, obj):
         key = settings.SECRET_KEY.encode('utf-8')[:32]
@@ -163,16 +163,10 @@ class putUserSerializer(serializers.ModelSerializer):
 
 BLOCK_SIZE = 32
 PADDING = '{'
-
-
 def pad(s): 
     return s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
-
-
 def encode(c, s):
     return base64.b64encode(c.encrypt(pad(s).encode('utf-8'))).decode('utf-8')
-
-
 def decode(c, e): 
     return c.decrypt(base64.b64decode(e.encode('utf-8'))).decode('utf-8').rstrip(PADDING)
 
