@@ -123,7 +123,7 @@ Page({
                 }
                 else 
                 {
-                    wx.navigateTo({"url":"/pages/project/project?projectID="+that.data.projectID})
+                  wx.reLaunch({"url":"/pages/project/project?projectID="+that.data.projectID})
                 }
             },
             fail() { // 失败回调
