@@ -13,8 +13,8 @@ class WxUser(models.Model):
 
 class WebUser(AbstractUser):
     name = models.CharField('组织名称', max_length=128)
-    description = models.CharField('简介', max_length=256)
-    manager = models.CharField('负责人', max_length=16)
+    description = models.CharField('简介',blank=True, null=True, max_length=256)
+    manager = models.CharField('负责人', blank=True, null=True, max_length=16)
     email = models.EmailField('电子邮箱', blank=True, null=True)
     phone = models.DecimalField('电话', null=True, blank=True, max_digits=11, decimal_places=0)
 
@@ -58,6 +58,7 @@ class Project(models.Model):
     title = models.CharField('项目', max_length=128)
     introduction = models.CharField('简介', max_length=32)
     content = models.TextField('详情')
+    type = models.CharField('种类', max_length=2, choices=[('WH','文化教育'),('SH', '赛会服务'), ('SQ', '社区服务'), ('YL', '医疗卫生'), ('JK', '健康残障'), ('XY', '校园讲解'), ('QT', '其他')])
     cover = models.ImageField('封面图片', blank=True)
     requirements = models.TextField('需求')
     form = models.TextField('报名表单', blank=True)
