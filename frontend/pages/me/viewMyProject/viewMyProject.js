@@ -127,5 +127,10 @@ Page({
     let dataset = e.currentTarget.dataset
     console.log("点击了评价按钮！,dataset:", dataset)
     wx.navigateTo({ "url": "/pages/comment/comment?joinrecordid=" + dataset.joinrecordid + '&title='+dataset.title })
+  },
+  worktimeprove:function(e){
+    let dataset = e.currentTarget.dataset
+    console.log("点击了评价按钮！,dataset:", dataset)
+    wx.navigateTo({ "url": "/pages/worktimeprove/worktimeprove?title="+dataset.title + "&worktime="+dataset.worktime})
   }
 })

@@ -1,22 +1,10 @@
 <view class="page">
   <view class="page__hd">
-    <view class="page__title">{{title}}</view>
+    <view class="page__title">工时证明</view>
   </view>
 
-  <i-panel title="综合评分">
-    <i-rate 
-      bind:change="onRateChange" 
-      value="{{input.starIndex}}" 
-      size="32">
-    </i-rate>
-  </i-panel>
-
-  <i-panel title="请输入项目评价">
-    <i-input value="{{ input.textcomment }}" title="项目评价" data-item="textcomment" bind:change="onValueChanged"/>
-  </i-panel>
-
-
-  <view>
-    <button class="weui-btn buttons" type="primary" bindtap="onSubmit">提交</button>
+  <view class="page__bd">
+    <p>兹证明，{{name}}同学，学号：{{id}}，在 {{title}} 项目中表现优异，获得志愿工时{{worktime}}(时)。</p>
+    <p>本工时证明仅供参考，最终解释权以校团委为准。</p>
   </view>
 </view>
