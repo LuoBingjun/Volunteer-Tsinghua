@@ -8,6 +8,8 @@
     "i-card": "/dist/card/index",
     "i-drawer": "/dist/drawer/index",
     "van-sidebar": "/dist/Vant/sidebar/index",
-    "van-sidebar-item": "/dist/Vant/sidebar-item/index"
+    "van-sidebar-item": "/dist/Vant/sidebar-item/index",
+    "i-page": "/dist/page/index",
+    "i-icon": "/dist/icon/index"
   }
 }

@@ -7,8 +7,8 @@ Page({
     current: 'home',
     projectsKind: 0,
     showLeft1: false,
-    "username": "FTP server",
-    "projects": [
+    username: undefined,
+    projects: [
       {
         "id": 1,
         "cover": "封面图片url",
@@ -22,9 +22,23 @@ Page({
         "deadline": "截止时间"
       },
     ],
-    "searchbar": true,
     inputShowed: false,
-    inputVal: ""
+    inputVal: "",
+    curPage: 1,
+    totPage: 340
+  },
+  handlePageChange ({ detail }) {
+    const type = detail.type;
+    if (type === 'next') {
+        this.setData({
+          curPage: this.data.curPage + 1
+        });
+    } else if (type === 'prev') {
+        this.setData({
+          curPage: this.data.curPage - 1
+        });
+    }
+    console.log(this.data.curPage)
   },
 
   handleChange({ detail }) {
@@ -41,7 +55,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  updateList(){
     var that = this
     var app = getApp()
     let isIphoneX = app.globalData.isIphoneX;
@@ -87,6 +101,12 @@ Page({
         console.log('向后端发送数据失败！');
       }
     })
+  },
+
+  onLoad: function (options) {
+    console.log("options are",options)
+    
+    this.updateList()
   },
 
   /**
