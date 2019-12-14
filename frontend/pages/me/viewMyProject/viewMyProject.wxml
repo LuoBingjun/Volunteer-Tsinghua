@@ -7,7 +7,7 @@
           
             <view>
               <i-icon size="16" type="time" />认证工时：{{item.work_time}} 
-              <button class="weui-btn" type="primary" catchtap="comment">进行评价</button>
+              <button wx:if="{{item.is_comment=='False'}}" class="weui-btn" type="primary" data-joinrecordid="{{item.id}}" data-title="{{item.project.title}}" catchtap="comment">进行评价</button>
             </view>
           
         </view>

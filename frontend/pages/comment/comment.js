@@ -4,21 +4,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-    'department': "",
-    'id': "",
-    'name': "",
-    input:{
-      'phone': '',
-      'email': '',
-      'realid': ''
-    }
+    
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("fillUserInfo获取传来的用户信息：", options)
+    console.log("comment获取传来的信息：", options)
     this.setData(options)
   },
 

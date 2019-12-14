@@ -144,6 +144,7 @@ Page({
     //     wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
     // }
     cancelApply:function(e){
-
+        let dataset = e.currentTarget.dataset
+        
     }
 })
