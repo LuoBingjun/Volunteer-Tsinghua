@@ -8,3 +8,4 @@ redis
 django-redis
 jieba
 celery
+pycryptodome
