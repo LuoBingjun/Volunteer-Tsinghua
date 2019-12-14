@@ -49,21 +49,22 @@ class fillformView(APIView):
 
 
 class cancelapplySerializer(serializers.Serializer):
-    apply_id = serializers.IntegerField(max_value=None, min_value=1)
+    project_id = serializers.IntegerField(max_value=None, min_value=1)
+    job_id = serializers.IntegerField(max_value=None, min_value=1)
     
 
 class cancelapplyView(APIView):
     @login_required(wx=True)
     def post(self, request):
         info = cancelapplySerializer(data=request.data) # 验证数据
-        if info.is_valid():
-            apply_id = info.validated_data['apply_id']  
-            queryset = ApplyRecord.objects.all()
-            apply_record = get_object_or_404(queryset, id=apply_id, user=request.user)
-            if apply_record.status == 'P' or apply_record.status == 'N':
-                return Response({"error":"无法取消报名"},status=406)
-            
-            apply_record.delete()
-            return Response(status=200)
-        else:
-            return Response(info.errors, status=400) #数据格式错误
+        info.is_valid(raise_exception=True)
+        project_id = info.validated_data['project_id']
+        job_id = info.validated_data['job_id']
+        apply_record = get_object_or_404(ApplyRecord, project=project_id, job=job_id, user=request.user)
+        # queryset = ApplyRecord.objects.all()
+        # apply_record = get_object_or_404(queryset, id=apply_id, user=request.user)
+        if apply_record.status == 'P' or apply_record.status == 'N':
+            return Response({"error":"无法取消报名"},status=406)
+        
+        apply_record.delete()
+        return Response(status=200)

@@ -336,7 +336,7 @@ class CancelApplyTestCase(TestCase):
         response = client.post('/auth/login', {'token': 'null'})
         assert response.status_code == 200
 
-        response = client.post('/apply/cancelapply', {'apply_id': 1})
+        response = client.post('/apply/cancelapply', {'project_id': 1, 'job_id':1})
         assert response.status_code == 200
 
     def tearDown(self):
