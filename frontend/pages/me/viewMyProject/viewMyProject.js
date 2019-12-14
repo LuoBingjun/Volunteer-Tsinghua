@@ -23,9 +23,23 @@ Page({
       title: title
     })
 
-    let that = this;
+    
     this.setData(options)
+  },
 
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    
+    let that = this;
     var app = getApp()
     let urlWhole = "null"
     if (that.data.type == "ALL") {
@@ -59,20 +73,6 @@ Page({
         console.log('向后端发送数据失败！');
       }
     })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
   },
 
   /**
