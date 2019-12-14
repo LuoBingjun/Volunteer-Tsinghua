@@ -30,7 +30,10 @@
         <van-sidebar-item title="其他活动" />
       </van-sidebar>
     </i-drawer>
-    <button class="weui-btn" type="primary" bindtap="showKinds">{{typeText}}</button>
+    <button class="weui-btn" type="primary" bindtap="showKinds">
+      <i-icon type="refresh" size="20" color="#ffffff" />
+      {{typeText}}
+    </button>
     
     <view wx:for="{{projects}}" class="project-card">
       <i-card title="{{item.title}}" extra="{{item.require_num}}人" bindtap="enterProject" id="{{item.id}}">

@@ -28,7 +28,7 @@ Page({
     type:0,
     lastPage: false,
     loadingPage: false,
-    typeText: "选择种类"
+    typeText: "按标签筛选"
   },
 
   handleChange({ detail }) {
@@ -87,7 +87,7 @@ Page({
             {
               console.log("得到的数据为", res)
               that.setData({
-                projects: that.data.projects.concat(res.data),
+                projects: that.data.projects.concat(res.data.results),
                 lastPage: res.data.next===null,
                 loadingPage: false
               })
@@ -172,7 +172,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    if(!this.lastPage)
+    if(!this.data.lastPage)
       this.updateList()
   },
 
@@ -216,12 +216,22 @@ Page({
   },
   kindChange(event) {
     console.log(event)
+    var typeText="按标签筛选"
+    if(event.detail==1)typeText="文化教育"
+    else if(event.detail==2)typeText="赛会服务"
+    else if(event.detail==3)typeText="社区服务"
+    else if(event.detail==4)typeText="医疗卫生"
+    else if(event.detail==5)typeText="健康残障"
+    else if(event.detail==6)typeText="校园讲解"
+    else if(event.detail==7)typeText="其他项目"
+
     this.setData({
       showLeft1: false,
       type:event.detail,
       page:0,
       lastPage:false,
       projects:[],
+      typeText:typeText
     });
     this.updateList()
     wx.showToast({
