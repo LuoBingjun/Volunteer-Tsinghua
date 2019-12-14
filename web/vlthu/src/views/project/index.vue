@@ -9,6 +9,20 @@
       </div>
       {{ownername}}
     </el-card>
+    <el-card style="margin-bottom:10px;">
+      <div slot="header" class="clearfix">
+        <span>
+          <i class="el-icon-menu">项目类型</i>
+        </span>
+      </div>
+      <div v-if="type=='WH'">文化教育</div>
+      <div v-else-if="type=='SH'">赛会服务</div>
+      <div v-else-if="type=='SQ'">社区服务</div>
+      <div v-else-if="type=='YL'">医疗卫生</div>
+      <div v-else-if="type=='JK'">健康残障</div>
+      <div v-else-if="type=='XY'">校园讲解</div>
+      <div v-else-if="type=='QT'">其他项目</div>
+    </el-card>
     <el-card v-if="content" style="margin-bottom:10px;">
       <div slot="header" class="clearfix">
         <span>
@@ -107,7 +121,8 @@ export default {
       applyList: undefined,
       finished: undefined,
       started: undefined,
-      jobs: undefined
+      jobs: undefined,
+      type: undefined, 
     };
   },
   methods: {
@@ -212,6 +227,7 @@ export default {
         that.deadline = res.data.deadline;
         that.finished = res.data.finished;
         that.jobs = res.data.job_set;
+        that.type = res.data.type;
 
         var start = new Date(res.data.deadline).getTime();
         var now = new Date().getTime();
