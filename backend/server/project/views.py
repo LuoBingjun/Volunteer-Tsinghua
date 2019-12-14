@@ -139,6 +139,7 @@ class detailView(GenericAPIView):
             apply_records = ApplyRecord.objects.filter(user=request.user, project=project)
             applied_job = [record.job.id for record in apply_records]
             for item in res['job_set']:
+                item['apply_num'] = len(ApplyRecord.objects.filter(job=item['id']))
                 if item['id'] in applied_job:
                     item['job_status'] = apply_records.get(job=item['id']).status
                 else:
