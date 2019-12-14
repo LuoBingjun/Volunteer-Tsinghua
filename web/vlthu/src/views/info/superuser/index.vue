@@ -1,6 +1,5 @@
 <template>
     <div>
-        <p>superuser</p>
         <el-table :data="users" style="width: 100%">
             <el-table-column type="expand" label-width="auto">
                 <template slot-scope="scope">

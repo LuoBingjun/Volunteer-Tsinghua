@@ -34,7 +34,7 @@
         </span>
       </div>
       <p v-if="applyList && applyList.length == 0">暂时还没有人报名QAQ</p>
-      <checkform v-if="applyList && applyList.length > 0" :applyList="applyList"></checkform>
+      <checkform v-if="applyList && applyList.length > 0" :applyList="applyList" :form="JSON.parse(form)"></checkform>
     </el-card>
 
     <el-card v-if="started && !finished" style="margin-bottom:10px;">
