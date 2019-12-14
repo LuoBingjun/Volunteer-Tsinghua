@@ -1,6 +1,6 @@
 from django.db import models
-from django.http import JsonResponse
 from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
 
 from rest_framework import generics
 from rest_framework import serializers
@@ -15,7 +15,7 @@ from server.utils import login_required
 
 import xlwt
 from io import BytesIO
-import time,datetime
+import time, datetime
 import xlrd
 
 
@@ -137,13 +137,16 @@ class importSerializer(serializers.Serializer):
     project_id = serializers.IntegerField(max_value=None, min_value=1)
     import_file = serializers.FileField(required=True)
     
-class importView(APIView): 
+class importView(APIView):
+    @login_required(web=True)
     def post(self, request):
         serializer = importSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         project_id = serializer.validated_data['project_id']
         f = serializer.validated_data['import_file']
         project = get_object_or_404(Project, pk=project_id)
+        if not (request.user.is_superuser or request.user == project.webuser):
+            raise PermissionDenied()
         records = project.joinrecord_set.all()
         work_time = {}
         try:

@@ -5,6 +5,7 @@ from rest_framework.response import Response
 
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.core.exceptions import PermissionDenied
 
 import datetime
 import json
@@ -23,10 +24,13 @@ class createSerializer(serializers.ModelSerializer):
 
 # 发起签到
 class projectView(CreateAPIView):
-    @login_required(web=True, wx=False)
+    @login_required(web=True)
     def post(self, request):
         serializer = createSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        project = serializer.validated_data['project']
+        if not (request.user.is_superuser or request.user == project.webuser):
+            raise PermissionDenied()
         sign_project = serializer.save()
         sign_project.longitude -= 0.006256
         sign_project.latitude -= 0.001276

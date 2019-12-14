@@ -31,8 +31,9 @@ class detailSerializer(serializers.ModelSerializer):
         # fields = ['title','content','requirements','form','deadline','jobs']
 
 # 用于返回项目详情
-class detail_Serializer(serializers.ModelSerializer):
+class wx_detail_Serializer(serializers.ModelSerializer):
     webuser = serializers.ReadOnlyField(source='webuser.name')
+
     class Meta:
         model = Project
         fields = '__all__'
@@ -40,19 +41,34 @@ class detail_Serializer(serializers.ModelSerializer):
         depth = 1
 
     def get_field_names(self, declared_fields, info):
-        expanded_fields = super(detail_Serializer, self).get_field_names(declared_fields, info)
+        expanded_fields = super(wx_detail_Serializer, self).get_field_names(declared_fields, info)
 
         if getattr(self.Meta, 'extra_fields', None):
             return expanded_fields + self.Meta.extra_fields
         else:
             return expanded_fields
-        # fields = ['id', 'title', 'type', 'webuser', 'content', 'introduction', 'cover', 'requirements',
-        #     'form', 'time', 'deadline', 'finished', 'job_set', 'begin_datetime', 'end_datetime']
-        # # fields = ['__all__', 'job_set'] #failed
+
+class web_detail_Serializer(serializers.ModelSerializer):
+    webuser = serializers.ReadOnlyField(source='webuser.name')
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+        extra_fields = ['job_set', 'signproject_set']
+        depth = 1
+
+    def get_field_names(self, declared_fields, info):
+        expanded_fields = super(web_detail_Serializer, self).get_field_names(declared_fields, info)
+
+        if getattr(self.Meta, 'extra_fields', None):
+            return expanded_fields + self.Meta.extra_fields
+        else:
+            return expanded_fields
+
         
 
 class detailView(GenericAPIView):
-    serializer_class = detail_Serializer
+    serializer_class = wx_detail_Serializer
 
     @login_required(web=True)
     def post(self, request):
@@ -113,12 +129,11 @@ class detailView(GenericAPIView):
     def get(self, request):
         id = self.request.query_params.get('id')
         project = get_object_or_404(Project, id=id)
-        
-        serializer = self.get_serializer(project)
-        res = dict(serializer.data)
-
 
         if request.session.get('wx_user'):
+            serializer = self.get_serializer(data=project)
+            res = dict(serializer.data)
+
             apply_records = ApplyRecord.objects.filter(user=request.user, project=project)
             applied_job = [record.job.id for record in apply_records]
             for item in res['job_set']:
@@ -126,8 +141,11 @@ class detailView(GenericAPIView):
                     item['job_status'] = apply_records.get(job=item['id']).status
                 else:
                     item['job_status'] = 'A'
+            return Response(res)
+        else:
+            serializer = web_detail_Serializer(project)
+            return Response(serializer.data)
 
-        return Response(res)
 
 class listPagination(PageNumberPagination):
     page_query_param = 'page'

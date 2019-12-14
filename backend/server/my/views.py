@@ -206,15 +206,20 @@ class allprojectView(generics.ListAPIView):
     serializer_class = allprojectSerializer
     @login_required(web=True)
     def get_queryset(self):
+        if self.request.user.is_superuser:
+            queryset = Project.objects.all()
+        else:
+            queryset = Project.objects.filter(webuser=self.request.user)
+        
         if self.request.query_params.get('begin_time') and self.request.query_params.get('end_time'):
             filterinfo = filterbydate(data=self.request.query_params)
             filterinfo.is_valid(raise_exception=True)
             _begin_time = filterinfo.validated_data['begin_time']
             _end_time = filterinfo.validated_data['end_time']
-            _end_time = _end_time.replace(day=_end_time.day+1)
-            return Project.objects.filter(webuser=self.request.user, begin_datetime__gte=_begin_time, end_datetime__lte=_end_time)
-        else:
-            return Project.objects.filter(webuser=self.request.user)
+            _end_time = _end_time.replace(day=_end_time.day + 1)
+            queryset = queryset.filter(begin_datetime__gte=_begin_time, end_datetime__lte=_end_time)
+        
+        return queryset
 
 
 class processdetailinSerializer(serializers.Serializer):
