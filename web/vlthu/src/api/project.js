@@ -30,7 +30,7 @@ export function checkApplyRecord(applyID,checked)
 
 export function getProjectList(){
     return request({
-        url:'/my/allproject',
+        url:'/project/list',
         method:'get'
     })
 }

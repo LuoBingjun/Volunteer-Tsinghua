@@ -4,24 +4,11 @@
       <i class="el-icon-news" /> 基本信息
     </h2>
     <el-form-item label="项目标题" prop="title" class="short">
-      <el-input v-model="form.title" placeholder="请输入项目标题"></el-input>
+      <el-input v-model="form.title"></el-input>
     </el-form-item>
     <el-form-item label="项目简介" prop="introduction">
-      <el-input v-model="form.introduction" placeholder="请输入项目简介"></el-input>
+      <el-input v-model="form.introduction"></el-input>
     </el-form-item>
-    
-    <el-form-item label="选择标签" prop="type">
-      <el-select placeholder="请选择项目标签" v-model="form.type" @input="clearValidate('type')">
-        <el-option label="文化教育" value="WH"></el-option>
-        <el-option label="赛会服务" value="SH"></el-option>
-        <el-option label="社区服务" value="SQ"></el-option>
-        <el-option label="医疗健康" value="YL"></el-option>
-        <el-option label="健康残障" value="JK"></el-option>
-        <el-option label="校园讲解" value="XY"></el-option>
-        <el-option label="其他项目" value="QT"></el-option>
-      </el-select>
-    </el-form-item>
-
     <el-form-item label="项目详情" prop="content">
       <el-input v-model="form.content" type="textarea" :rows="6"></el-input>
     </el-form-item>
@@ -173,7 +160,6 @@ export default {
         requirements: undefined,
         cover: undefined,
         introduction: undefined,
-        type:undefined,
         form: [
           {
             text: "姓名",
@@ -215,7 +201,6 @@ export default {
           message: "请输入项目简介",
           trigger: "blur"
         },
-        type:{required:true,message:"请选择项目标签",trigger:"blul"},
         requirements: {
           required: true,
           message: "请输入项目需求",
@@ -271,10 +256,6 @@ export default {
     addJob() {
       this.form.jobs.push({});
     },
-    clearValidate(type)
-    {
-      this.$refs.mainform.clearValidate(type)
-    },
     addForm(type) {
       if (type == 0) {
         this.form.form.push({ type: "text" });
@@ -313,7 +294,6 @@ export default {
           newform.append("content", this.form.content);
           newform.append("introduction", this.form.introduction);
           newform.append("requirements", this.form.requirements);
-          newform.append("type", this.form.type);
           newform.append("cover", this.form.cover);
           newform.append(
             "deadline",
@@ -329,6 +309,7 @@ export default {
           );
           newform.append("jobs", JSON.stringify(this.form.jobs));
           newform.append("form", JSON.stringify(this.form.form));
+          console.log("新：", newform);
           startProject(newform)
             .then(res => {
               Message({
@@ -336,7 +317,7 @@ export default {
                 type: "success",
                 duration: 5000
               });
-              that.$router.push({ path: "/dashboard" });
+              that.$router.push({ path: "/" });
             })
             .catch(err => {
               Message({
