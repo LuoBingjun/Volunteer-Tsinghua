@@ -8,7 +8,7 @@ Page({
     projectsKind: 0,
     showLeft1: false,
     username: undefined,
-    projects: [
+    projects: []/*[
       {
         "id": 1,
         "cover": "封面图片url",
@@ -21,24 +21,14 @@ Page({
         "time": "发起时间",
         "deadline": "截止时间"
       },
-    ],
+    ]*/,
     inputShowed: false,
     inputVal: "",
-    curPage: 1,
-    totPage: 340
-  },
-  handlePageChange ({ detail }) {
-    const type = detail.type;
-    if (type === 'next') {
-        this.setData({
-          curPage: this.data.curPage + 1
-        });
-    } else if (type === 'prev') {
-        this.setData({
-          curPage: this.data.curPage - 1
-        });
-    }
-    console.log(this.data.curPage)
+    page:0,
+    type:0,
+    lastPage: false,
+    loadingPage: false,
+    typeText: "选择种类"
   },
 
   handleChange({ detail }) {
@@ -63,25 +53,65 @@ Page({
     this.setData({
       isIphoneX: isIphoneX
     })
-
-    wx.request({
-      url: `${app.globalData.backEndUrl}/project/list`,
-      method: 'get',
-      header: {
-        'content-type': 'application/json', // 提交的数据类型
-        'cookie': app.globalData.cookies //读取cookie
-      },
-      success(res) {  // 成功回调
-        console.log("得到的数据为", res)
-        that.setData({
-          "projects": res.data
-        })
-      },
-      fail() { // 失败回调
-        console.log('向后端发送数据失败！');
-      }
+    this.setData({
+      page:this.data.page+1
     })
+    
+    var typeParam=""
+    if(this.data.type==1)typeParam="&type=WH"
+    else if(this.data.type==2)typeParam="&type=SH"
+    else if(this.data.type==3)typeParam="&type=SQ"
+    else if (this.data.type==4)typeParam="&type=YL"
+    else if (this.data.type==5)typeParam="&type=JK"
+    else if (this.data.type==6)typeParam="&type=XY"
+    else if (this.data.type==7)typeParam="&type=QT"
 
+    var searchParam=""
+    if(this.data.inputVal.length>0)searchParam=`&search=${this.data.inputVal}`
+    
+    var getUrl=`${app.globalData.backEndUrl}/project/list?page=${this.data.page}${typeParam}${searchParam}`
+    console.log("请求页面，url为",getUrl)
+
+    this.setData({loadingPage:true})
+    setTimeout(
+      function(){
+            wx.request({
+          url: getUrl,
+          method: 'get',
+          header: {
+            'content-type': 'application/json', // 提交的数据类型
+            'cookie': app.globalData.cookies //读取cookie
+          },
+          success(res) {  // 成功回调
+            if(res.statusCode==200)
+            {
+              console.log("得到的数据为", res)
+              that.setData({
+                projects: that.data.projects.concat(res.data),
+                lastPage: res.data.next===null,
+                loadingPage: false
+              })
+            }
+            else if(res.statusCode==404)
+            {
+              console.log("无数据")
+              that.setData({
+                lastPage: true,
+                loadingPage: false
+              })
+            }
+          },
+          fail() { // 失败回调
+            console.log('向后端发送数据失败！');
+            that.setData({loadingPage:false})
+          }
+        })
+      },5000
+    )
+  },
+
+  onLoad: function (options) {
+    this.updateList()
     // 请求用户信息：
     wx.request({
       url: `${app.globalData.backEndUrl}/auth/user`,
@@ -101,12 +131,6 @@ Page({
         console.log('向后端发送数据失败！');
       }
     })
-  },
-
-  onLoad: function (options) {
-    console.log("options are",options)
-    
-    this.updateList()
   },
 
   /**
@@ -141,14 +165,15 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    console.log("pull down")
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    if(!this.lastPage)
+      this.updateList()
   },
 
   /**
@@ -190,9 +215,15 @@ Page({
     });
   },
   kindChange(event) {
+    console.log(event)
     this.setData({
-      showLeft1: false
+      showLeft1: false,
+      type:event.detail,
+      page:0,
+      lastPage:false,
+      projects:[],
     });
+    this.updateList()
     wx.showToast({
       icon: 'none',
       title: `切换至第${event.detail}项`

@@ -1,5 +1,4 @@
 {
-  
   "usingComponents": {
     "i-tab-bar": "/dist/tab-bar/index",
     "i-tab-bar-item": "/dist/tab-bar-item/index",
@@ -9,7 +8,7 @@
     "i-drawer": "/dist/drawer/index",
     "van-sidebar": "/dist/Vant/sidebar/index",
     "van-sidebar-item": "/dist/Vant/sidebar-item/index",
-    "i-page": "/dist/page/index",
+    "i-load-more": "/dist/load-more/index",
     "i-icon": "/dist/icon/index"
   }
 }
