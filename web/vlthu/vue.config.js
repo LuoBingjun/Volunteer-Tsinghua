@@ -40,8 +40,8 @@ module.exports = {
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       '/api': {
-        // target: 'https://2019-a15.iterator-traits.com/',
-        target: 'http://62.234.0.237/',
+        target: 'https://2019-a15.iterator-traits.com/',
+        //target: 'http://62.234.0.237/',
         changeOrigin: true
       }
     },
