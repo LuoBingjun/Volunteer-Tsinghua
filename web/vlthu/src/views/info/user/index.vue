@@ -61,6 +61,12 @@ export default {
                 {
                     modifyUserInfo(that.form).then(()=>{
                         that.oldname=that.form.name
+                        Message({
+                            message: '成功修改',
+                            type: 'success',
+                            duration: 5 * 1000
+                        })
+                        that.$router.push({path:'/dashboard'})
                     })
                 }
             }).catch(err=>{
