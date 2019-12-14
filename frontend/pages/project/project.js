@@ -71,7 +71,7 @@ Page({
                         'introduction':res.data.introduction,
                         "job_set":res.data.job_set,
                         "deadline": res.data.deadline,
-                        "finished": false,
+                        "finished": res.data.finished,
 
                         "begin_datetime": res.data.begin_datetime,
                         "end_datetime": res.data.end_datetime
@@ -144,6 +144,6 @@ Page({
     //     wx.navigateTo({"url":"sign/sign?projectID="+this.data.projectID});
     // }
     cancelApply:function(e){
-        
+
     }
 })
