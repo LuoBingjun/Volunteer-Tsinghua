@@ -66,5 +66,5 @@
       </view>
     </van-collapse-item>
   </van-collapse>
-   <button class="weui-btn" type="warn" catchtap='projectcancel'>退出此项目</button>
+   <!-- <button class="weui-btn" type="warn" catchtap='projectcancel'>退出此项目</button> -->
 </view>
