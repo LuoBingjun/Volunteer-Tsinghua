@@ -143,7 +143,7 @@ class postUserSerializer(serializers.ModelSerializer):
 
 
 class getUserSerializer(serializers.ModelSerializer):
-    id_card = serializers.SerializerMethodField()
+    # id_card = serializers.SerializerMethodField()
 
     class Meta:
         model = WxUser
