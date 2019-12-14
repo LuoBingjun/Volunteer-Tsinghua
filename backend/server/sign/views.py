@@ -126,7 +126,7 @@ class signinView(APIView):
         distance=2*asin(sqrt(a))*6371393 # 地球平均半径，6371km
         distance=round(distance,3)
         print(distance)
-        if distance > 2000:
+        if distance > 100:
             return Response({"error":"请前往指定地点签到"},status=406)
 
         _file = open("record.txt", 'a', encoding='utf-8')
