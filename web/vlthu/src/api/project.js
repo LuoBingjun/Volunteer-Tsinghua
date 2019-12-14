@@ -59,3 +59,14 @@ export function startProject(options)
         data:options
     })
 }
+
+export function endProject(id,options)
+{
+    return request({
+        method:"put",
+        url:`/project/detail?id=${id}`,
+        data:{
+            "finished":true
+        }
+    })
+}

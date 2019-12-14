@@ -35,7 +35,11 @@
       </div>
       <p v-if="applyList && applyList.length == 0">暂时还没有人报名QAQ</p>
       <checkform v-if="applyList && applyList.length > 0" :applyList="applyList" :form="JSON.parse(form)"></checkform>
+      
     </el-card>
+    <el-button type="danger" plain @click="endProject" v-if="!finished && !started">
+      <i class="el-icon-close"> 结项</i>
+    </el-button>
 
     <el-card v-if="started && !finished" style="margin-bottom:10px;">
       <div slot="header" class="clearfix">
@@ -77,9 +81,10 @@ import {
   downloadExcel,
   startSign
 } from "@/api/project";
-import { Message, Checkbox } from "element-ui";
+import { Message, Checkbox, MessageBox } from "element-ui";
 import signform from "./signform";
 import checkform from "./checkform";
+import {endProject} from "@/api/project"
 export default {
   name: "Project",
   components: {
@@ -164,6 +169,28 @@ export default {
             duration: 5 * 1000
           });
         });
+    },
+    endProject(){
+      this.$confirm('此操作不可逆转，是否结项？','提示',{
+        confirmButtonText: '确定',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=>{
+        endProject(this.projectID).then(res=>{
+          Message({
+            message:'已成功结项',
+            type:'success',
+            duration:5000
+          })
+          this.$router.push(-1)
+        })
+      }).catch(()=>{
+        Message({
+          message:'已取消',
+          type:'info',
+          duration:5000
+        })
+      })
     }
   },
   created() {
