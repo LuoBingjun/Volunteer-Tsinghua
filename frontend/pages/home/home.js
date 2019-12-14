@@ -106,11 +106,13 @@ Page({
             that.setData({loadingPage:false})
           }
         })
-      },5000
+      },100
     )
   },
 
   onLoad: function (options) {
+    let app = getApp()
+    let that = this
     this.updateList()
     // 请求用户信息：
     wx.request({
