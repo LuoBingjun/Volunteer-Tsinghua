@@ -75,9 +75,9 @@ class ProjectCreateTestCase(TestCase):
         response = client.post(
             '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
         assert response.status_code == 200
-        file = File(open('media/cover.jpg', 'rb'))
-        uploaded_file = SimpleUploadedFile(
-            'cover.jpg', file.read(), content_type='multipart/form-data')
+        # file = File(open('media/cover.jpg', 'rb'))
+        # uploaded_file = SimpleUploadedFile(
+        #     'cover.jpg', file.read(), content_type='multipart/form-data')
         response = client.post('/project/detail', {
             "title": "题目",
             "content": "内容",
@@ -85,7 +85,10 @@ class ProjectCreateTestCase(TestCase):
             "requirements": "需求",
             "type":'QT',
             "form": "{}",
-            "cover": uploaded_file,
+            "cover": open('media/cover.jpg', 'rb'),
+            "qrcode_1":open('media/cover.jpg', 'rb'),
+            "qrcode_2":open('media/cover.jpg', 'rb'),
+            "success_note":'温馨提示',
             "deadline": "2035-12-3 12:00:00",
             "begin_datetime": "2019-12-4 13:00:00",
             "end_datetime": "2035-12-5 18:00:00",
@@ -305,7 +308,6 @@ class ApplyTestCase(TestCase):
 
         response = client.post(
             '/apply/fillform', {'job_id': 1, 'form': '{json文本}'})
-        print(response.json())
         assert response.status_code == 200
 
     def tearDown(self):
