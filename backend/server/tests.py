@@ -80,6 +80,7 @@ class ProjectCreateTestCase(TestCase):
             "content": "内容",
             "introduction": "简介",
             "requirements": "需求",
+            "type":'QT',
             "form": "{}",
             "cover": uploaded_file,
             "deadline": "2035-12-3 12:00:00",
@@ -161,13 +162,13 @@ class ProjectTestCase(TestCase):
             '/auth/weblogin', {'username': 'admin1', 'password': 'admin1'})
         assert response.status_code == 200
 
-        response = client.get('/project/search', {"search": "tset"})
+        response = client.get('/project/list', {"search": "tset"})
         assert response.status_code == 200
 
         response = client.post('/auth/login', {'token': 'null'})
         assert response.status_code == 200
 
-        response = client.get('/project/search', {"search": "tset"})
+        response = client.get('/project/list', {"search": "tset"})
         assert response.status_code == 200
 
     def tearDown(self):
