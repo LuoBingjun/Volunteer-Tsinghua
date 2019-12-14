@@ -35,10 +35,21 @@ class detail_Serializer(serializers.ModelSerializer):
     webuser = serializers.ReadOnlyField(source='webuser.name')
     class Meta:
         model = Project
-        fields = ['id', 'title', 'type', 'webuser', 'content', 'introduction', 'cover', 'requirements',
-            'form', 'time', 'deadline', 'finished', 'job_set', 'begin_datetime', 'end_datetime']
-        # fields = ['__all__', 'job_set'] #failed
+        fields = '__all__'
+        extra_fields = ['job_set']
         depth = 1
+
+    def get_field_names(self, declared_fields, info):
+        expanded_fields = super(detail_Serializer, self).get_field_names(declared_fields, info)
+
+        if getattr(self.Meta, 'extra_fields', None):
+            return expanded_fields + self.Meta.extra_fields
+        else:
+            return expanded_fields
+        # fields = ['id', 'title', 'type', 'webuser', 'content', 'introduction', 'cover', 'requirements',
+        #     'form', 'time', 'deadline', 'finished', 'job_set', 'begin_datetime', 'end_datetime']
+        # # fields = ['__all__', 'job_set'] #failed
+        
 
 class detailView(GenericAPIView):
     serializer_class = detail_Serializer
@@ -126,9 +137,17 @@ class listSerializer(serializers.ModelSerializer):
     require_num = serializers.SerializerMethodField()
     class Meta:
         model = Project
-        fields = ['id', 'title', 'webuser', 'type', 'content', 'introduction', 'cover', 'requirements',
-            'form', 'time', 'deadline', 'finished', 'require_num', 'begin_datetime', 'end_datetime']
+        fields = '__all__'
+        extra_fields = ['require_num']
         depth = 0
+
+    def get_field_names(self, declared_fields, info):
+        expanded_fields = super(listSerializer, self).get_field_names(declared_fields, info)
+
+        if getattr(self.Meta, 'extra_fields', None):
+            return expanded_fields + self.Meta.extra_fields
+        else:
+            return expanded_fields
 
     def get_require_num(self,obj):
         jobs = obj.job_set.all()
