@@ -36,8 +36,18 @@
         <view slot="content">{{item.introduction}}</view>
         <view slot="footer">截止时间：{{item.deadline}}</view>
       </i-card>
-
     </view>
+    <i-page current="{{ curPage }}" total="{{ totPage }}" mode="number"></i-page>
+    <i-page current="{{ curPage }}" total="{{ totPage }}" bind:change="handlePageChange">
+      <view slot="prev">
+          <i-icon type="return"></i-icon>
+          上一页
+      </view>
+      <view slot="next">
+          下一页
+          <i-icon type="enter"></i-icon>
+      </view>
+    </i-page>
   </view>
   <i-tab-bar current="home" bindchange="handleChange" fixed="true">
     <i-tab-bar-item key="home" icon="homepage" current-icon="homepage_fill" title="项目广场"></i-tab-bar-item>
