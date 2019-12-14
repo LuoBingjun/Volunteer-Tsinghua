@@ -33,6 +33,7 @@
         </i-panel>
           <view wx:if="{{item.job_status=='W'}}">
             <button class="weui-btn" type="primary" disabled="true">正在审核</button>
+            <button class="weui-btn" type="primary" bindtap="cancelApply">取消申请</button>
           </view>
           <view wx:elif="{{item.job_status=='P'}}">
             <button class="weui-btn" type="primary" bindtap="gotoCurrentProject">查看通过信息</button>

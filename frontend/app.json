@@ -9,7 +9,8 @@
     "pages/project/project",
     "pages/project/submit/submit",
     "pages/homepage/homepage",
-    "pages/currentproject/currentproject"
+    "pages/currentproject/currentproject",
+    "pages/comment/comment"
   ],
   "window": {
     "navigationBarTextStyle": "black",

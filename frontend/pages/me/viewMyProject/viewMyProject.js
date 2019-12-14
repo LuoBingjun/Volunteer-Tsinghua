@@ -123,4 +123,8 @@ Page({
     }
     
   },
+  comment:function(e){
+    console.log("点击了评价按钮！")
+    
+  }
 })
