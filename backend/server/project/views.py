@@ -145,7 +145,7 @@ class listView(ListAPIView):
 
     @login_required(wx=True, web=True)
     def get_queryset(self):
-        queryset = Project.objects.all()
+        queryset = Project.objects.filter(finished=False)
         search = self.request.GET.get("search")
         _type = self.request.GET.get('type')
 
