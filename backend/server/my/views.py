@@ -18,7 +18,7 @@ class filterbydate(serializers.Serializer):
 class historySerializer(serializers.ModelSerializer):     
     class Meta: 
         model = JoinRecord
-        fields = ['project','work_time']
+        fields = ['project','work_time','is_comment','id']
         # exclude = ["user"]
         depth = 1
 
@@ -39,6 +39,26 @@ class historyView(generics.ListAPIView):
         else:
             return JoinRecord.objects.filter(user=self.request.user, project__finished=True)
         
+class commentSerializer(serializers.Serializer):
+    join_record_id=serializers.IntegerField(max_value=None, min_value=0)
+    comment = serializers.CharField(max_length=None, min_length=None, allow_blank=True)
+    comment_rank = serializers.IntegerField(max_value=5, min_value=0)
+
+class commentView(APIView):
+
+    @login_required(wx=True)
+    def post(self, request):
+        info = commentSerializer(data=request.data)
+        info.is_valid(raise_exception=True)
+        join_rocord = get_object_or_404(JoinRecord,id=info.validated_data['join_record_id'])
+        if join_rocord.is_comment:
+            return Response({"error":"已评价"}, status=406)
+        join_rocord.comment=info.validated_data['comment']
+        join_rocord.comment_rank=info.validated_data['comment_rank']
+        join_rocord.is_comment=True
+        join_rocord.save()
+        return Response(status=200)
+
 class processSerializer(serializers.ModelSerializer):     
     class Meta: 
         model = Project

@@ -10,4 +10,5 @@ urlpatterns = [
     path(r'signrecord', views.signrecordView.as_view()), 
     path(r'messages', views.messagesView.as_view()),
     path(r'allproject',views.allprojectView.as_view()),
+    path(r'comment',views.commentView.as_view()),
 ]

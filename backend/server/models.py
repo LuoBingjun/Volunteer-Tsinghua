@@ -33,6 +33,9 @@ class JoinRecord(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     job = models.ManyToManyField('Job')
     work_time = models.FloatField('工时', blank=True, null=True)
+    comment_rank = models.IntegerField('评分', blank=True, null=True)
+    comment = models.TextField('评价', blank=True, null=True)
+    is_comment = models.BooleanField('评价状态', default=False)
 
 # 项目签到
 class SignProject(models.Model):

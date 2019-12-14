@@ -526,3 +526,49 @@ class webuserTestCase(TestCase):
 
     def tearDown(self):
         get_redis_connection("default").flushall()
+
+class commentTestCase(TestCase):
+    def setUp(self):
+        _webuser = WebUser.objects.create_user('test1234', password='test1234')
+        # 在ApplyRecord中创建一条记录
+        _user = WxUser(id=2017011111, name='清小华', department='软件学院',
+                       email='lixiaojia@163.com', phone=12233)
+        _user.save()
+        _project = Project(id=1, webuser=_webuser, title='test', content='testcontent', introduction='intro', requirements='req', begin_datetime=datetime.datetime(2019, 12, 4, 0, 0, 0),
+                           end_datetime=datetime.datetime(2035, 12, 5, 23, 59, 59), deadline=datetime.datetime(2035, 12, 1, 23, 59, 59))
+        _project.save()
+        _job = Job(id=1, project=_project, job_name='test_job',
+                   job_worktime=5.0, job_content='content_test', job_require_num=10)
+        _job.save()
+
+        _join_record = JoinRecord.objects.create(user=_user, project=_project)
+        _join_record.job.add(_job)
+        _join_record.save()
+    
+    def test_comment(self):
+        client = APIClient()
+        response = client.post('/auth/login', {'token': 'null'})
+        assert response.status_code == 200
+
+        response = client.post('/my/comment', {"join_record_id":1,
+                                                "comment":"评价",
+                                                "comment_rank":5
+                                                 })
+        assert response.status_code == 200
+
+        response = client.post('/my/comment', {"join_record_id":1,
+                                                "comment":"评价",
+                                                "comment_rank":5
+                                                 })
+        assert response.status_code == 406
+
+        response = client.post('/my/comment', {"join_record_id":2,
+                                                "comment":"评价",
+                                                "comment_rank":5
+                                                 })
+        assert response.status_code == 404
+
+
+
+    def tearDown(self):
+        get_redis_connection("default").flushall()
