@@ -28,7 +28,9 @@ class projectView(CreateAPIView):
         serializer = createSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         sign_project = serializer.save()
-        
+        sign_project.longitude -= 0.006256
+        sign_project.latitude -= 0.001276
+        sign_project.save()
         jobs = sign_project.jobs.all()
 
         receivers = set()
