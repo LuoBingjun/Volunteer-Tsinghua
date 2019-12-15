@@ -47,7 +47,8 @@ class ExportView(APIView):
     def get(self, request):
 
         response = HttpResponse(content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = "attachment; filename*=utf-8''{}".format(escape_uri_path('workname.xls'))
+        response['Content-Disposition'] = 'attachment;filename=workname.xls'
+        # response.write
         
         # 创建一个文件对象
         wb = xlwt.Workbook(encoding='utf-8')
