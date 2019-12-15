@@ -2,26 +2,16 @@
   <div style="margin:40px">
     <h1>{{title}}</h1>
     <el-card v-if="ownername" style="margin-bottom:10px;">
-      <div slot="header" class="clearfix">
-        <span>
-          <i class="el-icon-user-solid"></i> 发起人
-        </span>
-      </div>
-      {{ownername}}
+      <i class="el-icon-user-solid"> 发起人：</i>{{ownername}}
     </el-card>
     <el-card style="margin-bottom:10px;">
-      <div slot="header" class="clearfix">
-        <span>
-          <i class="el-icon-menu">项目类型</i>
-        </span>
-      </div>
-      <div v-if="type=='WH'">文化教育</div>
-      <div v-else-if="type=='SH'">赛会服务</div>
-      <div v-else-if="type=='SQ'">社区服务</div>
-      <div v-else-if="type=='YL'">医疗卫生</div>
-      <div v-else-if="type=='JK'">健康残障</div>
-      <div v-else-if="type=='XY'">校园讲解</div>
-      <div v-else-if="type=='QT'">其他项目</div>
+      <div v-if="type=='WH'"><i class="el-icon-school"> 项目类型：文化教育</i></div>
+      <div v-else-if="type=='SH'"><i class="el-icon-medal-1"> 项目类型：赛会服务</i></div>
+      <div v-else-if="type=='SQ'"><i class="el-icon-house"> 项目类型：社区服务</i></div>
+      <div v-else-if="type=='YL'"><i class="el-icon-first-aid-kit"> 项目类型：医疗卫生</i></div>
+      <div v-else-if="type=='JK'"><i class="el-icon-bangzhu"> 项目类型：健康残障</i></div>
+      <div v-else-if="type=='XY'"><i class="el-icon-guide"> 项目类型：校园讲解</i></div>
+      <div v-else-if="type=='QT'"><i class="el-icon-menu"> 项目类型：其他项目</i></div>
     </el-card>
     <el-card v-if="content" style="margin-bottom:10px;">
       <div slot="header" class="clearfix">
@@ -55,7 +45,15 @@
       <i class="el-icon-close"> 结项</i>
     </el-button>
 
-    <el-card v-if="started && !finished" style="margin-bottom:10px;">
+    <el-card>
+      <div slot="header" class="clearfix">
+        <span>
+          <i class="el-icon-tickets"></i> 签到列表
+        </span>
+      </div>
+      <signlist :signlist="signList"/>
+    </el-card>
+    <el-card v-if="started && !finished" style="Lmargin-bottom:10px;">
       <div slot="header" class="clearfix">
         <span>
           <i class="el-icon-circle-plus-outline"></i> 发起签到
@@ -99,11 +97,13 @@ import { Message, Checkbox, MessageBox } from "element-ui";
 import signform from "./signform";
 import checkform from "./checkform";
 import {endProject} from "@/api/project"
+import signlist from './signlist'
 export default {
   name: "Project",
   components: {
     signform,
-    checkform
+    checkform,
+    signlist
   },
   data() {
     return {
@@ -123,6 +123,7 @@ export default {
       started: undefined,
       jobs: undefined,
       type: undefined, 
+      signList:undefined
     };
   },
   methods: {
@@ -228,6 +229,7 @@ export default {
         that.finished = res.data.finished;
         that.jobs = res.data.job_set;
         that.type = res.data.type;
+        that.signList=res.data.signproject_set;
 
         var start = new Date(res.data.deadline).getTime();
         var now = new Date().getTime();

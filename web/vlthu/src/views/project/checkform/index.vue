@@ -53,10 +53,10 @@
             通过选中项
           </el-button>
         </template>
-
         <template slot-scope="scope">
           <el-button type="success" @click="handleOne(true,scope.row.id)" :disabled="scope.row.status=='P'">
-            <i class="el-icon-check">  通过  </i>
+            <i class="el-icon-check" v-if="scope.row.status=='P'">  已通过  </i>
+            <i class="el-icon-check" v-else>  通过  </i>
           </el-button>
         </template>
       </el-table-column>
@@ -69,7 +69,8 @@
         </template>
         <template slot-scope="scope">
           <el-button type="danger" @click="handleOne(false,scope.row.id)" :disabled="scope.row.status=='N'">
-            <i class="el-icon-close">  拒绝  </i>
+            <i class="el-icon-close" v-if="scope.row.status=='N'">  已拒绝  </i>
+            <i class="el-icon-close" v-else>  拒绝  </i>
           </el-button>
         </template>
       </el-table-column>
