@@ -143,11 +143,11 @@ class postUserSerializer(serializers.ModelSerializer):
 
 
 class getUserSerializer(serializers.ModelSerializer):
-    # id_card = serializers.SerializerMethodField()
+    id_card = serializers.SerializerMethodField()
 
     class Meta:
         model = WxUser
-        exclude = ['join_time', 'id_card']
+        exclude = ['join_time']
 
     def get_id_card(self, obj):
         key = settings.SECRET_KEY.encode('utf-8')[:32]
@@ -156,9 +156,10 @@ class getUserSerializer(serializers.ModelSerializer):
 
 
 class putUserSerializer(serializers.ModelSerializer):
+    id_card = serializers.RegexField(r'\d{17}[0-9Xx]')
     class Meta:
         model = WxUser
-        fields = ['department', 'email', 'phone']
+        fields = ['department', 'email', 'phone', 'id_card']
 
 
 BLOCK_SIZE = 32
@@ -180,7 +181,7 @@ class userView(APIView):
         serializer.is_valid(raise_exception=True)
         key = settings.SECRET_KEY.encode('utf-8')[:32]
         cipher = AES.new(key, AES.MODE_ECB)
-        encoded = encode(cipher, serializer.validated_data['id_card'])
+        # encoded = encode(cipher, serializer.validated_data['id_card'])
         # s = decode(cipher, encoded)
         # assert serializer.validated_data['id_card'] == s
         serializer.validated_data['id_card'] = encode(cipher, serializer.validated_data['id_card']) 
@@ -194,6 +195,9 @@ class userView(APIView):
         serializer = putUserSerializer(
             request.user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
+        key = settings.SECRET_KEY.encode('utf-8')[:32]
+        cipher = AES.new(key, AES.MODE_ECB)
+        serializer.validated_data['id_card'] = encode(cipher, serializer.validated_data['id_card'])
         serializer.save()
         return Response(serializer.data)
 
