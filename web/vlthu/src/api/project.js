@@ -42,6 +42,14 @@ export function downloadExcel(projectID){
     })
 }
 
+export function uploadExcel(options){
+    return request({
+        url:`/worktime/import`,
+        method:'post',
+        data:options
+    })
+}
+
 export function startSign(options)
 {
     return request({

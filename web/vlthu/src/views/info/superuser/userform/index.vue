@@ -1,6 +1,9 @@
 <template>
     <div>
         <el-form :model="form" :rules="rules" ref="form">
+            <el-form-item label="用户昵称" prop="username" v-if="isnew">
+                <el-input v-model="form.username" class="short"></el-input>
+            </el-form-item>
             <el-form-item label="团体名称" prop="name">
                 <el-input v-model="form.name" class="short"></el-input>
             </el-form-item>
@@ -41,15 +44,17 @@ export default {
     data(){
         return{
             form:{
+                username:undefined,
                 id:undefined,
                 name:undefined,
                 manager:undefined,
                 phone:undefined,
                 email:undefined,
                 description:undefined,
-                password:undefined
+                password:undefined,
             },
             rules:{
+                username:{required:true, message: "登陆名称不能为空", trigger: "blur"},
                 name:{required: true, message: "团体名称不能为空", trigger: "blur"},
                 manager:{required:true,message:"负责人不能为空",trigger:'blur'},
                 phone:[{required:true,message:"电话号码不能为空",trigger:'blur'}],

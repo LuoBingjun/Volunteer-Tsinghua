@@ -39,6 +39,7 @@
         :http-request="getFile"
         ref="uploader"
         :on-remove="handleCoverRemove"
+        accept="image/*"
       >
         <i slot="default" :class="form.cover?'el-icon-close':'el-icon-plus'"></i>
       </el-upload>
@@ -63,6 +64,7 @@
         :http-request="getQrcode1"
         ref="uploader"
         :on-remove="handleQrcode1Remove"
+        accept="image/*"
       >
         <i slot="default" :class="form.qrcode1?'el-icon-close':'el-icon-plus'"></i>
       </el-upload>
@@ -87,6 +89,7 @@
         :http-request="getQrcode2"
         ref="uploader"
         :on-remove="handleQrcode2Remove"
+        accept="image/*"
       >
         <i slot="default" :class="form.qrcode2?'el-icon-close':'el-icon-plus'"></i>
       </el-upload>
@@ -158,13 +161,15 @@
               <i class="el-icon-info hb"></i>
             </el-tooltip>
           </span>
-          <span v-else-if="item.bind=='school'">
+          <span v-else-if="item.bind=='department'">
             报名表单项{{index+1}}（该选项以院系为默认值）
             <el-tooltip content="填写时默认填充项为报名者院系" placement="top">
               <i class="el-icon-info hb"></i>
             </el-tooltip>
           </span>
-          <span v-else>报名表单项{{index+1}}</span>
+          <span v-else-if="item.type=='text'">报名表单项{{index+1}}（文本）</span>
+          <span v-else-if="item.type=='radioBox'">报名表单项{{index+1}}（单选）</span>
+          <span v-else-if="item.type=='checkBox'">报名表单项{{index+1}}（多选）</span>
         </span>
               <el-button @click="rmForm(item)" style="float: right; padding: 3px 0" type="text">
         <i class="el-icon-delete"></i> 删除表单项
@@ -239,7 +244,7 @@ export default {
             text: "院系",
             required: true,
             type: "text",
-            bind: "school"
+            bind: "department"
           }
         ],
         deadline: undefined,

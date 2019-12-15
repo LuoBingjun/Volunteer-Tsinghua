@@ -41,7 +41,7 @@
       <checkform v-if="applyList && applyList.length > 0" :applyList="applyList" :form="JSON.parse(form)"></checkform>
       
     </el-card>
-    <el-card>
+    <el-card v-if="!finished && started">
       <div slot="header" class="clearfix">
         <span><i class="el-icon-close"> 结项操作</i></span>
       </div>
@@ -49,7 +49,7 @@
         <i class="el-icon-close"> 结束项目</i>
       </el-button>
     </el-card>
-    <el-card style="margin:10px 0px">
+    <el-card style="margin:10px 0px" v-if="started && !finished">
       <div slot="header" class="clearfix">
         <span>
           <i class="el-icon-tickets"></i> 签到列表
@@ -67,23 +67,34 @@
     </el-card>
 
     <el-card v-if="finished" style="margin-bottom:10px;">
-      <p>
-        已经结项：查看工时记录
-        <el-button @click="exportExcel">
-          <i class="el-icon-download"></i>导出工时为excel
-        </el-button>
-      </p>
+      <div slot="header" class="clearfix">
+        <span>
+          <i class="el-icon-setting"></i> 已经结项：查看/修改工时记录
+          <el-upload action="#" 
+            :http-request="uploadExcel" 
+            :auto-upload="true"
+            :multiple="false"
+            :show-file-list="false"
+            accept=".xls,.xlsx"
+            style="float: right;"
+          >
+            <el-button type="primary">
+              <i class="el-icon-upload"> 以Excel导入工时</i>
+            </el-button>
+          </el-upload>
+
+          <el-button @click="exportExcel" style="float: right; margin:0px 10px">
+            <i class="el-icon-download"> 导出工时为excel</i>
+          </el-button>
+        </span>
+      </div>
       <p v-if="applyList && applyList.length == 0">没有记录~</p>
-      <table v-if="applyList && applyList.length !=0" style="text-align:center">
-        <tr>
-          <td>参加人员</td>
-          <td>岗位</td>
-        </tr>
-        <tr v-for="itemm in applyList" :key="itemm.index">
-          <td>{{ itemm.user.name }}</td>
-          <td>{{ itemm.job.job_name }}</td>
-        </tr>
-      </table>
+      <el-table v-if="applyList && applyList.length !=0" :data="applyList">
+        <el-table-column label="参加人员" prop="user.name"></el-table-column>
+        <el-table-column label="岗位" prop="job.job_name"></el-table-column>
+      </el-table>
+      
+      
     </el-card>
   </div>
 </template>
@@ -95,7 +106,8 @@ import {
   getProjectApplyList,
   checkApplyRecord,
   downloadExcel,
-  startSign
+  startSign,
+  uploadExcel
 } from "@/api/project";
 import { Message, Checkbox, MessageBox } from "element-ui";
 import signform from "./signform";
@@ -191,6 +203,7 @@ export default {
         });
     },
     endProject(){
+      var that=this
       this.$confirm('此操作不可逆转，是否结项？','提示',{
         confirmButtonText: '确定',
         cancelButtonText:'取消',
@@ -200,11 +213,29 @@ export default {
           Message({
             message:'已成功结项',
             type:'success',
-            duration:5000
+            duration:3000
           })
-          this.$router.push(-1)
+          setTimeout(function(){that.$router.go(0)},3000) 
         })
       }).catch(()=>{
+      })
+    },
+    uploadExcel(file){
+      var newform=new FormData()
+      newform.append('project_id',this.projectID)
+      newform.append('import_file',file.file)
+      uploadExcel(newform).then(res=>{
+        Message({
+          message:"成功上传",
+          type:"success",
+          duration:5000
+        })
+      }).catch(err=>{
+        Message({
+          message:"Error: ",err,
+          type:"error",
+          duration: 5000
+        })
       })
     }
   },

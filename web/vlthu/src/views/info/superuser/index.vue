@@ -95,7 +95,7 @@ export default {
         addUser(form){
             console.log("here")
             addUser({
-                username:form.name,
+                username:form.username,
                 password:form.password,
                 name:form.name,
                 description:form.description,
