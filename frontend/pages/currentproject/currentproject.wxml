@@ -1,7 +1,7 @@
 <view class="page">
-  <view wx:if="{{cover}}">
+  <!-- <view wx:if="{{cover}}">
     <image src="{{cover}}" mode="widthFix" style="width:100%;height:auto;" />
-  </view>
+  </view> -->
 
   <view class="container">
     <i-row>
@@ -16,16 +16,24 @@
       </i-panel>
     </i-row>
 
-    <i-row>
-      <i-panel title="详情" hide-border="{{ true }}">
-        <view style="padding: 15px;">{{description}}</view>
+    <i-row wx:if="{{success_note}}">
+      <i-panel title="温馨提示" hide-border="{{ true }}">
+        <view style="padding: 15px;">{{success_note}}</view>
+      </i-panel>
+    </i-row>
+    
+    <i-row wx:if="{{qrcode_1}}">
+      <i-panel title="群二维码">
+        <view>
+          <image src="{{qrcode_1}}" mode="widthFix" style="width:100%;height:auto;" />
+        </view>
       </i-panel>
     </i-row>
 
-    <i-row>
-      <i-panel title="要求" hide-border="{{ true }}">
-        <view style="padding: 15px;">
-          {{requirement}}
+    <i-row wx:if="{{qrcode_2}}">
+      <i-panel title="管理员二维码">
+        <view>
+          <image src="{{qrcode_2}}" mode="widthFix" style="width:100%;height:auto;" />
         </view>
       </i-panel>
     </i-row>

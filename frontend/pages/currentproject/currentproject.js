@@ -51,9 +51,10 @@ Page({
                         'projectID':res.data.project.id,
                         'cover':res.data.project.cover,
                         'title':res.data.project.title,
-                        'description':res.data.project.content,
-                        'requirement':res.data.project.requirements,
-                        'introduction':res.data.project.introduction
+                        'introduction':res.data.project.introduction,
+                        'success_note':res.data.project.success_note,
+                        'qrcode_1':res.data.project.qrcode_1,
+                        'qrcode_2':res.data.project.qrcode_2
                     });
                     let signList = {}
                     that.reslen = res.data.signproject.length
