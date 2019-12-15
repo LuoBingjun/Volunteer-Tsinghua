@@ -48,67 +48,66 @@ class ExportView(APIView):
 
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment;filename=workname.xls'
-        # response.write
+        
         
         # 创建一个文件对象
         wb = xlwt.Workbook(encoding='utf-8')
         # 创建一个表
         sheet = wb.add_sheet('namelist',cell_overwrite_ok=True)
 
-        # # project_id
-        # p_id=request.GET.get('project_id')
-        # # 根据projectid获取历次签到的title
-        # signproject_set=SignProject.objects.filter(project__id=p_id).order_by('begin_time')
+        # project_id
+        p_id=request.GET.get('project_id')
+        # 根据projectid获取历次签到的title
+        signproject_set=SignProject.objects.filter(project__id=p_id).order_by('begin_time')
 
         # 构建表头
         sheet.write(0,0,'id')
         sheet.write(0,1,'姓名')
 
-        # _row=0 # 行 
-        # _column=2 # 列
+        _row=0 # 行 
+        _column=2 # 列
 
-        # # 存储title，便于后续输入
-        # signproject_title_dict = {}
+        # 存储title，便于后续输入
+        signproject_title_dict = {}
 
-        # for i in signproject_set:
-        #     sheet.write(_row,_column,i.title)
-        #     signproject_title_dict[i.id]=_column
-        #     _column=_column+1
+        for i in signproject_set:
+            sheet.write(_row,_column,i.title)
+            signproject_title_dict[i.id]=_column
+            _column=_column+1
     
-        # sheet.write(_row,_column,'总工时')
+        sheet.write(_row,_column,'总工时')
 
-        # # 参加项目的所有人
-        # joinrecord_set=JoinRecord.objects.filter(project__id=p_id)
+        # 参加项目的所有人
+        joinrecord_set=JoinRecord.objects.filter(project__id=p_id)
 
-        # _row=1
-        # for i in joinrecord_set:
-        #     sheet.write(_row,0,i.user.id)
-        #     sheet.write(_row,1,i.user.name)
+        _row=1
+        for i in joinrecord_set:
+            sheet.write(_row,0,i.user.id)
+            sheet.write(_row,1,i.user.name)
 
-        #     a_signrecord=SignRecord.objects.filter(join_record__id=i.id).order_by('sign_in_time')
+            a_signrecord=SignRecord.objects.filter(join_record__id=i.id).order_by('sign_in_time')
 
-        #     alltime=0
-        #     for j in a_signrecord:
-        #         signal_worktime=0
-        #         if j.sign_in_time and j.sign_out_time:
-        #             strtime_t1 = j.sign_in_time.strftime("%Y-%m-%d %H:%M:%S")
-        #             datetime_t1 = time.strptime(strtime_t1, '%Y-%m-%d %H:%M:%S')
-        #             t1 = time.mktime(datetime_t1)
+            alltime=0
+            for j in a_signrecord:
+                signal_worktime=0
+                if j.sign_in_time and j.sign_out_time:
+                    strtime_t1 = j.sign_in_time.strftime("%Y-%m-%d %H:%M:%S")
+                    datetime_t1 = time.strptime(strtime_t1, '%Y-%m-%d %H:%M:%S')
+                    t1 = time.mktime(datetime_t1)
 
-        #             strtime_t2 = j.sign_out_time.strftime("%Y-%m-%d %H:%M:%S")
-        #             datetime_t2 = time.strptime(strtime_t2, '%Y-%m-%d %H:%M:%S')
-        #             t2 = time.mktime(datetime_t2)
+                    strtime_t2 = j.sign_out_time.strftime("%Y-%m-%d %H:%M:%S")
+                    datetime_t2 = time.strptime(strtime_t2, '%Y-%m-%d %H:%M:%S')
+                    t2 = time.mktime(datetime_t2)
 
-        #             signal_worktime=round((t2-t1)/3600,2)
-        #         else:
-        #             signal_worktime=0
-        #         alltime=alltime+signal_worktime
-        #         sheet.write(_row, signproject_title_dict[j.sign_project.id], signal_worktime)
+                    signal_worktime=round((t2-t1)/3600,2)
+                else:
+                    signal_worktime=0
+                alltime=alltime+signal_worktime
+                sheet.write(_row, signproject_title_dict[j.sign_project.id], signal_worktime)
 
-        #     sheet.write(_row, _column, alltime)
-        #     _row=_row+1
+            sheet.write(_row, _column, alltime)
+            _row=_row+1
 
-        wb.save('test.xls')
         output = BytesIO()
         wb.save(output)
         output.seek(0)
@@ -116,84 +115,6 @@ class ExportView(APIView):
         response.write(output.getvalue())
         return response
    
-
-
-# # 导出名单
-
-# def export_excel(request):
-
-#     if request.method == 'GET':
-
-#         response = HttpResponse(content_type='application/vnd.ms-excel')
-#         response['Content-Disposition'] = 'attachment;filename=workname.xls'
-    
-#         # 创建一个文件对象
-#         wb = xlwt.Workbook(encoding='utf8')
-#         # 创建一个表
-#         sheet = wb.add_sheet('namelist',cell_overwrite_ok=True)
-
-#         # project_id
-#         p_id=request.GET.get('project_id') 
-#         # 根据projectid获取历次签到的title
-#         signproject_set=SignProject.objects.filter(project__id=p_id).order_by('begin_time')
-
-#         # 构建表头
-#         sheet.write(0,0,'id')
-#         sheet.write(0,1,'姓名')
-
-#         _row=0 # 行 
-#         _column=2 # 列
-
-#         # 存储title，便于后续输入
-#         signproject_title_dict = {}
-
-#         for i in signproject_set:
-#             sheet.write(_row,_column,i.title)
-#             signproject_title_dict[i.id]=_column
-#             _column=_column+1
-    
-#         sheet.write(_row,_column,'总工时')
-
-#         # 参加项目的所有人
-#         joinrecord_set=JoinRecord.objects.filter(project__id=p_id)
-
-#         _row=1
-#         for i in joinrecord_set:
-#             sheet.write(_row,0,i.user.id)
-#             sheet.write(_row,1,i.user.name)
-
-#             a_signrecord=SignRecord.objects.filter(join_record__id=i.id).order_by('sign_in_time')
-
-#             alltime=0
-#             for j in a_signrecord:
-#                 signal_worktime=0
-#                 if j.sign_in_time and j.sign_out_time:
-#                     strtime_t1 = j.sign_in_time.strftime("%Y-%m-%d %H:%M:%S")
-#                     datetime_t1 = time.strptime(strtime_t1, '%Y-%m-%d %H:%M:%S')
-#                     t1 = time.mktime(datetime_t1)
-
-#                     strtime_t2 = j.sign_out_time.strftime("%Y-%m-%d %H:%M:%S")
-#                     datetime_t2 = time.strptime(strtime_t2, '%Y-%m-%d %H:%M:%S')
-#                     t2 = time.mktime(datetime_t2)
-
-#                     signal_worktime=round((t2-t1)/3600,2)
-#                 else:
-#                     signal_worktime=0
-#                 alltime=alltime+signal_worktime
-#                 sheet.write(_row, signproject_title_dict[j.sign_project.id], signal_worktime)
-
-#             sheet.write(_row, _column, alltime)
-#             _row=_row+1
-
-
-#         output = BytesIO()
-#         wb.save(output)
-#         output.seek(0)
-
-#         response.write(output.getvalue())
-#         return response
-#     else:
-#         return Response({"error": 'method wrong'},status=405)
 
 
 class importSerializer(serializers.Serializer): 
