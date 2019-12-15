@@ -41,11 +41,15 @@
       <checkform v-if="applyList && applyList.length > 0" :applyList="applyList" :form="JSON.parse(form)"></checkform>
       
     </el-card>
-    <el-button type="danger" plain @click="endProject" v-if="!finished && !started">
-      <i class="el-icon-close"> 结项</i>
-    </el-button>
-
     <el-card>
+      <div slot="header" class="clearfix">
+        <span><i class="el-icon-close"> 结项操作</i></span>
+      </div>
+      <el-button type="danger" plain @click="endProject" v-if="!finished && started">
+        <i class="el-icon-close"> 结束项目</i>
+      </el-button>
+    </el-card>
+    <el-card style="margin:10px 0px">
       <div slot="header" class="clearfix">
         <span>
           <i class="el-icon-tickets"></i> 签到列表
@@ -201,11 +205,6 @@ export default {
           this.$router.push(-1)
         })
       }).catch(()=>{
-        Message({
-          message:'已取消',
-          type:'info',
-          duration:5000
-        })
       })
     }
   },
