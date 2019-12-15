@@ -82,5 +82,8 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  changeInfo: function(){
+    
   }
 })

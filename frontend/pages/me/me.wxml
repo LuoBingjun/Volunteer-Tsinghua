@@ -32,6 +32,8 @@
       </navigator>
     </view>
   </i-row>
+
+  <button class="weui-btn" type="primary" bindtap="changeInfo">修改个人信息</button>
   
   <i-tab-bar current="me" bindchange="handleChange" fixed="true">
     <i-tab-bar-item key="home" icon="homepage" current-icon="homepage_fill" title="项目广场"></i-tab-bar-item>
