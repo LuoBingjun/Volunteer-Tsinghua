@@ -84,6 +84,6 @@ Page({
 
   },
   changeInfo: function(){
-    
+    wx.navigateTo({ "url": "/pages/changeUserInfo/changeUserInfo"})
   }
 })

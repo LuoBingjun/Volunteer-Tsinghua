@@ -11,7 +11,8 @@
     "pages/homepage/homepage",
     "pages/currentproject/currentproject",
     "pages/comment/comment",
-    "pages/worktimeprove/worktimeprove"
+    "pages/worktimeprove/worktimeprove",
+    "pages/changeUserInfo/changeUserInfo"
   ],
   "window": {
     "navigationBarTextStyle": "black",

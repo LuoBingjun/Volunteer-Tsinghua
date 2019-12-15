@@ -10,7 +10,7 @@ Page({
     input:{
       'phone': '',
       'email': '',
-      'realid': ''
+      'id_card': ''
     }
   },
 
@@ -21,6 +21,14 @@ Page({
     var app = getApp()
     this.setData(app.globalData.userInfo)
     console.log("worktimeProve this.data:",this.data)
+    let inputTmp = {
+      'phone': this.data.phone,
+      'email': this.data.email,
+      'id_card': this.data.id_card
+    }
+    this.setData({
+      input: inputTmp
+    })
   },
 
   /**
@@ -92,21 +100,18 @@ Page({
     // console.log("fillUserInfo.js: formSubmit函数开始", e.detail.value)
 
     // 检测用户是否填写完全信息
-    if (this.data.input.phone.length && this.data.input.email.length) {
+    if (this.data.input.phone.length && this.data.input.email.length && this.data.input.id_card.length) {
       let app = getApp();
       const userUrl = `${app.globalData.backEndUrl}/auth/user`
       console.log('fillUserInfo中formSubmit函数，cookie为：', app.globalData.cookies)
       // 向后端发送填写信息请求
       wx.request({
         url: userUrl,
-        method: 'post',// 请求方式
+        method: 'put',// 请求方式
         data: { // 想接口提交的数据
-          'name': that.data.name,
-          'id': that.data.id,
-          'department': that.data.department,
           'email': that.data.input.email,
           'phone': that.data.input.phone,
-          'id_card': that.data.input.realid
+          'id_card': that.data.input.id_card
         },
         header: {
           'content-type': 'application/json',// 提交的数据类型
@@ -122,7 +127,7 @@ Page({
           else{
             wx.showModal({
               title: '错误',
-              content: '手机号或邮箱格式有误',
+              content: '填写信息格式有误',
               success(res) {
                 if (res.confirm) {
                   console.log('用户点击确定')
@@ -142,7 +147,7 @@ Page({
     else {
       wx.showModal({
         title: '提示',
-        content: '请输入手机号和邮箱',
+        content: '请输入手机号,邮箱及身份证号',
         success(res) {
           if (res.confirm) {
             console.log('用户点击确定')

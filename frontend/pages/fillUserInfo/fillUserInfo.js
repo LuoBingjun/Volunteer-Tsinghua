@@ -10,7 +10,7 @@ Page({
     input:{
       'phone': '',
       'email': '',
-      'realid': ''
+      'id_card': ''
     }
   },
 
@@ -91,7 +91,7 @@ Page({
     // console.log("fillUserInfo.js: formSubmit函数开始", e.detail.value)
 
     // 检测用户是否填写完全信息
-    if (this.data.input.phone.length && this.data.input.email.length) {
+    if (this.data.input.phone.length && this.data.input.email.length && this.data.input.id_card.length) {
       let app = getApp();
       const userUrl = `${app.globalData.backEndUrl}/auth/user`
       console.log('fillUserInfo中formSubmit函数，cookie为：', app.globalData.cookies)
@@ -105,7 +105,7 @@ Page({
           'department': that.data.department,
           'email': that.data.input.email,
           'phone': that.data.input.phone,
-          'id_card': that.data.input.realid
+          'id_card': that.data.input.id_card
         },
         header: {
           'content-type': 'application/json',// 提交的数据类型
@@ -121,7 +121,7 @@ Page({
           else{
             wx.showModal({
               title: '错误',
-              content: '手机号或邮箱格式有误',
+              content: '填写信息格式有误',
               success(res) {
                 if (res.confirm) {
                   console.log('用户点击确定')
@@ -141,7 +141,7 @@ Page({
     else {
       wx.showModal({
         title: '提示',
-        content: '请输入手机号和邮箱',
+        content: '请输入手机号,邮箱和身份证号',
         success(res) {
           if (res.confirm) {
             console.log('用户点击确定')
