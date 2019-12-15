@@ -17,7 +17,7 @@ import xlwt
 from io import BytesIO
 import time, datetime
 import xlrd
-
+import codecs
 
 class ViewWorktimeSerializer(serializers.Serializer): 
     project_id = serializers.IntegerField(max_value=None, min_value=0)
@@ -48,14 +48,15 @@ class ExportView(APIView):
 
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment;filename=workname.xls'
-    
+        response.write(codecs.BOM_UTF8)
+
         # 创建一个文件对象
         wb = xlwt.Workbook(encoding='utf-8')
         # 创建一个表
         sheet = wb.add_sheet('namelist',cell_overwrite_ok=True)
 
         # # project_id
-        # p_id=request.GET.get('project_id') 
+        # p_id=request.GET.get('project_id')
         # # 根据projectid获取历次签到的title
         # signproject_set=SignProject.objects.filter(project__id=p_id).order_by('begin_time')
 
