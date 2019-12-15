@@ -23,6 +23,7 @@ Page({
                     'projectID': options.projectID })
     console.log("从project跳转到URL：", getUrl)
     var that = this;
+    this.setData(app.globalData.userInfo)
     wx.request({
       url: getUrl,
       method: "get",
@@ -40,6 +41,21 @@ Page({
             "form": JSON.parse(res.data.form.replace(/\s+/g, "")),
           });
           console.log("报名问卷界面请求得到的数据：", that.form)
+
+          // 自动填写某些项目：
+          let i = 0
+          let len = 0
+          for(len = that.data.form.length; i < len; i++)
+          {
+            if(that.data.form[i].bind)
+            {
+              that.data.form[i].value = that.data[that.data.form[i].bind]
+              that.setData({
+                form: that.data.form
+              })
+            }
+          }
+          console.log("自动填写之后的form:",that.data.form)
         }
         else {
           wx.showModal({
@@ -107,6 +123,7 @@ Page({
   },
 
   onTextChanged: function (e) {
+    console.log("submit.js onTextChanged函数被调用")
     let dataset = e.currentTarget.dataset
     let value = e.detail.detail.value;
     this.data.form[dataset.item].value = value
@@ -123,7 +140,7 @@ Page({
     this.setData({
       form: this.data.form
     })
-    // console.log(this.data.form)
+    console.log(this.data.form)
   },
 
   onCheckChanged: function (e) {
