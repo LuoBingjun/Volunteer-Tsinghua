@@ -19,26 +19,24 @@ import time, datetime
 import xlrd
 import codecs
 from django.utils.encoding import escape_uri_path
-class ViewWorktimeSerializer(serializers.Serializer): 
-    project_id = serializers.IntegerField(max_value=None, min_value=0)
+class ViewJoinInfoSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model = JoinRecord
+        fields = "__all__"
+        depth = 1
     
-class ViewWorktime(APIView): 
-   
-    @login_required(wx=True)
-    def get(self, request):
-        info = ViewWorktimeSerializer(data=self.request.query_params)
-        if info.is_valid():
-            _project_id=info.validated_data['project_id']
+class ViewJoinInfo(generics.ListAPIView): 
+    serializer_class = ViewJoinInfoSerializer
+
+    @login_required(web=True)
+    def get_queryset(self):
+        
+        _project_id=self.request.GET.get("project_id")
         #项目存在是否判断
-            queryset = JoinRecord.objects.all()
-            join_record=get_object_or_404(queryset, user=request.user, project__id=_project_id)
-            
-            return Response({'worktime':join_record.work_time}, status=200)
-            
-        else:
-            return Response(info.errors, status=400) #数据格式错误
-
-
+        _project = get_object_or_404(Project, pk=_project_id)
+        if not (self.request.user.is_superuser or self.request.user == _project.webuser):
+            raise PermissionDenied()
+        return _project.joinrecord_set.all()
 
 #导出名单
 class ExportView(APIView):

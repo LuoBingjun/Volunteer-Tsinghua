@@ -291,7 +291,7 @@ class webuserView(APIView):
 class listWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['id', 'name', 'description', 'manager', 'email', 'phone']
+        fields = ['id', 'name', 'description', 'manager', 'email', 'phone', 'avatar']
 
 
 class listwebuserView(ListAPIView):
