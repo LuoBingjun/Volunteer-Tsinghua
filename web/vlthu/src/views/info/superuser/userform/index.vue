@@ -54,6 +54,7 @@
     </div>
 </template>
 <script>
+import {Message} from 'element-ui'
 export default {
     name:'userform',
     props:['user'],
@@ -113,8 +114,25 @@ export default {
         },
         getavatar(file)
         {
-            this.form.avatar=file.file
-            console.log(file.file)
+            var that=this
+            new Promise(function(resolve,reject){
+                let _URL=window.URL||window.webkitURL
+                let img=new Image()
+                img.onload=function(){
+                    let valid=(img.width==img.height)
+                    valid?resolve():reject()
+                }
+                img.src=_URL.createObjectURL(file.file)
+            }).then(()=>{
+                that.form.avatar=file.file
+            }).catch(()=>{
+                Message({
+                    message:"上传的图片不符合要求（要求宽高比1:1）",
+                    type:'warning',
+                    duration:5000
+                })
+                that.$refs.uploader.clearFiles()
+            })
         },
         removeavatar()
         {
