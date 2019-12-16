@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "项目详情",
   "usingComponents": {
     "i-panel": "../../dist/panel/index",
     "i-row": "../../dist/row/index",

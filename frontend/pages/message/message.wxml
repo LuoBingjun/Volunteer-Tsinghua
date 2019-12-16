@@ -34,9 +34,9 @@
 
 
 
-  <i-tab-bar current="message" bindchange="handleChange" fixed="true">
+  <!-- <i-tab-bar current="message" bindchange="handleChange" fixed="true">
     <i-tab-bar-item key="home" icon="homepage" current-icon="homepage_fill" title="项目广场"></i-tab-bar-item>
     <i-tab-bar-item key="message" icon="remind" current-icon="remind_fill" count="3" title="通知"></i-tab-bar-item>
     <i-tab-bar-item key="me" icon="mine" current-icon="mine_fill" dot title="我的"></i-tab-bar-item>
-  </i-tab-bar>
+  </i-tab-bar> -->
 </view>

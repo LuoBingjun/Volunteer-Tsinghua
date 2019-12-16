@@ -46,11 +46,10 @@
     <i-load-more wx:if="{{lastPage}}" tip="没有更多的项目了" loading="{{ false }}"/>
     <i-load-more wx:if="{{loadingPage || lastPage}}" tip="" loading="{{false}}"/>
   </view>
-  <i-tab-bar current="home" bindchange="handleChange" fixed="true">
+  <!-- <i-tab-bar current="home" bindchange="handleChange" fixed="true">
     <i-tab-bar-item key="home" icon="homepage" current-icon="homepage_fill" title="项目广场"></i-tab-bar-item>
     <i-tab-bar-item key="message" icon="remind" current-icon="remind_fill" count="3" title="通知"></i-tab-bar-item>
     <i-tab-bar-item key="me" icon="mine" current-icon="mine_fill" dot title="我的"></i-tab-bar-item>
-  </i-tab-bar>
+  </i-tab-bar> -->
   
 </view>
-<view class="footer" style="margin-bottom: {{isIphoneX ? '68rpx' : '0rpx'}};"></view>

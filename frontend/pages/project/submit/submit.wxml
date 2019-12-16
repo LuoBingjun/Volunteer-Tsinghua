@@ -1,35 +1,42 @@
 <view class="page">
-  <i-panel title="正在报名项目：{{ title }}">
-    <block wx:for="{{form}}">
-      <block wx:if="{{item.type=='text'}}">
-        <i-input wx:if="{{item.bind == 'name'}}" title="{{index+1}}.{{item.text}}" data-item="{{index}}"  value="{{name}}" bind:change="onTextChanged"/>
-        <i-input wx:elif="{{item.bind == 'phone'}}" title="{{index+1}}.{{item.text}}" data-item="{{index}}"  value="{{phone}}" bind:change="onTextChanged"/>
-        <i-input wx:elif="{{item.bind == 'department'}}" title="{{index+1}}.{{item.text}}" data-item="{{index}}"  value="{{department}}" bind:change="onTextChanged"/>
-        <i-input wx:else title="{{index+1}}.{{item.text}}" data-item="{{index}}" bind:change="onTextChanged" />
-      </block>
+  <view class="page__hd">
+    <view class="page__title">确认报名项目</view>
+    <view class="page__desc">{{ title }}</view>
+  </view>
 
-      <block wx:if="{{item.type=='radioBox'}}">
-        <i-panel title="{{index+1}}.{{item.text}}">
-          <i-radio-group current="{{item.value}}" data-item="{{index}}" bind:change="onRadioChanged">
-            <i-radio wx:for="{{item.options}}" value="{{item.name}}">
-            </i-radio>
-          </i-radio-group>
-        </i-panel>
-      </block>
+  <block wx:if="{{Object.keys(form) == []}}">
+    <i-panel title="请填写报名表单">
+      <block wx:for="{{form}}">
+        <block wx:if="{{item.type=='text'}}">
+          <i-input wx:if="{{item.bind == 'name'}}" title="{{index+1}}.{{item.text}}" data-item="{{index}}" value="{{name}}" bind:change="onTextChanged" />
+          <i-input wx:elif="{{item.bind == 'phone'}}" title="{{index+1}}.{{item.text}}" data-item="{{index}}" value="{{phone}}" bind:change="onTextChanged" />
+          <i-input wx:elif="{{item.bind == 'department'}}" title="{{index+1}}.{{item.text}}" data-item="{{index}}" value="{{department}}" bind:change="onTextChanged" />
+          <i-input wx:else title="{{index+1}}.{{item.text}}" data-item="{{index}}" bind:change="onTextChanged" />
+        </block>
 
-      <block wx:if="{{item.type=='checkBox'}}">
-        <i-panel title="{{index+1}}.{{item.text}}">
-          <i-checkbox-group current="{{item.value}}" data-item="{{index}}" bindchange="onCheckChanged">
-            <i-checkbox wx:for="{{item.options}}" value="{{item.name}}"></i-checkbox>
-          </i-checkbox-group>
-        </i-panel>
-      </block>
+        <block wx:if="{{item.type=='radioBox'}}">
+          <i-panel title="{{index+1}}.{{item.text}}">
+            <i-radio-group current="{{item.value}}" data-item="{{index}}" bind:change="onRadioChanged">
+              <i-radio wx:for="{{item.options}}" value="{{item.name}}">
+              </i-radio>
+            </i-radio-group>
+          </i-panel>
+        </block>
 
-      <!-- <p>{{index+1}}.{{item.text}}
+        <block wx:if="{{item.type=='checkBox'}}">
+          <i-panel title="{{index+1}}.{{item.text}}">
+            <i-checkbox-group current="{{item.value}}" data-item="{{index}}" bindchange="onCheckChanged">
+              <i-checkbox wx:for="{{item.options}}" value="{{item.name}}"></i-checkbox>
+            </i-checkbox-group>
+          </i-panel>
+        </block>
+
+        <!-- <p>{{index+1}}.{{item.text}}
         <text wx:if="{{item.required}}">*</text>
       </p> -->
-    </block>
-  </i-panel>
+      </block>
+    </i-panel>
+  </block>
   <!-- <view wx:for="{{form}}">
 
             <view class="weui-cells__title">
@@ -76,7 +83,7 @@
 
     </form> -->
   <view class="buttons">
-    <button class="weui-btn" type="primary" bindtap="onSubmit">我要报名</button>
+    <button class="weui-btn" type="primary" bindtap="onSubmit">确认报名</button>
   </view>
 </view>
 
