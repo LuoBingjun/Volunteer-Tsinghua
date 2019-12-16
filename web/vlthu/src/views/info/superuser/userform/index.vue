@@ -1,6 +1,9 @@
 <template>
     <div>
         <el-form :model="form" :rules="rules" ref="form">
+            <el-form-item label="用户昵称" prop="username" v-if="isnew">
+                <el-input v-model="form.username" class="short"></el-input>
+            </el-form-item>
             <el-form-item label="团体名称" prop="name">
                 <el-input v-model="form.name" class="short"></el-input>
             </el-form-item>
@@ -19,6 +22,22 @@
             <el-form-item label="团体描述" prop="description">
                 <el-input v-model="form.description" type="textarea" :rows="6"></el-input>
             </el-form-item>
+            <el-form-item label="上传头像">
+                <el-upload
+                    action="#"
+                    list-type="picture-card"
+                    :auto-upload="true"
+                    :multiple="false"
+                    :limit="1"
+                    name="avatar"
+                    :http-request="getavatar"
+                    ref="uploader"
+                    :on-remove="removeavatar"
+                    accept="image/*"
+                >
+                    <i slot="default" :class="form.avatar?'el-icon-close':'el-icon-plus'"></i>
+                </el-upload>
+            </el-form-item>
         </el-form>
         <el-button type="primary" @click="modifyUser" v-if="isnew">
             <i class="el-icon-plus"> 新建用户</i>
@@ -29,7 +48,7 @@
         <el-button type="danger" @click="resetForm" v-if="!isnew" plain>
             <i class="el-icon-close"> 放弃修改</i>
         </el-button>
-        <el-button type="danger" @click="deleteUser" v-if="!isnew">
+        <el-button type="danger" @click="deleteUser" v-if="!isnew && !nodelete">
             <i class="el-icon-delete"> 删除账号</i>
         </el-button>
     </div>
@@ -41,22 +60,32 @@ export default {
     data(){
         return{
             form:{
+                username:undefined,
                 id:undefined,
                 name:undefined,
                 manager:undefined,
                 phone:undefined,
                 email:undefined,
                 description:undefined,
-                password:undefined
+                password:undefined,
+                avatar:undefined
             },
             rules:{
+                username:{required:true, message: "登陆名称不能为空", trigger: "blur"},
                 name:{required: true, message: "团体名称不能为空", trigger: "blur"},
                 manager:{required:true,message:"负责人不能为空",trigger:'blur'},
                 phone:[{required:true,message:"电话号码不能为空",trigger:'blur'}],
                 email:{required:true,message:"电子邮箱不能为空",trigger:'blur'},
                 description:{required:true,message:"团体描述不能为空",trigger:'blur'},
                 password:{required:true,message:"密码不能为空",trigger:'blur'}
-            }
+            },
+            isnew:undefined,
+            nodelete:undefined
+        }
+    },
+    watch:{
+        user(){
+            this.resetForm()
         }
     },
     methods:{
@@ -74,11 +103,23 @@ export default {
             this.form.email=this.user.email
             this.form.description=this.user.description
             this.form.id=this.user.id
+            this.form.avatar=this.user.avatar
+            this.form.nodelete=this.user.nodelete
             this.isnew=this.user.isnew
+            this.nodelete=this.user.nodelete
         },
         deleteUser(){
             this.$emit('deleteuser',this.form.id)
-        }
+        },
+        getavatar(file)
+        {
+            this.form.avatar=file.file
+            console.log(file.file)
+        },
+        removeavatar()
+        {
+            this.form.avatar=undefined
+        },
     },
     created(){
         console.log("user is",this.user)

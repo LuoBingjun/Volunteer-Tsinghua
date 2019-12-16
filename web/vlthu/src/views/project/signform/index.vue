@@ -54,7 +54,7 @@ export default {
         content: undefined,
         time_range:undefined,
         jobs:[],
-        pos:{pos:"40.0024431613261,116.3263320",text:undefined}
+        pos:{pos:{lat:40.0024431613261,lng:116.3263320},text:undefined}
       },
       alljobs:undefined,
       isIndeterminate:undefined,
@@ -81,7 +81,7 @@ export default {
     },
     startSign()
     {
-      console.log()
+      var that=this
       this.$refs['form'].validate((valid)=>{
         if(valid){
           var newForm={
@@ -100,8 +100,9 @@ export default {
             Message({
               message: '成功发起签到',
               type: 'success',
-              duration: 5 * 1000
+              duration: 3 * 1000
             })
+            setTimeout(function(){that.$router.go(0)},3000)
           }).catch(err=>{
             Message({
               message: '发起签到失败：'+err,

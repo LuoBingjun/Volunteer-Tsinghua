@@ -6,7 +6,7 @@ yarn-error.log*
 package-lock.json
 tests/**/coverage/
 
-!dist/
+dist/
 
 # Editor directories and files
 .idea
