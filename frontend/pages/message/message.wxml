@@ -7,7 +7,8 @@
     <view class="weui-loadmore weui-loadmore_line">
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{item.time}}</view>
     </view>
-    <i-card title="{{item.title}}" extra="{{item.project.title}}" thumb="https://i.loli.net/2017/08/21/599a521472424.jpg" i-class="card-demo" bindtap="enterProject" data-projectid="{{item.project.id}}">
+    <i-card title="{{item.title}}" extra="{{item.project.title}}" thumb="{{item.sender.avatar}}" i-class="card-demo"
+    bindtap="enterProject" data-projectid="{{item.project.id}}">
       <view slot="content">
         <view wx:if="{{item.type=='P'}}">
           {{item.content}}
