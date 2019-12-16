@@ -29,7 +29,8 @@ Page({
     lastPage: false,
     loadingPage: false,
     typeText: "按标签筛选",
-    typelock: false
+    typelock: false,
+    swipers:[]
   },
 
   handleChange({ detail }) {
@@ -149,7 +150,31 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    let that = this
+    let app =  getApp();
+        
+    //  加载轮播图图片
+    wx.request({
+      url: `${app.globalData.backEndUrl}/project/swiper`,
+      method: 'get',
+      header: {
+        'content-type': 'application/json', // 提交的数据类型
+        'cookie': app.globalData.cookies //读取cookie
+      },
+      success(res) {  // 成功回调
+        if(res.statusCode==200)
+        {
+          console.log("轮播图得到的数据为", res)
+          that.setData({
+            swipers: res.data
+          })
+        }
+      },
+      fail() { // 失败回调
+        console.log('向后端发送数据失败！');
+        that.setData({loadingPage:false})
+      }
+    })
   },
 
   /**
