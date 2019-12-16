@@ -29,8 +29,20 @@
     </i-row>
     <div wx:if="{{finished == false}}">
       <i-row wx:for="{{job_set}}" i-class="buttons">
-        <i-panel title="{{item.job_name}}" hide-border="{{ true }}">
+        <i-panel title="岗位名称">
+          <view style="padding: 15px;">{{item.job_name}}</view>
         </i-panel>
+        <i-panel title="岗位工时">
+          <view style="padding: 15px;">{{item.job_worktime}}</view>
+        </i-panel>
+        <i-panel title="岗位详情">
+          <view style="padding: 15px;">{{item.job_content}}</view>
+        </i-panel>
+
+        <i-panel title="岗位人数">
+          <view style="padding: 15px;">需求人数：{{item.job_require_num}} 已报名：{{item.apply_num}}</view>
+        </i-panel>
+       
           <view wx:if="{{item.job_status=='W'}}">
             <button class="weui-btn" type="primary" disabled="true">正在审核</button>
             <button class="weui-btn" type="warn" bindtap="cancelApply" data-jobindex="{{item.id}}">取消申请</button>
