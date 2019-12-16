@@ -173,9 +173,13 @@ Page({
     /**
      * 用户点击右上角分享
      */
-    onShareAppMessage: function () {
-  
-    },
+    onShareAppMessage: function (res) {
+      var that = this;
+      return {
+          title: '志愿清华: '+that.data.title
+      }
+
+  },
     sign: function (e) {
         if (this.data.disabled) return;
         var app = getApp();
