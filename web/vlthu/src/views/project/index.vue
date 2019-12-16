@@ -39,7 +39,9 @@
       </div>
       <p v-if="applyList && applyList.length == 0">暂时还没有人报名QAQ</p>
       <checkform v-if="applyList && applyList.length > 0" :applyList="applyList" :form="JSON.parse(form)"></checkform>
-      
+      <el-button type="danger" @click="deleteProject">
+        <i class="el-icon-delete"> 删除项目</i>
+      </el-button>
     </el-card>
     <el-card v-if="!finished && started">
       <div slot="header" class="clearfix">
@@ -92,8 +94,6 @@
         <el-table-column label="参加人员" prop="user.name"></el-table-column>
         <el-table-column label="岗位" prop="job.job_name"></el-table-column>
       </el-table>
-      
-      
     </el-card>
   </div>
 </template>
@@ -111,7 +111,7 @@ import {
 import { Message, Checkbox, MessageBox } from "element-ui";
 import signform from "./signform";
 import checkform from "./checkform";
-import {endProject} from "@/api/project"
+import {endProject,deleteProject} from "@/api/project"
 import signlist from './signlist'
 export default {
   name: "Project",
@@ -215,6 +215,32 @@ export default {
           message:"Error: ",err,
           type:"error",
           duration: 5000
+        })
+      })
+    },
+    deleteProject()
+    {
+      var that=this
+      this.$confirm('此操作不可逆转，是否删除？','提示',{
+        confirmButtonText: '确定',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=>{
+        deleteProject(that.projectID).then(res=>{
+          Message({
+            message:"已删除项目",
+            type:"success",
+            duration:1500
+          })
+          setTimeout(() => {
+            that.$router.push({path:'/dashboard'})
+          }, 1500);
+        })
+      }).catch(()=>{
+        Message({
+          message:'已取消',
+          type:'info',
+          duration:5000
         })
       })
     }

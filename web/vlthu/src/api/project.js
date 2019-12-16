@@ -7,6 +7,17 @@ export function getProjectDetails(projectID){
     })
 }
 
+export function deleteProject(projectID)
+{
+    return request({
+        url:'/project/cancel',
+        method:'post',
+        data:{
+            project_id:projectID
+        }
+    })
+}
+
 export function getProjectApplyList(projectID)
 {
     return request({
