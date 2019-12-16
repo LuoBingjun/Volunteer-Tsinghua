@@ -44,6 +44,7 @@ class ViewWorktime(APIView):
 class ExportView(APIView):
 
     # 导出名单
+    @login_required(web=True)
     def get(self, request):
 
         response = HttpResponse(content_type='application/vnd.ms-excel')

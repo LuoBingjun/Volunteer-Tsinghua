@@ -222,13 +222,13 @@ class postWebuserSerializer(serializers.ModelSerializer):
 class putWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['name', 'description', 'manager', 'email', 'phone']
+        fields = ['name', 'description', 'manager', 'email', 'phone', 'head']
 
 
 class getWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['id', 'name', 'description', 'manager', 'email', 'phone']
+        fields = ['id', 'name', 'description', 'manager', 'email', 'phone', 'head']
 
 
 class webuserView(APIView):
