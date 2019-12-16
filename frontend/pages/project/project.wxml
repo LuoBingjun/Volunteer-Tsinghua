@@ -11,19 +11,19 @@
     </i-row>
     <i-row>
       <i-panel title="简介" hide-border="{{ true }}">
-        <view style="padding: 15px;">{{introduction}}</view>
+        <view style="padding: 15px;"><text>{{introduction}}</text></view>
       </i-panel>
     </i-row>
     <i-row>
       <i-panel title="详情" hide-border="{{ true }}">
-        <view style="padding: 15px;">{{description}}</view>
+        <view style="padding: 15px;"><text>{{description}}</text></view>
       </i-panel>
     </i-row>
 
     <i-row>
       <i-panel title="要求" hide-border="{{ true }}">
         <view style="padding: 15px;">
-          {{requirement}}
+          <text>{{requirement}}</text>
         </view>
       </i-panel>
     </i-row>
@@ -36,7 +36,7 @@
           <view style="padding: 15px;">{{item.job_worktime}}</view>
         </i-panel>
         <i-panel title="岗位详情">
-          <view style="padding: 15px;">{{item.job_content}}</view>
+          <view style="padding: 15px;"><text>{{item.job_content}}</text></view>
         </i-panel>
 
         <i-panel title="岗位人数">

@@ -12,13 +12,13 @@
 
     <i-row>
       <i-panel title="简介" hide-border="{{ true }}">
-        <view style="padding: 15px;">{{introduction}}</view>
+        <view style="padding: 15px;"><text>{{introduction}}</text></view>
       </i-panel>
     </i-row>
 
     <i-row wx:if="{{success_note}}">
       <i-panel title="温馨提示" hide-border="{{ true }}">
-        <view style="padding: 15px;">{{success_note}}</view>
+        <view style="padding: 15px;"><text>{{success_note}}</text></view>
       </i-panel>
     </i-row>
     
