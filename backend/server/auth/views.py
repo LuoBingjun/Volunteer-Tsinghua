@@ -18,7 +18,12 @@ from backend import settings
 from server.models import *
 from server.utils import login_required
 
+from server.auth.identicon import *
 
+import random
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from io import BytesIO
+from PIL import Image
 class preloginSerializer(serializers.Serializer):
     code = serializers.CharField()
 
@@ -233,6 +238,13 @@ class webuserView(APIView):
             raise PermissionDenied()
         serializer = postWebuserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
+        head = render_identicon(random.randint(1,100000)*10000000+random.randint(1,10000000), 16)  
+        f=BytesIO()
+        head.save(f,'JPEG')
+        file = InMemoryUploadedFile(f, None, 'avater.jpg', None, 48, None, None)       
+        serializer.validated_data['head']=file
+
         WebUser.objects.create_user(**serializer.validated_data)
         return Response(status=200)
 
@@ -292,3 +304,13 @@ class unbundlingView(APIView):
         request.user.openid = None
         request.user.save()
         return Response(status=200)
+
+# class testView(APIView):
+
+#     def post(self,request):
+#         img = render_identicon(2017013627, 16)
+#         img.save('123123.png')
+#         # im = Image.open('123123.png')
+#         # im_rotate_180 = im.transpose(Image.FLIP_LEFT_RIGHT)
+#         # im.paste(im_rotate_180,(48,48),None)
+#         return Response(status=200)
