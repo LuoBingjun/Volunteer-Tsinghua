@@ -27,7 +27,9 @@ Page({
     page:0,
     type:0,
     lastPage: false,
-    loadingPage: false
+    loadingPage: false,
+    typeText: "按标签筛选",
+    typelock: false
   },
 
   handleChange({ detail }) {
@@ -74,7 +76,7 @@ Page({
     this.setData({loadingPage:true})
     setTimeout(
       function(){
-            wx.request({
+        wx.request({
           url: getUrl,
           method: 'get',
           header: {
@@ -88,7 +90,8 @@ Page({
               that.setData({
                 projects: that.data.projects.concat(res.data.results),
                 lastPage: res.data.next===null,
-                loadingPage: false
+                loadingPage: false,
+                typelock:false
               })
             }
             else if(res.statusCode==404)
@@ -96,7 +99,8 @@ Page({
               console.log("无数据")
               that.setData({
                 lastPage: true,
-                loadingPage: false
+                loadingPage: false,
+                typelock:false
               })
             }
           },
@@ -197,18 +201,39 @@ Page({
   hideInput: function () {
     this.setData({
       inputVal: "",
-      inputShowed: false
+      inputShowed: false,
+      page:0,
+      lastPage:false,
+      projects:[],
+      typelock:true
     });
+    this.updateList()
   },
   clearInput: function () {
     this.setData({
-      inputVal: ""
+      inputVal: "",
+      page:0,
+      lastPage:false,
+      projects:[],
+      typelock:true
     });
+    this.updateList()
   },
   inputTyping: function (e) {
-    this.setData({
-      inputVal: e.detail.value
-    });
+    if(!this.data.typelock)
+    {
+      this.setData({
+        inputVal: e.detail.value,
+        showLeft1: false,
+        page:0,
+        lastPage:false,
+        projects:[],
+        typelock:true
+      });
+      this.updateList()
+    }
+    
+
   },
   showKinds() {
     this.setData({
