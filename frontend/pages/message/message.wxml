@@ -1,17 +1,19 @@
 <view class="page">
-  <view class="page__hd">
+  <!-- <view class="page__hd">
     <view class="page__title">我的消息</view>
-  </view>
+  </view> -->
 
   <view wx:for="{{messages}}" class="message-card">
-    <i-card title="{{item.title}}" extra="{{item.project.title}}" thumb="https://i.loli.net/2017/08/21/599a521472424.jpg" i-class="card-demo"
-    bindtap="enterProject" data-projectid="{{item.project.id}}">
+    <view class="weui-loadmore weui-loadmore_line">
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{item.time}}</view>
+    </view>
+    <i-card title="{{item.title}}" extra="{{item.project.title}}" thumb="https://i.loli.net/2017/08/21/599a521472424.jpg" i-class="card-demo" bindtap="enterProject" data-projectid="{{item.project.id}}">
       <view slot="content">
         <view wx:if="{{item.type=='P'}}">
           {{item.content}}
         </view>
 
-        <view wx:if="{{item.type=='M'}}">  
+        <view wx:if="{{item.type=='M'}}">
           <view wx:for="{{item.content}}" wx:for-item="inf">
             <i-row>
               <i-col span="2" i-class="col-icon">
@@ -27,16 +29,9 @@
       <view slot="footer">{{item.sender.description}}</view>
     </i-card>
 
+    <view wx:for="{{messages.length}}" class="weui-loadmore weui-loadmore_line">
+      <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{item.time}}</view>
+    </view>
+
   </view>
-
-  
-
-
-
-
-  <!-- <i-tab-bar current="message" bindchange="handleChange" fixed="true">
-    <i-tab-bar-item key="home" icon="homepage" current-icon="homepage_fill" title="项目广场"></i-tab-bar-item>
-    <i-tab-bar-item key="message" icon="remind" current-icon="remind_fill" count="3" title="通知"></i-tab-bar-item>
-    <i-tab-bar-item key="me" icon="mine" current-icon="mine_fill" dot title="我的"></i-tab-bar-item>
-  </i-tab-bar> -->
 </view>
