@@ -213,22 +213,23 @@ class userView(APIView):
 
 
 class postWebuserSerializer(serializers.ModelSerializer):
+    avatar = serializers.ImageField(read_only=True)
     class Meta:
         model = WebUser
         fields = ['username', 'password', 'name',
-                  'description', 'manager', 'email', 'phone']
+                  'description', 'manager', 'email', 'phone', 'avatar']
 
 
 class putWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['name', 'description', 'manager', 'email', 'phone', 'head']
+        fields = ['name', 'description', 'manager', 'email', 'phone', 'avatar']
 
 
 class getWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['id', 'name', 'description', 'manager', 'email', 'phone', 'head']
+        fields = ['id', 'name', 'description', 'manager', 'email', 'phone', 'avatar']
 
 
 class webuserView(APIView):
@@ -239,11 +240,15 @@ class webuserView(APIView):
         serializer = postWebuserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        head = render_identicon(random.randint(1,100000)*10000000+random.randint(1,10000000), 16)  
-        f=BytesIO()
-        head.save(f,'JPEG')
-        file = InMemoryUploadedFile(f, None, 'avater.jpg', None, 48, None, None)       
-        serializer.validated_data['head']=file
+        if not request.data.get('avatar'):
+            avatar = render_identicon(random.randint(1,100000)*10000000+random.randint(1,10000000), 16)  
+            f=BytesIO()
+            avatar.save(f,'JPEG')
+            file = InMemoryUploadedFile(f, None, 'avatar.jpg', None, 48, None, None)       
+            serializer.validated_data['avatar']=file
+        else:
+            serializer.validated_data['avatar']=request.FILES.get('avatar')
+
 
         WebUser.objects.create_user(**serializer.validated_data)
         return Response(status=200)

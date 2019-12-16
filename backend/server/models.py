@@ -18,7 +18,7 @@ class WebUser(AbstractUser):
     manager = models.CharField('负责人', blank=True, null=True, max_length=16)
     email = models.EmailField('电子邮箱', blank=True, null=True)
     phone = models.DecimalField('电话', null=True, blank=True, max_digits=11, decimal_places=0)
-    head = models.ImageField('头像')
+    avatar = models.ImageField('头像')
 
 class ApplyRecord(models.Model):
     user = models.ForeignKey('WxUser', on_delete=models.CASCADE)
