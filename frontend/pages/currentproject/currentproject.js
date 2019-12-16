@@ -122,6 +122,12 @@ Page({
                         'signList': signList
                     });
                 }
+                else if(res.statusCode==403)
+                {
+                    wx.reLaunch({
+                        url: `/pages/login/login?page=currentproject&projectID=`+that.data.projectID,
+                    })
+                }
                 else 
                 {
                   wx.reLaunch({"url":"/pages/project/project?projectID="+that.data.projectID})

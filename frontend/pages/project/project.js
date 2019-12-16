@@ -81,6 +81,12 @@ Page({
                     that.setData({"beforedeadline": now.getTime() < deadline.getTime()})
                     console.log("now:",now, "deadline:",deadline,"beforedeadline:",that.data.beforedeadline)
                 }
+                else if(res.statusCode==403)
+                {
+                    wx.reLaunch({
+                        url: `/pages/login/login?page=project&projectID=`+that.data.projectID,
+                    })
+                }
                 else 
                 {
                     wx.showModal({
