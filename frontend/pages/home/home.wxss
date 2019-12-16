@@ -1,4 +1,4 @@
 /* pages/home/home.wxss */
 .project-card{
-  margin-bottom: 15rpx;
+  margin-bottom: 10rpx;
 }

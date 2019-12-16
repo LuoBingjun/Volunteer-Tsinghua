@@ -27,8 +27,7 @@ Page({
     page:0,
     type:0,
     lastPage: false,
-    loadingPage: false,
-    typeText: "按标签筛选"
+    loadingPage: false
   },
 
   handleChange({ detail }) {

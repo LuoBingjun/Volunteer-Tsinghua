@@ -5,6 +5,7 @@
     "i-tab-bar-item": "/dist/tab-bar-item/index",
     "i-row": "/dist/row/index",
     "i-col": "/dist/col/index",
-    "i-avatar": "/dist/avatar/index"
+    "i-avatar": "/dist/avatar/index",
+    "i-icon": "../../dist/icon/index"
   }
 }

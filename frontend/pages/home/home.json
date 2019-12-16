@@ -9,6 +9,7 @@
     "van-sidebar": "/dist/Vant/sidebar/index",
     "van-sidebar-item": "/dist/Vant/sidebar-item/index",
     "i-load-more": "/dist/load-more/index",
-    "i-icon": "/dist/icon/index"
+    "i-icon": "/dist/icon/index",
+    "i-button": "../../dist/button/index"
   }
 }
