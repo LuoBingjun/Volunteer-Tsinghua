@@ -36,6 +36,19 @@
       {{typeText}}
     </button> -->
     
+    <view >
+    <!--轮播图-->
+      <swiper class='lunbo' indicator-dots='true' autoplay='true' interval='4000' circular='true'>
+        <view>
+          <swiper-item class="banner"> <image src='a.jpg'></image> <text>afasfsafa</text></swiper-item>
+          <swiper-item class="banner"> <image src='b.jpg'></image> <text>bfadsfasfb</text></swiper-item>
+          <swiper-item class="banner"> <image src='c.jpg'></image> <text>cfasdfsafsafasc</text></swiper-item>
+        </view>
+      </swiper>
+   
+    </view>
+
+
     <view wx:for="{{projects}}" class="project-card" style="margin:5px">
       <i-card title="{{item.title}}" extra="{{item.require_num}}人" bindtap="enterProject" id="{{item.id}}">
         <view slot="content">{{item.introduction}}</view>
