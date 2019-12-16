@@ -58,6 +58,10 @@ class ExportView(APIView):
 
         # project_id
         p_id=request.GET.get('project_id')
+        project = get_object_or_404(Project, pk=p_id)
+        if not (request.user.is_superuser or request.user == project.webuser):
+            raise PermissionDenied()
+
         # 根据projectid获取历次签到的title
         signproject_set=SignProject.objects.filter(project__id=p_id).order_by('begin_time')
 
