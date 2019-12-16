@@ -82,9 +82,8 @@
               <i class="el-icon-upload"> 以Excel导入工时</i>
             </el-button>
           </el-upload>
-
-          <el-button @click="exportExcel" style="float: right; margin:0px 10px">
-            <i class="el-icon-download"> 导出工时为excel</i>
+          <el-button style="float: right; margin:0px 10px">
+            <el-link  :href="'/api/worktime/Export?project_id='+projectID" type="primary">导出工时为excel</el-link>
           </el-button>
         </span>
       </div>
@@ -182,25 +181,6 @@ export default {
           }
         }
       }
-    },
-    exportExcel() {
-      downloadExcel(this.projectID)
-        .then(res => {
-          const url = window.URL.createObjectURL(new Blob([res.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          let fileName = res.headers["content-disposition"].split("filename=");
-          link.setAttribute("download", fileName[1]);
-          document.body.appendChild(link);
-          link.click();
-        })
-        .catch(err => {
-          Message({
-            message: "Error request" + err,
-            type: "error",
-            duration: 5 * 1000
-          });
-        });
     },
     endProject(){
       var that=this

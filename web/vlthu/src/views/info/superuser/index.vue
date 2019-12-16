@@ -46,7 +46,6 @@ export default {
     methods:{
         getIndex(id)
         {
-            console.log("INDEX! ")
             for(var i in this.users)
             {
                 if(this.users[i].id==id)
@@ -56,7 +55,17 @@ export default {
         },
         modifyUser(form)
         {
-            modifyUserInfo(form,form.id).then(res=>{
+            var formdata=new FormData()
+            formdata.append('username',form.username)
+            formdata.append('password',form.password)
+            formdata.append('name',form.name)
+            formdata.append('description',form.description)
+            formdata.append('manager',form.manager)
+            formdata.append('email',form.email)
+            formdata.append('phone',form.phone)
+            if(form.avatar)formdata.append('avatar',form.avatar)
+            console.log("here!",formdata)
+            modifyUserInfo(formdata,form.id).then(res=>{
                 Message({
                     message: '成功修改',
                     type: 'success',
@@ -94,15 +103,16 @@ export default {
         },
         addUser(form){
             console.log("here")
-            addUser({
-                username:form.username,
-                password:form.password,
-                name:form.name,
-                description:form.description,
-                manager:form.manager,
-                email:form.email,
-                phone:form.phone
-            }).then(res=>{
+            var formdata=new FormData()
+            formdata.append('username',form.username)
+            formdata.append('password',form.password)
+            formdata.append('name',form.name)
+            formdata.append('description',form.description)
+            formdata.append('manager',form.manager)
+            formdata.append('email',form.email)
+            formdata.append('phone',form.phone)
+            if(form.avatar)formdata.append('avatar',form.avatar)
+            addUser(formdata).then(res=>{
                 Message({
                     message: '成功添加',
                     type: 'success',

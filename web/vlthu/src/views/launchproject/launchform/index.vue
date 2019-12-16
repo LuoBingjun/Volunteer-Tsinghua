@@ -62,7 +62,7 @@
         :limit="1"
         name="cover"
         :http-request="getQrcode1"
-        ref="uploader"
+        ref="uploader1"
         :on-remove="handleQrcode1Remove"
         accept="image/*"
       >
@@ -87,7 +87,7 @@
         :limit="1"
         name="cover"
         :http-request="getQrcode2"
-        ref="uploader"
+        ref="uploader2"
         :on-remove="handleQrcode2Remove"
         accept="image/*"
       >
@@ -355,7 +355,7 @@ export default {
     },
     submitform() {
       var that = this;
-      this.$refs.uploader.submit(); //getfile
+      //this.$refs.uploader.submit(); //getfile
       console.log(this.form);
       this.$refs.mainform.validate(valid => {
         console.log(valid);
