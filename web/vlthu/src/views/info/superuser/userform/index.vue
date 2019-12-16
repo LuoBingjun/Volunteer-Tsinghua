@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-form :model="form" :rules="rules" ref="form">
+        <el-form :model="form" :rules="rules" ref="form">           
             <el-form-item label="用户昵称" prop="username" v-if="isnew">
                 <el-input v-model="form.username" class="short"></el-input>
             </el-form-item>
@@ -23,6 +23,7 @@
                 <el-input v-model="form.description" type="textarea" :rows="6"></el-input>
             </el-form-item>
             <el-form-item label="上传头像">
+                <img v-if="avatar_url" :alt="avatar_url" :src="avatar_url" style="height:120px;width:120px;float:right" />
                 <el-upload
                     action="#"
                     list-type="picture-card"
@@ -104,7 +105,11 @@ export default {
             this.form.email=this.user.email
             this.form.description=this.user.description
             this.form.id=this.user.id
-            this.form.avatar=this.user.avatar
+            this.avatar_url=this.user.avatar
+            this.form.avatar=undefined
+            if(this.$refs.uploader)this.$refs.uploader.clearFiles()
+            else console.log("uploader: empty",)
+
             this.form.nodelete=this.user.nodelete
             this.isnew=this.user.isnew
             this.nodelete=this.user.nodelete

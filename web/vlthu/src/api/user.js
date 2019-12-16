@@ -31,6 +31,7 @@ export function getUserInfo(id)
 
 export function modifyUserInfo(options,id)
 {
+  console.log(id)
   if(id!==undefined)
   {
     return request({
