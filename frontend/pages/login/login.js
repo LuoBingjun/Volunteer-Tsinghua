@@ -38,7 +38,33 @@ Page({
                   app.globalData.cookies = res.header['Set-Cookie']
                   if (res.data.login_status) {
                     console.log('res.data.login_status为true')
-                    wx.reLaunch({ 'url': "/pages/home/home" })
+                    if(!options.page)
+                    {
+                      wx.reLaunch({ 'url': "/pages/home/home" })
+                    }
+                    else
+                    {
+                      wx.request({
+                        url: `${app.globalData.backEndUrl}/auth/user`,
+                        method: 'get',
+                        header: {
+                          'content-type': 'application/json', // 提交的数据类型
+                          'cookie': app.globalData.cookies //读取cookie
+                        },
+                        success(res) {  // 成功回调
+                          console.log("home.js 获取用户信息：", res.data)
+                          app.globalData.userInfo = JSON.parse(JSON.stringify(res.data))
+                          that.setData({
+                            "username": app.globalData.userInfo.name,
+                          })
+                          wx.reLaunch({ "url": `/pages/${options.page}/${options.page}?projectID=${options.projectID}`})
+                        },
+                        fail() { // 失败回调
+                          console.log('向后端发送数据失败！');
+                        }
+                      })
+                    }
+
                   }
                   else {
                     console.log('res.data.login_status为false还未登录')
