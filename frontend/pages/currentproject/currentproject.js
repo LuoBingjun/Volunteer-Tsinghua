@@ -234,7 +234,7 @@ Page({
                 else {
                   wx.showModal({
                     title: '错误',
-                    content: JSON.stringify(res.data),
+                    content: res.data.error,
                   });
                 }
               },
