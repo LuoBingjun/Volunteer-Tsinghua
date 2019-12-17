@@ -148,6 +148,19 @@ Page({
 
   onCheckChanged: function (e) {
     console.log(e)
+    let num = e.currentTarget.dataset.item
+    let item=e.detail
+    var form=this.data.form
+    form[num].value=item
+    this.setData({
+      form:form
+    })
+    console.log(num,this.data.form[num].value)
+  },
+
+  /*
+  onCheckChanged: function (e) {
+    console.log(e)
     let dataset = e.currentTarget.dataset
     let value = e.detail.value
 
@@ -164,6 +177,7 @@ Page({
       form: this.data.form
     })
   },
+  */
 
   // radioChange: function (e) {
   //   if (this.data.status == "joined") return;
