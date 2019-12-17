@@ -132,7 +132,7 @@ Page({
    */
   onShareAppMessage: function (res) {
     return {
-        path: '/page/login/login'
+        path: '/pages/login/login'
     }
 
   },

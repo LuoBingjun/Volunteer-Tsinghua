@@ -2,3 +2,9 @@
 .project-card{
   margin-bottom: 10rpx;
 }
+.banner text{
+  position: absolute;
+  top:70%;
+  left:50%;
+  transform:translateX(-50%);
+}
