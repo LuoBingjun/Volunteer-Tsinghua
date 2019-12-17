@@ -43,7 +43,7 @@ class projectView(CreateAPIView):
             receivers = receivers | users
 
         for user in receivers:
-            send_wx_msg.delay(user.openid, settings.SIGN_TEMPLATE_ID, '',
+            send_wx_msg.delay(user.openid, settings.SIGN_TEMPLATE_ID, '/pages/currentproject/currentproject?projectID={}'.format(project.id),
                     {
                         'thing1': {"value": sign_project.title},
                         "date2": {"value": datetime.datetime.strftime(sign_project.begin_time, "%Y-%m-%d")},
@@ -53,8 +53,9 @@ class projectView(CreateAPIView):
             Message.objects.create(type='M', sender=request.user, receiver=user, project=sign_project.project,
                                        title='签到活动通知', content=json.dumps([
                                            {'key':'活动名称', 'value': sign_project.title},
-                                           {'key':'签到开始时间', 'value': datetime.datetime.strftime(sign_project.begin_time, "%Y-%m-%d %H:%M")},
-                                           {'key':'签到截止时间', 'value': datetime.datetime.strftime(sign_project.end_time, "%Y-%m-%d %H:%M")}
+                                           {'key':'签到地点', 'value': sign_project.position},
+                                           {'key':'开始时间', 'value': datetime.datetime.strftime(sign_project.begin_time, "%Y-%m-%d %H:%M")},
+                                           {'key':'截止时间', 'value': datetime.datetime.strftime(sign_project.end_time, "%Y-%m-%d %H:%M")}
                                        ], ensure_ascii=False))
         return Response({'id': sign_project.id})
 
