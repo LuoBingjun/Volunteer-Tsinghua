@@ -84,12 +84,13 @@
               <i-col span="8" i-class="col-class">结束时间</i-col>
               <i-col span="14" i-class="col-content">{{item.end_time}}</i-col>
             </i-row>
-            <view class="buttons">
-              <button class="weui-button" wx:if="{{item.status==0}}" disabled='{{true}}'>签到已结束</button>
-              <button class="weui-button" wx:if="{{item.status==1}}" catchtap='sign' id="{{item.id}}">点击签到</button>
-              <button class="weui-button" wx:if="{{item.status==2}}" disabled='{{true}}'>已签到</button>
-              <button class="weui-button" wx:if="{{item.status==3}}" disabled='{{true}}'>签到未开始</button>
-            </view>
+          <view class="buttons">
+            <button class="weui-button" wx:if="{{item.status==0}}" disabled='{{true}}'>签到已结束</button>
+            <button class="weui-button" wx:if="{{item.status==1}}" catchtap='sign' id="{{item.id}}">点击签到</button>
+            <button class="weui-button" wx:if="{{item.status==2}}" catchtap='signout' data-signrecordid="{{item.signrecordid}}">点击签退</button>
+            <button class="weui-button" wx:if="{{item.status==3}}" disabled='{{true}}'>签到未开始</button>
+            <button class="weui-button" wx:if="{{item.status==4}}" disabled='{{true}}'>已签退</button>
+          </view>
           </van-collapse-item>
         </van-collapse>
       </block>

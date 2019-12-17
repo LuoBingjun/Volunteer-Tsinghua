@@ -88,5 +88,64 @@ Page({
   },
   changeInfo: function(){
     wx.navigateTo({ "url": "/pages/changeUserInfo/changeUserInfo"})
+  },
+  unbundling:function(){
+    console.log("unbundling函数触发！")
+    var that = this
+    var app = getApp()
+    wx.showModal({
+      title: '用户解绑',
+      content: '您确定要解绑此学号吗？',
+      confirmText: "我再想想",
+      cancelText: "解绑",
+      success: function (res) {
+        console.log(res);
+        if (res.confirm) {
+          console.log('用户点击我再想想')
+        } else {
+          console.log('用户点击解绑')
+
+
+          wx.request({
+            url: `${app.globalData.backEndUrl}/auth/unbundling`,
+            method: 'post',
+            header: {
+              'content-type': 'application/json', // 提交的数据类型
+              'cookie': app.globalData.cookies //读取cookie
+            },
+            data: {
+            },
+            success(res) {  // 成功回调
+              console.log("得到的数据为", res);
+              if (res.statusCode == 200) {
+                wx.showToast({
+                  title: "已成功解绑",
+                  icon: "success",
+                  duration: 2000
+                });
+                setTimeout(function () {
+                  console.log("返回登录");
+                  wx.reLaunch({
+                    url: `/pages/login/login`
+                  })
+                }, 2000);
+              }
+              else {
+                wx.showModal({
+                  title: '错误',
+                  content: res.data.error,
+                });
+              }
+            },
+            fail() { // 失败回调
+              wx.showModal({
+                title: '错误',
+                content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+              });
+            }
+          })
+        }
+      }
+    });
   }
 })

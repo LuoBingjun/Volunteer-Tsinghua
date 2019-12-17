@@ -72,6 +72,19 @@ Page({
 
               item.status = 1
 
+                    for (let item of res.data.signrecord_set){
+                      if(item.sign_out_time)
+                      {
+                        //  已签退
+                        signList[item.sign_project].status = 4
+                      }
+                      else
+                      {
+                        //  未签退
+                        signList[item.sign_project].status = 2
+                        signList[item.sign_project].signrecordid = item.id
+                      }
+                    }
 
               // wx.request({
               //     url: `${app.globalData.backEndUrl}/my/signrecord?signproject=${item.id}`,
@@ -193,6 +206,46 @@ Page({
           header: {
             'content-type': 'application/json', // 提交的数据类型
             'cookie': app.globalData.cookies //读取cookie
+            wx.request({
+              url: `${app.globalData.backEndUrl}/sign/signin`,
+              method: 'post',
+              header: {
+                'content-type': 'application/json', // 提交的数据类型
+                'cookie': app.globalData.cookies //读取cookie
+              },
+              data: {
+                'sign_project_id': e.currentTarget.id,
+                "longitude":longitude,
+                "latitude":latitude
+              },
+              success(res) {  // 成功回调
+                console.log("得到的数据为", res);
+                if (res.statusCode == 200) {
+                  that.setData({ 'disabled': true })
+                  wx.showToast({
+                    title: "签到成功",
+                    icon: "success",
+                    duration: 2000
+                  });
+                  setTimeout(function () {
+                    console.log("返回主界面");
+                    wx.navigateBack();
+                  }, 2000);
+                }
+                else {
+                  wx.showModal({
+                    title: '错误',
+                    content: res.data.error,
+                  });
+                }
+              },
+              fail() { // 失败回调
+                wx.showModal({
+                  title: '错误',
+                  content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+                });
+              }
+            })
           },
           data: {
             'sign_project_id': e.currentTarget.id,
@@ -309,4 +362,124 @@ Page({
       }
     });
   }
+        }) 
+    },
+
+    // 下面的是原来写的退出项目，但没有后端
+    // projectcancel(){
+    //   var that = this
+    //   var app = getApp()
+    //   wx.showModal({
+    //     title: '危险操作！',
+    //     content: '退出项目后将无法恢复！',
+    //     confirmText: "我再想想",
+    //     cancelText: "退出项目",
+    //     success: function (res) {
+    //         console.log(res);
+    //         if (res.confirm) {
+    //             console.log('用户点击我再想想')
+    //         }else{
+    //             console.log('用户点击退出项目')
+
+
+    //             wx.request({
+    //               url: `${app.globalData.backEndUrl}/project/cancel`,
+    //               method: 'post',
+    //               header: {
+    //                 'content-type': 'application/json', // 提交的数据类型
+    //                 'cookie': app.globalData.cookies //读取cookie
+    //               },
+    //               data: {
+    //                 "project_id":that.data.projectID
+    //               },
+    //               success(res) {  // 成功回调
+    //                 console.log("得到的数据为", res);
+    //                 if (res.statusCode == 200) {
+    //                   wx.showToast({
+    //                     title: "已退出此项目",
+    //                     icon: "success",
+    //                     duration: 2000
+    //                   });
+    //                   setTimeout(function () {
+    //                     console.log("返回主界面");
+    //                     wx.navigateBack();
+    //                   }, 2000);
+    //                 }
+    //                 else {
+    //                   wx.showModal({
+    //                     title: '错误',
+    //                     content: JSON.stringify(res.data),
+    //                   });
+    //                 }
+    //               },
+    //               fail() { // 失败回调
+    //                 wx.showModal({
+    //                   title: '错误',
+    //                   content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+    //                 });
+    //               }
+    //             })
+    //         }
+    //     }
+    // });
+    // },
+    signout: function(e){
+      let dataset = e.currentTarget.dataset
+      console.log("signout函数触发！,signrecordid=",dataset.signrecordid)
+      var that = this
+      var app = getApp()
+      wx.showModal({
+        title: '签退',
+        content: '您确定要签退吗？签退后不可再次签到',
+        confirmText: "我再想想",
+        cancelText: "签退",
+        success: function (res) {
+          console.log(res);
+          if (res.confirm) {
+            console.log('用户点击我再想想')
+          } else {
+            console.log('用户点击签退')
+
+
+            wx.request({
+              url: `${app.globalData.backEndUrl}/sign/signout`,
+              method: 'post',
+              header: {
+                'content-type': 'application/json', // 提交的数据类型
+                'cookie': app.globalData.cookies //读取cookie
+              },
+              data: {
+                "sign_record_id":dataset.signrecordid
+              },
+              success(res) {  // 成功回调
+                console.log("得到的数据为", res);
+                if (res.statusCode == 200) {
+                  wx.showToast({
+                    title: "已成功签退",
+                    icon: "success",
+                    duration: 2000
+                  });
+                  setTimeout(function () {
+                    console.log("返回主界面")
+                    wx.navigateBack()
+                  }, 2000);
+                }
+                else {
+                  wx.showModal({
+                    title: '错误',
+                    content: JSON.stringify(res.data),
+                  });
+                }
+              },
+              fail() { // 失败回调
+                wx.showModal({
+                  title: '错误',
+                  content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+                });
+              }
+            })
+          }
+        }
+      });
+      }
 })
