@@ -233,6 +233,7 @@ class getWebuserSerializer(serializers.ModelSerializer):
 
 
 class webuserView(APIView):
+    serializer_class = getWebuserSerializer
     @login_required(web=True)
     def post(self, request):
         if not request.user.is_superuser:

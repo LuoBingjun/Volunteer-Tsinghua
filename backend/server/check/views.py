@@ -107,11 +107,11 @@ class CheckOp(APIView):
                                         {'key':'审核结果', 'value':'通过'},
                                         {'key':'审核岗位', 'value':_apply.job.job_name},
                                     ], ensure_ascii=False))
-            send_wx_msg.delay(_apply.user.openid, settings.CHECK_TEMPLATE_ID, '',
+            send_wx_msg.delay(_apply.user.openid, settings.CHECK_TEMPLATE_ID, '/pages/currentproject/currentproject?projectID={}'.format(_apply.project.id),
                                 {
                                     'phrase1': {"value": '通过'},
                                     "thing2": {"value": _apply.project.title},
-                                    "time3": {"value": '2019-10-01 15:01'},
+                                    "time3": {"value": _apply.project.begin_datetime.strftime('%Y-%m-%d %H:%M')},
                                     "thing5": {'value': '请持续关注志愿清华小程序以获取进一步信息'},
                                     "name4": {'value': _apply.user.name}
                                 })
@@ -121,11 +121,11 @@ class CheckOp(APIView):
                                         {'key':'审核结果', 'value':'不通过'},
                                         {'key':'审核岗位', 'value':_apply.job.job_name}
                                     ], ensure_ascii=False))
-            send_wx_msg.delay(_apply.user.openid, settings.CHECK_TEMPLATE_ID, '',
+            send_wx_msg.delay(_apply.user.openid, settings.CHECK_TEMPLATE_ID, '/pages/currentproject/currentproject?projectID={}'.format(_apply.project.id),
                                 {
                                     'phrase1': {"value": '不通过'},
                                     "thing2": {"value": _apply.project.title},
-                                    "time3": {"value": '2019-10-01 15:01'},
+                                    # "time3": {"value": _apply.project.begin_datetime.strftime('%Y-%m-%d %H:%M')},
                                     "thing5": {'value': '您可以联系项目负责人获得审核的详细信息'},
                                     "name4": {'value': _apply.user.name}
                                 })
