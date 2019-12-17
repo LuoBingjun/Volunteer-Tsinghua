@@ -1,14 +1,9 @@
 <view class="page">
-  <!-- <view class="page__hd">
-    <view class="page__title">我的消息</view>
-  </view> -->
-
   <view wx:for="{{messages}}">
     <view class="weui-loadmore weui-loadmore_line">
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{item.time}}</view>
     </view>
-    <i-card title="{{item.title}}" extra="{{item.project.title}}" thumb="{{item.sender.avatar}}" i-class="card-demo"
-    bindtap="enterProject" data-projectid="{{item.project.id}}">
+    <i-card title="{{item.title}}" extra="{{item.project.title}}" thumb="{{item.sender.avatar}}" i-class="card-demo" bindtap="enterProject" data-projectid="{{item.project.id}}">
       <view slot="content">
         <view wx:if="{{item.type=='P'}}">
           {{item.content}}
@@ -29,10 +24,8 @@
 
       <view slot="footer">{{item.sender.description}}</view>
     </i-card>
-
-    <view wx:if="{{messages.length == 0}}" class="weui-loadmore weui-loadmore_line">
-      <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无通知</view>
-    </view>
-
+  </view>
+  <view wx:if="{{messages.length == 0}}" class="weui-loadmore weui-loadmore_line">
+    <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无通知</view>
   </view>
 </view>
