@@ -16,6 +16,21 @@ from django.db.models import Q
 import jieba
 import json
 
+class swiperSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['id', 'title', 'cover']
+
+class swiperView(GenericAPIView):
+    serializer_class = swiperSerializer
+    @login_required(wx=True)
+    def get(self, request):
+        queryset = Project.objects.all().order_by('-time')
+        if len(queryset) > 4:
+            queryset = queryset[:4]
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 class jobSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,6 +48,8 @@ class detailSerializer(serializers.ModelSerializer):
 # 用于返回项目详情
 class wx_detail_Serializer(serializers.ModelSerializer):
     webuser = serializers.ReadOnlyField(source='webuser.name')
+    begin_datetime = serializers.DateTimeField(format="%Y-%m-%d")
+    end_datetime = serializers.DateTimeField(format="%Y-%m-%d")
 
     class Meta:
         model = Project
@@ -166,6 +183,11 @@ class listPagination(PageNumberPagination):
 
 class listSerializer(serializers.ModelSerializer):
     require_num = serializers.SerializerMethodField()
+    type =  serializers.CharField(source='get_type_display')
+    begin_datetime = serializers.DateTimeField(format="%Y-%m-%d")
+    end_datetime = serializers.DateTimeField(format="%Y-%m-%d")
+    
+    deadline = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
     class Meta:
         model = Project
         fields = '__all__'
@@ -215,7 +237,7 @@ class listView(ListAPIView):
                 resultset |= queryset.filter(content__icontains=i)
         else:
             resultset = queryset
-        return resultset
+        return resultset.order_by('-time')
 
 
 # class searchSerializer(serializers.ModelSerializer):
