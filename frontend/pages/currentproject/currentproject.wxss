@@ -18,3 +18,23 @@
   text-align: right;
   line-height: 100%;
 }
+
+
+.col-icon-1 {
+  text-align: left;
+  line-height: 100%;
+}
+
+.col-class-1 {
+  text-align: left;
+  line-height: 100%;
+}
+
+.col-content-1 {
+  text-align: left;
+  line-height: 100%;
+}
+
+.row-1{
+  margin-bottom: 15px;
+}
