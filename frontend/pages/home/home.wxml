@@ -43,7 +43,7 @@
       <!--轮播图-->
       <swiper class='lunbo' indicator-dots='true' autoplay='true' interval='4000' circular='true'>
         <view wx:for="{{swipers}}">
-          <swiper-item class="banner" bind:tap="swipertap">
+          <swiper-item class="banner" id="{{item.id}}" bind:tap="enterProject">
             <image src="{{item.cover}}"></image>
             <text>{{item.title}}</text>
           </swiper-item>
