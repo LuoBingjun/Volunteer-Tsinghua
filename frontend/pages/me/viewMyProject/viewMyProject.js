@@ -15,9 +15,9 @@ Page({
     console.log("viewMyProject页面加载： ", options)
     let title = {
       'ALL': '所有项目',
-      'CHECKING': '审核中的项目',
-      'CURRENT': '正在进行的项目',
-      'HISTORY': '历史项目'
+      'CHECKING': '待审核项目',
+      'CURRENT': '进行中项目',
+      'HISTORY': '已完成项目'
     }[options.type]
     wx.setNavigationBarTitle({
       title: title

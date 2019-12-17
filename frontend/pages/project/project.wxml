@@ -7,7 +7,8 @@
     <van-panel>
       <view slot="header" class="weui-article__h2" style="padding: 15px;">
         <van-tag wx:if="{{beforedeadline}}" type="danger" round plain size='medium'>报名中</van-tag>
-        <van-tag wx:if="{{finished}}" round plain size='medium'>已结束</van-tag> {{title}}
+        <van-tag wx:elif="{{!finished}}" type="success" round plain size='medium'>进行中</van-tag>
+        <van-tag wx:else round plain size='medium'>已结束</van-tag> {{title}}
       </view>
       <view style="padding: 15px;">
         <i-row i-class="row">
@@ -22,7 +23,14 @@
             <van-icon name="clock-o" size="16px" />
           </i-col>
           <i-col span="6" i-class="col-class">时间</i-col>
-          <i-col span="16" i-class="col-content">{{begin_datetime}} 至 {{end_datetime}}</i-col>
+          <i-col span="16" i-class="col-content">{{begin_datetime}} ~ {{end_datetime}}</i-col>
+        </i-row>
+        <i-row i-class="row">
+          <i-col span="2" i-class="col-icon">
+            <van-icon name="location-o" size="16px" />
+          </i-col>
+          <i-col span="6" i-class="col-class">地点</i-col>
+          <i-col span="16" i-class="col-content">{{loc}}</i-col>
         </i-row>
         <i-row>
           <i-col span="2" i-class="col-icon">

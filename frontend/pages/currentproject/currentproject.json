@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "正在进行的项目",
+  "navigationBarTitleText": "工作信息",
   "usingComponents": {
     "i-panel": "/dist/panel/index",
     "i-row": "/dist/row/index",

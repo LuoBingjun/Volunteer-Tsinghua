@@ -1,15 +1,15 @@
 <view class="page">
-  <i-panel title="请确认用户信息">
+  <i-panel title="用户信息（不可修改）">
   <i-input value="{{ id }}" title="学号" disabled />
     <i-input value="{{ name }}" title="姓名" disabled />
     <i-input value="{{ department }}" title="院系" disabled/>
   </i-panel>
-  <i-panel title="请填写个人信息">
+  <i-panel title="个人信息">
     <i-input value="{{ phone }}" type="number" title="联系电话" placeholder="请输入手机号" data-item="phone" bind:change="onValueChanged"/>
     <i-input value="{{ email }}" title="电子邮箱" placeholder="请输入电子邮箱地址" data-item="email" bind:change="onValueChanged"/>
     <i-input value="{{ id_card }}" title="身份证号" placeholder="请输入您的身份证号" data-item="id_card" bind:change="onValueChanged"/>
   </i-panel>
   <view>
-    <button class="weui-btn buttons" type="primary" bindtap="onSubmit">提交</button>
+    <button class="weui-btn buttons" type="primary" bindtap="onSubmit">确认修改</button>
   </view>
 </view>

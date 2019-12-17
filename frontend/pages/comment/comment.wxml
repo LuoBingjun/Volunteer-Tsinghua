@@ -3,20 +3,17 @@
     <view class="page__title">{{title}}</view>
   </view>
 
-  <i-panel title="综合评分">
-    <i-rate 
-      bind:change="onRateChange" 
-      value="{{input.starIndex}}" 
-      size="32">
-    </i-rate>
-  </i-panel>
-
-  <i-panel title="请输入项目评价">
-    <i-input value="{{ input.textcomment }}" title="项目评价" data-item="textcomment" bind:change="onValueChanged"/>
-  </i-panel>
-
+  <i-cell-group>
+    <i-cell title="综合评分">
+      <i-rate bind:change="onRateChange" value="{{input.starIndex}}" size="32">
+      </i-rate>
+    </i-cell>
+    <i-cell title="评价反馈">
+    <i-input value="{{ input.textcomment }}" type="textarea" data-item="textcomment" bind:change="onValueChanged" />
+    </i-cell>
+  </i-cell-group>
 
   <view>
-    <button class="weui-btn buttons" type="primary" bindtap="onSubmit">提交</button>
+    <button class="weui-btn buttons" type="primary" bindtap="onSubmit">提交反馈</button>
   </view>
 </view>
