@@ -56,7 +56,7 @@
     <view wx:for="{{projects}}" class="project-card" style="margin:5px">
       <i-card title="{{item.title}}" extra="{{item.require_num}}人" bindtap="enterProject" id="{{item.id}}">
         <view slot="content">
-          <van-tag plain mark type="success">{{item.type}}</van-tag> {{item.introduction}}</view>
+          <van-tag plain mark color="#2d8cf0">{{item.type}}</van-tag> {{item.introduction}}</view>
         <view slot="footer">
           <van-icon name="underway-o" size="14px"></van-icon>{{item.begin_datetime}} ~ {{item.end_datetime}}
           <van-icon name="location-o" size="14px"></van-icon>{{item.loc}}
