@@ -21,14 +21,16 @@
         <el-option label="其他项目" value="QT"></el-option>
       </el-select>
     </el-form-item>
-
+    <el-form-item label="项目地点" prop="loc">
+      <el-input v-model="form.loc" placeholder="请填写活动地点"></el-input>
+    </el-form-item>
     <el-form-item label="项目详情" prop="content">
       <el-input v-model="form.content" type="textarea" :rows="6"></el-input>
     </el-form-item>
     <el-form-item label="项目需求" prop="requirements">
       <el-input type="textarea" v-model="form.requirements" :rows="6"></el-input>
     </el-form-item>
-    <el-form-item label="封面图片 (宽高比3:2)" prop="cover" ref="upload_item">
+    <el-form-item label="封面图片 (宽高比2:1)" prop="cover" ref="upload_item">
       <el-upload
         action="#"
         list-type="picture-card"
@@ -227,6 +229,7 @@ export default {
         cover: undefined,
         introduction: undefined,
         type:undefined,
+        loc:undefined,
         form: [
           {
             text: "姓名",
@@ -282,6 +285,11 @@ export default {
         time_range: {
           required: true,
           message: "请选择活动起止时间",
+          trigger: "blur"
+        },
+        loc: {
+          required: true,
+          message: "请填写活动地点",
           trigger: "blur"
         },
         jobs: {
@@ -366,6 +374,7 @@ export default {
           newform.append("content", this.form.content);
           newform.append("introduction", this.form.introduction);
           newform.append("requirements", this.form.requirements);
+          newform.append("loc", this.form.loc);
           newform.append("type", this.form.type);
           newform.append("cover", this.form.cover);
           newform.append("deadline",new Date(this.form.deadline).toISOString());
@@ -373,6 +382,7 @@ export default {
           newform.append("end_datetime",new Date(this.form.time_range[1]).toISOString());
           newform.append("jobs", JSON.stringify(this.form.jobs));
           newform.append("form", JSON.stringify(this.form.form));
+          
           if(this.form.qrcode1){newform.append("qrcode_1",this.form.qrcode1);console.log("qrcode1 added")}
           if(this.form.qrcode2){newform.append("qrcode_2",this.form.qrcode2);console.log("qrcode2 added")}
           startProject(newform)
@@ -402,7 +412,7 @@ export default {
         let _URL=window.URL||window.webkitURL
         let img=new Image()
         img.onload=function(){
-          let valid=(2*img.width==3*img.height)
+          let valid=(img.width==2*img.height)
           valid?resolve():reject()
         }
         img.src=_URL.createObjectURL(file.file)
@@ -410,7 +420,7 @@ export default {
         that.form.cover = file.file;
       }).catch(()=>{
         Message({
-          message:"上传的图片不符合要求（要求宽高比3:2）",
+          message:"上传的图片不符合要求（要求宽高比2:1）",
           type:'warning',
           duration:5000
         })

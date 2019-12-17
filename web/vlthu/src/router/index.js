@@ -33,11 +33,6 @@ import Layout from '@/layout'
  */
 export const constantRoutes = [
   {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
-  {
     path: '/dashboard',
     component: Layout,
     children: [{
@@ -77,6 +72,11 @@ export const constantRoutes = [
       component: () => import('@/views/info/index'),
       meta: { title: '用户管理', icon: 'user'}
     }],
+  },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    meta: { title: '退出登陆', icon: 'key' }
   },
   {
     path: '/',
