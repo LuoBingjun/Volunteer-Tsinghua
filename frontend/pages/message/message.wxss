@@ -23,4 +23,8 @@ line-height: 100%;
 text-align: right;
 line-height: 100%;
 }
+
+.load-more{
+  margin-bottom:0;
+}
   

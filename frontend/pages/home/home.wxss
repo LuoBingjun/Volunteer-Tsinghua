@@ -1,17 +1,23 @@
 /* pages/home/home.wxss */
-.project-card{
-  margin-bottom: 10rpx;
+
+.project-card {
+  margin-top: 5rpx;
+  margin-bottom: 5rpx;
 }
-.banner text{
+
+.banner text {
   position: absolute;
-  top:70%;
-  left:50%;
-  transform:translateX(-50%);
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
 }
-.lunbo{
+
+.lunbo {
+  margin-bottom: 20rpx;
   height: 375rpx;
 }
-.lunbo image{
+
+.lunbo image {
   width: 750rpx;
   height: 375rpx;
 }

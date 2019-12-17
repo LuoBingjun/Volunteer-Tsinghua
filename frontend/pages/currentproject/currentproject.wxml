@@ -52,7 +52,7 @@
       <i-panel title="微信群二维码">
         <view>
           <image src="{{project.qrcode_1}}" wx:if="{{project.qrcode_1}}" style="max-width:50%; max-height:200px" mode="aspectFill" data-index='1' bindtap='previewImg' />
-          <image src="{{project.qrcode_2}}" wx:if="{{project.qrcode_2}}" style="max-width:50%; max-height:200px"  mode="aspectFill" data-index='2' bindtap='previewImg' />
+          <image src="{{project.qrcode_2}}" wx:if="{{project.qrcode_2}}" style="max-width:50%; max-height:200px" mode="aspectFill" data-index='2' bindtap='previewImg' />
         </view>
       </i-panel>
     </i-row>
@@ -60,7 +60,7 @@
     <i-panel title="签到签退">
       <!-- <h2>签到模块</h2> -->
       <!-- 签到模块 -->
-      <block wx:if="{{ signList.length }}">
+      <block wx:if="{{ num_sign }}">
         <van-collapse value="{{ activeNames }}" bind:change="onChange">
           <van-collapse-item wx:for="{{ signList }}" title="{{item.title}}" name="{{item.id}}">
             <i-row>
@@ -72,29 +72,36 @@
             </i-row>
             <i-row>
               <i-col span="2" i-class="col-icon">
-                <i-icon size="16" type="time" />
+                <i-icon size="16" type="coordinates" />
+              </i-col>
+              <i-col span="8" i-class="col-class">地点</i-col>
+              <i-col span="14" i-class="col-content">{{item.position}}</i-col>
+            </i-row>
+            <i-row>
+              <i-col span="2" i-class="col-icon">
+                <i-icon size="16" type="clock" />
               </i-col>
               <i-col span="8">开始时间</i-col>
               <i-col span="14" i-class="col-content">{{item.begin_time}}</i-col>
             </i-row>
             <i-row>
               <i-col span="2" i-class="col-icon">
-                <i-icon size="16" type="time_fill" />
+                <i-icon size="16" type="clock_fill" />
               </i-col>
-              <i-col span="8" i-class="col-class">结束时间</i-col>
+              <i-col span="8" i-class="col-class">截止时间</i-col>
               <i-col span="14" i-class="col-content">{{item.end_time}}</i-col>
             </i-row>
-          <view class="buttons">
-            <button class="weui-button" wx:if="{{item.status==0}}" disabled='{{true}}'>签到已结束</button>
-            <button class="weui-button" wx:if="{{item.status==1}}" catchtap='sign' id="{{item.id}}">点击签到</button>
-            <button class="weui-button" wx:if="{{item.status==2}}" catchtap='signout' data-signrecordid="{{item.signrecordid}}">点击签退</button>
-            <button class="weui-button" wx:if="{{item.status==3}}" disabled='{{true}}'>签到未开始</button>
-            <button class="weui-button" wx:if="{{item.status==4}}" disabled='{{true}}'>已签退</button>
-          </view>
+            <view class="buttons">
+              <button class="weui-button" wx:if="{{item.status==0}}" disabled='{{true}}'>签到已结束</button>
+              <button class="weui-button" wx:if="{{item.status==1}}" catchtap='sign' id="{{item.id}}">点击签到</button>
+              <button class="weui-button" wx:if="{{item.status==2}}" catchtap='signout' data-signrecordid="{{item.signrecordid}}">点击签退</button>
+              <button class="weui-button" wx:if="{{item.status==3}}" disabled='{{true}}'>签到未开始</button>
+              <button class="weui-button" wx:if="{{item.status==4}}" disabled='{{true}}'>已签退</button>
+            </view>
           </van-collapse-item>
         </van-collapse>
       </block>
-      <block wx-else>
+      <block wx:else>
         <view style="margin:15px; text-align: center;">暂时没有签到呢~</view>
       </block>
     </i-panel>

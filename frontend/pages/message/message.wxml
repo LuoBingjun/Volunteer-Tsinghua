@@ -1,8 +1,9 @@
 <view class="page">
   <view wx:for="{{messages}}">
-    <view class="weui-loadmore weui-loadmore_line">
+    <!-- <view class="weui-loadmore weui-loadmore_line">
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{item.time}}</view>
-    </view>
+    </view> -->
+    <i-load-more tip="{{item.time}}" loading="{{ false }}" />
     <i-card title="{{item.title}}" extra="{{item.project.title}}" thumb="{{item.sender.avatar}}" i-class="card-demo" bindtap="enterProject" data-projectid="{{item.project.id}}">
       <view slot="content">
         <view wx:if="{{item.type=='P'}}">
@@ -22,7 +23,8 @@
       <view slot="footer">{{item.sender.description}}</view>
     </i-card>
   </view>
-  <view wx:if="{{messages.length == 0}}" class="weui-loadmore weui-loadmore_line">
+  <i-load-more tip="没有更多的通知了" loading="{{ false }}" i-class="load-more"/>
+  <!-- <view wx:if="{{messages.length == 0}}" class="weui-loadmore weui-loadmore_line">
     <view class="weui-loadmore__tips weui-loadmore__tips_in-line">没有更多的通知了</view>
-  </view>
+  </view> -->
 </view>
