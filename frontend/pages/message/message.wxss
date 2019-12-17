@@ -14,17 +14,11 @@ margin-top: 30rpx;
 margin-bottom: 30rpx;
 }
 
-.col-icon {
+.col-class {
 text-align: left;
-line-height: 100%;
 }
 
 .col-content {
 text-align: right;
-line-height: 100%;
-}
-
-.load-more{
-  margin-bottom:0;
 }
   

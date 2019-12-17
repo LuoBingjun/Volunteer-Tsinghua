@@ -4,7 +4,7 @@
       <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{item.time}}</view>
     </view> -->
     <i-load-more tip="{{item.time}}" loading="{{ false }}" />
-    <i-card title="{{item.title}}" extra="{{item.project.title}}" thumb="{{item.sender.avatar}}" i-class="card-demo" bindtap="enterProject" data-projectid="{{item.project.id}}">
+    <i-card title="{{item.title}}" extra="{{item.sender.description}}" thumb="{{item.sender.avatar}}" i-class="card-demo" bindtap="enterProject" data-projectid="{{item.project.id}}">
       <view slot="content">
         <view wx:if="{{item.type=='P'}}">
           {{item.content}}
@@ -20,7 +20,7 @@
         </view>
       </view>
 
-      <view slot="footer">{{item.sender.description}}</view>
+      <view slot="footer">{{item.project.title}}</view>
     </i-card>
   </view>
   <i-load-more tip="没有更多的通知了" loading="{{ false }}" i-class="load-more"/>

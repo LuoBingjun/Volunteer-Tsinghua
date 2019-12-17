@@ -64,6 +64,7 @@ Page({
             "job_set": res.data.job_set,
             "deadline": res.data.deadline,
             "finished": res.data.finished,
+            "loc": res.data.loc,
             "webuser": res.data.webuser,
             "begin_datetime": res.data.begin_datetime,
             "end_datetime": res.data.end_datetime

@@ -61,7 +61,9 @@
         <view class="weui-cell__hd">
           <image src="/src/unlock.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
         </view>
-        <view class="weui-cell__bd"> 解绑用户</view>
+        <view class="weui-cell__bd">
+        解绑用户
+        </view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
     </view>

@@ -58,8 +58,8 @@
         <view slot="content">
           <van-tag plain mark type="success">{{item.type}}</van-tag> {{item.introduction}}</view>
         <view slot="footer">
-          <van-icon name="underway-o" size="10px"></van-icon>{{item.begin_datetime}} ~ {{item.end_datetime}}
-          <van-icon name="location-o" size="10px"></van-icon>{{item.loc}}
+          <van-icon name="underway-o" size="14px"></van-icon>{{item.begin_datetime}} ~ {{item.end_datetime}}
+          <van-icon name="location-o" size="14px"></van-icon>{{item.loc}}
         </view>
       </i-card>
     </view>
