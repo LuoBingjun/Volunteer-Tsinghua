@@ -11,7 +11,10 @@
       <div v-else-if="type=='YL'"><i class="el-icon-first-aid-kit"> 项目类型：医疗卫生</i></div>
       <div v-else-if="type=='JK'"><i class="el-icon-bangzhu"> 项目类型：健康残障</i></div>
       <div v-else-if="type=='XY'"><i class="el-icon-guide"> 项目类型：校园讲解</i></div>
-      <div v-else-if="type=='QT'"><i class="el-icon-menu"> 项目类型：其他项目</i></div>
+      <div v-else-if="type=='QT'"><i class="el-icon-menu"> 项目类型：其他项目</i></div> 
+    </el-card>
+    <el-card v-if="ownername" style="margin-bottom:10px;">
+      <i class="el-icon-location-information"> 项目地点：</i>{{loc}}
     </el-card>
     <el-card v-if="content" style="margin-bottom:10px;">
       <div slot="header" class="clearfix">
@@ -138,7 +141,8 @@ export default {
       started: undefined,
       jobs: undefined,
       type: undefined, 
-      signList:undefined
+      signList:undefined,
+      loc:undefined
     };
   },
   methods: {
@@ -252,7 +256,7 @@ export default {
     getProjectDetails(this.projectID)
       .then(res => {
         console.log("项目详情", res);
-        this.ownername = res.data.webuser;
+        that.ownername = res.data.webuser;
         that.title = res.data.title;
         that.content = res.data.content;
         that.cover = res.data.cover;
@@ -266,6 +270,7 @@ export default {
         that.jobs = res.data.job_set;
         that.type = res.data.type;
         that.signList=res.data.signproject_set;
+        that.loc=res.data.loc
 
         var start = new Date(res.data.deadline).getTime();
         var now = new Date().getTime();
