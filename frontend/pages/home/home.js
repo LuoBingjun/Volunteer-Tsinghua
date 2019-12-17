@@ -288,9 +288,9 @@ Page({
       typeText:typeText
     });
     this.updateList()
-    wx.showToast({
-      icon: 'none',
-      title: `切换至第${event.detail}项`
-    });
+    // wx.showToast({
+    //   icon: 'none',
+    //   title: `切换至第${event.detail}项`
+    // });
   }
 })

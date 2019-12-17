@@ -8,6 +8,9 @@
     "i-drawer": "/dist/drawer/index",
     "van-sidebar": "/dist/Vant/sidebar/index",
     "van-sidebar-item": "/dist/Vant/sidebar-item/index",
+    "van-icon": "/dist/Vant/icon/index",
+    "van-sticky": "/dist/Vant/sticky/index",
+    "van-tag": "/dist/Vant/tag/index",
     "i-load-more": "/dist/load-more/index",
     "i-icon": "/dist/icon/index",
     "i-button": "../../dist/button/index"

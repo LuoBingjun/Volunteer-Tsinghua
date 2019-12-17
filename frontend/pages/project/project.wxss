@@ -3,3 +3,26 @@
   margin-top: 30rpx;
   margin-bottom: 30rpx;
 }
+
+.van-card__footer {
+  margin-top: 5px;
+}
+
+.col-icon {
+  text-align: left;
+  line-height: 100%;
+}
+
+.col-class {
+  text-align: left;
+  line-height: 100%;
+}
+
+.col-content {
+  text-align: left;
+  line-height: 100%;
+}
+
+.row{
+  margin-bottom: 15px;
+}

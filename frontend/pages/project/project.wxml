@@ -4,19 +4,41 @@
   </view>
 
   <view class="container">
+    <van-panel>
+      <view slot="header" class="weui-article__h2" style="padding: 15px;">
+        <van-tag wx:if="{{beforedeadline}}" type="danger" round plain size='medium'>报名中</van-tag>
+        <van-tag wx:if="{{finished}}" round plain size='medium'>已结束</van-tag> {{title}}
+      </view>
+      <view style="padding: 15px;">
+        <i-row i-class="row">
+          <i-col span="2" i-class="col-icon">
+            <van-icon name="apps-o" size="16px" />
+          </i-col>
+          <i-col span="6" i-class="col-class">类型</i-col>
+          <i-col span="16" i-class="col-content">{{type}}</i-col>
+        </i-row>
+        <i-row i-class="row">
+          <i-col span="2" i-class="col-icon">
+            <van-icon name="clock-o" size="16px" />
+          </i-col>
+          <i-col span="6" i-class="col-class">时间</i-col>
+          <i-col span="16" i-class="col-content">{{begin_datetime}} 至 {{end_datetime}}</i-col>
+        </i-row>
+        <i-row>
+          <i-col span="2" i-class="col-icon">
+            <van-icon name="friends-o" size="16px" />
+          </i-col>
+          <i-col span="6" i-class="col-class">发起者</i-col>
+          <i-col span="16" i-class="col-content">{{webuser}}</i-col>
+        </i-row>
+      </view>
+    </van-panel>
+
     <i-row>
-      <i-panel title="项目名称">
-        <view style="padding: 15px;">{{title}}</view>
-      </i-panel>
-    </i-row>
-    <i-row>
-      <i-panel title="简介" hide-border="{{ true }}">
-        <view style="padding: 15px;"><text>{{introduction}}</text></view>
-      </i-panel>
-    </i-row>
-    <i-row>
-      <i-panel title="详情" hide-border="{{ true }}">
-        <view style="padding: 15px;"><text>{{description}}</text></view>
+      <i-panel title="介绍" hide-border="{{ true }}">
+        <view style="padding: 15px;">
+          <text>{{description}}</text>
+        </view>
       </i-panel>
     </i-row>
 
@@ -27,42 +49,44 @@
         </view>
       </i-panel>
     </i-row>
-    <div wx:if="{{finished == false}}">
-      <i-row wx:for="{{job_set}}" i-class="buttons">
-        <i-panel title="岗位名称">
-          <view style="padding: 15px;">{{item.job_name}}</view>
-        </i-panel>
-        <i-panel title="岗位工时">
-          <view style="padding: 15px;">{{item.job_worktime}}</view>
-        </i-panel>
-        <i-panel title="岗位详情">
-          <view style="padding: 15px;"><text>{{item.job_content}}</text></view>
-        </i-panel>
 
-        <i-panel title="岗位人数">
-          <view style="padding: 15px;">需求人数：{{item.job_require_num}} 已报名：{{item.apply_num}}</view>
+    <!-- <van-card num="2" price="2.00" desc="描述信息" title="商品标题" /> -->
+
+    <block wx:if="{{finished == false}}">
+      <i-row>
+        <i-panel title="岗位" hide-border="{{ true }}">
+          <block wx:for="{{job_set}}">
+            <van-card currency="" price="{{item.job_worktime}}工时" num="已报名/总需求：{{item.apply_num}}/{{item.job_require_num}}" desc="{{item.job_content}}" title="{{item.job_name}}">
+              <!-- <view slot="footer">
+                <view>已报名/总需求：{{item.apply_num}}/{{item.job_require_num}}</view>
+              </view> -->
+              <view slot="footer">
+                <view wx:if="{{item.job_status=='W'}}">
+                  <button class="weui-btn mini-btn" type="primary" size="mini" disabled="true">正在审核</button>
+                  <button class="weui-btn mini-btn" type="warn" size="mini" bindtap="cancelApply" data-jobindex="{{item.id}}">取消报名</button>
+                </view>
+                <view wx:elif="{{item.job_status=='P'}}">
+                  <button class="weui-btn mini-btn" type="primary" size="mini" disabled="true">审核通过</button>
+                  <button class="weui-btn mini-btn" type="primary" size="mini" bindtap="gotoCurrentProject">工作信息</button>
+                </view>
+                <view wx:elif="{{item.job_status=='N'}}">
+                  <button class="weui-btn mini-btn" type="primary" size="mini" disabled="true">审核不通过</button>
+                </view>
+                <view wx:elif="{{item.job_status=='A'}}">
+                  <view wx:if="{{beforedeadline}}">
+                    <button class="weui-btn mini-btn" type="primary" size="mini" bindtap="signin" data-jobindex="{{item.id}}">我要报名</button>
+                  </view>
+                  <!-- <view wx:else>
+                    <button class="weui-btn mini-btn" type="primary" size="mini" disabled="true">不能报名</button>
+                  </view> -->
+                </view>
+                <!-- <van-button size="mini">按钮</van-button>
+            <van-button size="mini">按钮</van-button> -->
+              </view>
+            </van-card>
+          </block>
         </i-panel>
-       
-          <view wx:if="{{item.job_status=='W'}}">
-            <button class="weui-btn" type="primary" disabled="true">正在审核</button>
-            <button class="weui-btn" type="warn" bindtap="cancelApply" data-jobindex="{{item.id}}">取消申请</button>
-          </view>
-          <view wx:elif="{{item.job_status=='P'}}">
-            <button class="weui-btn" type="primary" bindtap="gotoCurrentProject">查看通过信息</button>
-          </view>
-          <view wx:elif="{{item.job_status=='N'}}">
-            <button class="weui-btn" type="primary" disabled="true">审核未通过</button>
-          </view>
-          <view wx:elif="{{item.job_status=='A'}}">
-            <view wx:if="{{beforedeadline}}">
-              <button class="weui-btn" type="primary" bindtap="signin" data-jobindex="{{item.id}}">我要报名</button>
-            </view>
-            <view wx:else>
-              <button class="weui-btn" type="primary" disabled="true">已过报名时间</button>
-            </view>
-          </view>
-        
       </i-row>
-    </div>
+    </block>
   </view>
 </view>
