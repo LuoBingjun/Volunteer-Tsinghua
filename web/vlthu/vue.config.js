@@ -43,6 +43,9 @@ module.exports = {
         target: 'https://2019-a15.iterator-traits.com/',
         //target: 'http://62.234.0.237/',
         changeOrigin: true
+      },
+      '/media':{
+        target: 'https://2019-a15.iterator-traits.com/',
       }
     },
     after: require('./mock/mock-server.js')

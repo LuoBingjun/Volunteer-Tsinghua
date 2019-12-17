@@ -28,7 +28,7 @@
     <el-form-item label="项目需求" prop="requirements">
       <el-input type="textarea" v-model="form.requirements" :rows="6"></el-input>
     </el-form-item>
-    <el-form-item label="封面图片" prop="cover" ref="upload_item">
+    <el-form-item label="封面图片 (宽高比3:2)" prop="cover" ref="upload_item">
       <el-upload
         action="#"
         list-type="picture-card"
@@ -395,9 +395,27 @@ export default {
       });
     },
     getFile(file) {
-      console.log("重置cover！");
+      console.log("重置cover！",file);
       this.$refs.mainform.clearValidate("cover");
-      this.form.cover = file.file;
+      var that=this
+      new Promise(function(resolve,reject){
+        let _URL=window.URL||window.webkitURL
+        let img=new Image()
+        img.onload=function(){
+          let valid=(2*img.width==3*img.height)
+          valid?resolve():reject()
+        }
+        img.src=_URL.createObjectURL(file.file)
+      }).then(()=>{
+        that.form.cover = file.file;
+      }).catch(()=>{
+        Message({
+          message:"上传的图片不符合要求（要求宽高比3:2）",
+          type:'warning',
+          duration:5000
+        })
+        that.$refs.uploader.clearFiles()
+      })
     },
     handleCoverRemove() {
       console.log("清除cover！");

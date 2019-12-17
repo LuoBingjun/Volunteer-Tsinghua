@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-form :model="form" :rules="rules" ref="form">
+        <el-form :model="form" :rules="rules" ref="form">           
             <el-form-item label="用户昵称" prop="username" v-if="isnew">
                 <el-input v-model="form.username" class="short"></el-input>
             </el-form-item>
@@ -23,6 +23,7 @@
                 <el-input v-model="form.description" type="textarea" :rows="6"></el-input>
             </el-form-item>
             <el-form-item label="上传头像">
+                <img v-if="avatar_url" :alt="avatar_url" :src="avatar_url" style="height:120px;width:120px;float:right" />
                 <el-upload
                     action="#"
                     list-type="picture-card"
@@ -54,6 +55,7 @@
     </div>
 </template>
 <script>
+import {Message} from 'element-ui'
 export default {
     name:'userform',
     props:['user'],
@@ -103,7 +105,11 @@ export default {
             this.form.email=this.user.email
             this.form.description=this.user.description
             this.form.id=this.user.id
-            this.form.avatar=this.user.avatar
+            this.avatar_url=this.user.avatar
+            this.form.avatar=undefined
+            if(this.$refs.uploader)this.$refs.uploader.clearFiles()
+            else console.log("uploader: empty",)
+
             this.form.nodelete=this.user.nodelete
             this.isnew=this.user.isnew
             this.nodelete=this.user.nodelete
@@ -113,8 +119,25 @@ export default {
         },
         getavatar(file)
         {
-            this.form.avatar=file.file
-            console.log(file.file)
+            var that=this
+            new Promise(function(resolve,reject){
+                let _URL=window.URL||window.webkitURL
+                let img=new Image()
+                img.onload=function(){
+                    let valid=(img.width==img.height)
+                    valid?resolve():reject()
+                }
+                img.src=_URL.createObjectURL(file.file)
+            }).then(()=>{
+                that.form.avatar=file.file
+            }).catch(()=>{
+                Message({
+                    message:"上传的图片不符合要求（要求宽高比1:1）",
+                    type:'warning',
+                    duration:5000
+                })
+                that.$refs.uploader.clearFiles()
+            })
         },
         removeavatar()
         {
