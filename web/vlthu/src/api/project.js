@@ -89,3 +89,11 @@ export function endProject(id,options)
         }
     })
 }
+
+export function getProjectJoinList(id)
+{
+    return request({
+        method:"get",
+        url:`/worktime/viewjoininfo?project_id=${id}`
+    })
+}

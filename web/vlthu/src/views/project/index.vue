@@ -62,13 +62,17 @@
       </div>
       <signlist :signlist="signList"/>
     </el-card>
+    
     <el-card v-if="started && !finished" style="Lmargin-bottom:10px;">
       <div slot="header" class="clearfix">
         <span>
           <i class="el-icon-circle-plus-outline"></i> 发起签到
         </span>
       </div>
-      <signform :jobs="jobs" :projectID="projectID" />
+      <signform :jobs="jobs" :projectID="projectID" v-if="signform_open"/>
+      <el-button plain v-else @click="signform_open=!signform_open">
+        <i class="el-icon-caret-bottom">点击展开</i>
+      </el-button>
     </el-card>
 
     <el-card v-if="finished" style="margin-bottom:10px;">
@@ -92,10 +96,33 @@
           </el-button>
         </span>
       </div>
-      <p v-if="applyList && applyList.length == 0">没有记录~</p>
-      <el-table v-if="applyList && applyList.length !=0" :data="applyList">
+      <p v-if="joinList && joinList.length == 0">没有记录~</p>
+      <el-table v-if="joinList && joinList.length !=0" :data="joinList">
         <el-table-column label="参加人员" prop="user.name"></el-table-column>
-        <el-table-column label="岗位" prop="job.job_name"></el-table-column>
+        <el-table-column label="岗位" prop="job_names"></el-table-column>
+        <el-table-column label="工时" prop="work_time"></el-table-column>
+        <el-table-column label="评分">
+          <div slot-scope="scope" >
+            <el-rate 
+              v-model="scope.row.comment_rank" 
+              v-if='scope.row.comment_rank in [0,1,2,3,4,5]'
+              disabled show-score />
+            <div v-else>--</div>
+          </div>
+        </el-table-column>
+        <el-table-column label="评价">
+          <template slot-scope="scope">
+            <el-tooltip 
+              :content="scope.row.is_comment?scope.row.comment:'该用户没有评价'"  
+              v-if="scope.row.is_comment&&scope.row.comment.length>8"
+              >
+              <i class="el-icon-info">查看评价</i>
+            </el-tooltip>
+            <div v-else>
+              {{scope.row.is_comment?scope.row.comment:'志愿者没有评价'}}
+            </div>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
   </div>
@@ -114,7 +141,7 @@ import {
 import { Message, Checkbox, MessageBox } from "element-ui";
 import signform from "./signform";
 import checkform from "./checkform";
-import {endProject,deleteProject} from "@/api/project"
+import {endProject,deleteProject,getProjectJoinList} from "@/api/project"
 import signlist from './signlist'
 export default {
   name: "Project",
@@ -142,7 +169,9 @@ export default {
       jobs: undefined,
       type: undefined, 
       signList:undefined,
-      loc:undefined
+      loc:undefined,
+      joinList:undefined,
+      signform_open:false
     };
   },
   methods: {
@@ -276,19 +305,43 @@ export default {
         var now = new Date().getTime();
         if (start > now) that.started = false;
         else that.started = true;
-
-        getProjectApplyList(this.projectID)
-          .then(res => {
-            console.log("报名信息：", res.data);
-            that.applyList = res.data;
-          })
-          .catch(err => {
+        if(that.finished)
+        {
+          getProjectJoinList(that.projectID).then(res=>{
+            that.joinList=res.data
+            console.log("Join数据",res.data)
+            for(var i in that.joinList)
+            {
+              var job_names=[]
+              for(var j in that.joinList[i].job)
+              {
+                job_names.push(that.joinList[i].job[j].job_name)
+              }
+              that.joinList[i].job_names=job_names.join(', ')
+            }
+          }).catch(err=>{
             Message({
-              message: "获取错误" + "Error request" + err,
-              type: "error",
-              duration: 5 * 1000
+              message:"获取Joinlist失败: "+err,
+              type:"error",
+              duration:"5000"
+            })
+          })
+        }
+        else if(!that.started)
+        {
+          getProjectApplyList(this.projectID)
+            .then(res => {
+              console.log("报名信息：", res.data);
+              that.applyList = res.data;
+            })
+            .catch(err => {
+              Message({
+                message: "获取错误" + "Error request" + err,
+                type: "error",
+                duration: 5 * 1000
+              });
             });
-          });
+        }
       })
       .catch(err => {
         Message({

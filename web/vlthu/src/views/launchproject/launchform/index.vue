@@ -46,6 +46,15 @@
         <i slot="default" :class="form.cover?'el-icon-close':'el-icon-plus'"></i>
       </el-upload>
     </el-form-item>
+    <el-form-item prop="success_note">
+      <div slot="label"> 
+        报名成功提示
+        <el-tooltip content="报名成功后显示给志愿者的提示信息">
+          <i class="el-icon-question"></i> 
+        </el-tooltip>
+      </div>
+      <el-input v-model="form.success_note"></el-input>
+    </el-form-item>
 
     <el-form-item ref="upload_qrcode1">
       <div slot='label'>
@@ -230,6 +239,7 @@ export default {
         introduction: undefined,
         type:undefined,
         loc:undefined,
+        success_note:"报名成功！",
         form: [
           {
             text: "姓名",
@@ -271,7 +281,7 @@ export default {
           message: "请输入项目简介",
           trigger: "blur"
         },
-        type:{required:true,message:"请选择项目标签",trigger:"blul"},
+        type:{required:true,message:"请选择项目标签",trigger:"blur"},
         requirements: {
           required: true,
           message: "请输入项目需求",
@@ -377,6 +387,7 @@ export default {
           newform.append("loc", this.form.loc);
           newform.append("type", this.form.type);
           newform.append("cover", this.form.cover);
+          newform.append("success_note", this.form.success_note);
           newform.append("deadline",new Date(this.form.deadline).toISOString());
           newform.append("begin_datetime",new Date(this.form.time_range[0]).toISOString());
           newform.append("end_datetime",new Date(this.form.time_range[1]).toISOString());
