@@ -4,7 +4,7 @@
     <view class="page__desc">{{ title }}</view>
   </view>
 
-  <block wx:if="{{Object.keys(form) == []}}">
+  <!-- <block wx:if="{{form}}"> -->
     <i-panel title="请填写报名表单">
       <block wx:for="{{form}}">
         <block wx:if="{{item.type=='text'}}">
@@ -36,7 +36,7 @@
       </p> -->
       </block>
     </i-panel>
-  </block>
+  <!-- </block> -->
   <!-- <view wx:for="{{form}}">
 
             <view class="weui-cells__title">
