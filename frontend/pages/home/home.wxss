@@ -8,3 +8,10 @@
   left:50%;
   transform:translateX(-50%);
 }
+.lunbo{
+  height: 375rpx;
+}
+.lunbo image{
+  width: 750rpx;
+  height: 375rpx;
+}
