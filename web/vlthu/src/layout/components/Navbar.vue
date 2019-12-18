@@ -13,16 +13,21 @@
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/dashboard">
             <el-dropdown-item>
-              主 页
+              我的项目
+            </el-dropdown-item>
+          </router-link>
+          <router-link to="/launchproject">
+            <el-dropdown-item>
+              发起项目
             </el-dropdown-item>
           </router-link>
           <router-link to="/info">
             <el-dropdown-item>
-              我 的
+              用户管理
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">登 出</span>
+            <span style="display:block;" @click="logout">退出登陆</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
