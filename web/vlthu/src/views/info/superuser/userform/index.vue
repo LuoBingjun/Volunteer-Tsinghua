@@ -56,6 +56,7 @@
 </template>
 <script>
 import {Message} from 'element-ui'
+import {checkPhone, checkEmail} from '@/utils/validate'
 export default {
     name:'userform',
     props:['user'],
@@ -76,8 +77,8 @@ export default {
                 username:{required:true, message: "登陆名称不能为空", trigger: "blur"},
                 name:{required: true, message: "团体名称不能为空", trigger: "blur"},
                 manager:{required:true,message:"负责人不能为空",trigger:'blur'},
-                phone:[{required:true,message:"电话号码不能为空",trigger:'blur'}],
-                email:{required:true,message:"电子邮箱不能为空",trigger:'blur'},
+                phone:[{required:true,message:"电话号码不能为空",trigger:'blur'},{validator: checkPhone,trigger:'blur'}],
+                email:[{required:true,message:"电子邮箱不能为空",trigger:'blur'},{validator: checkEmail,trigger:'blur'}],
                 description:{required:true,message:"团体描述不能为空",trigger:'blur'},
                 password:{required:true,message:"密码不能为空",trigger:'blur'}
             },

@@ -40,6 +40,7 @@ import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import {getUserInfo} from '@/api/user'
+import {Message} from 'element-ui'
 export default {
   components: {
     Breadcrumb,
@@ -68,6 +69,24 @@ export default {
   created(){
     getUserInfo().then(res=>{
       this.avatar_url=res.data.avatar
+    }).catch(err=>{
+      var errcode=err.request.status
+      console.log(errcode)
+      if(errcode==403){
+        Message({
+          message:"尚未登陆，请先登陆",
+          type:"info",
+          duration:3000
+        })
+        this.$router.push("/")
+      }
+      else if(errcode==404){
+        Message({
+          message:"用户不存在，请先登陆",
+          type:"info",
+          duration:3000
+        })
+      }
     })
   }
 }

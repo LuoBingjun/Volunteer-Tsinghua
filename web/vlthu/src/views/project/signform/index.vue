@@ -102,7 +102,7 @@ export default {
               type: 'success',
               duration: 3 * 1000
             })
-            setTimeout(function(){that.$router.go(0)},3000)
+            that.$router.go(0)
           }).catch(err=>{
             Message({
               message: '发起签到失败：'+err,
