@@ -19,12 +19,13 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path(r'admin/', admin.site.urls),
-    path(r'auth/', include('server.auth.urls')),
-    path(r'project/', include('server.project.urls')),
-    path(r'apply/', include('server.apply.urls')),
-    path(r'check/',include('server.check.urls')),
-    path(r'worktime/',include('server.worktime.urls')),
-    path(r'my/',include('server.my.urls')),
-    path(r'sign/',include('server.sign.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path(r'api/admin/', admin.site.urls),
+    path(r'api/auth/', include('server.auth.urls')),
+    path(r'api/project/', include('server.project.urls')),
+    path(r'api/apply/', include('server.apply.urls')),
+    path(r'api/check/',include('server.check.urls')),
+    path(r'api/worktime/',include('server.worktime.urls')),
+    path(r'api/my/',include('server.my.urls')),
+    path(r'api/sign/',include('server.sign.urls')),
+] 
+# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
