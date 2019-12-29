@@ -108,6 +108,10 @@ Page({
           fail() { // 失败回调
             console.log('向后端发送数据失败！');
             that.setData({loadingPage:false})
+            wx.showModal({
+              title: '错误',
+              content: '无法发送数据，请检查网络状态'
+            });
           }
         })
       },100
@@ -135,6 +139,10 @@ Page({
       },
       fail() { // 失败回调
         console.log('向后端发送数据失败！');
+        wx.showModal({
+          title: '错误',
+          content: '无法发送数据，请检查网络状态'
+        });
       }
     })
   },
@@ -173,6 +181,10 @@ Page({
       fail() { // 失败回调
         console.log('向后端发送数据失败！');
         that.setData({loadingPage:false})
+        wx.showModal({
+          title: '错误',
+          content: '无法发送数据，请检查网络状态'
+        });
       }
     })
   },

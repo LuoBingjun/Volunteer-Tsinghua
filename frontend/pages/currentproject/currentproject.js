@@ -109,7 +109,7 @@ Page({
               //     fail() { // 失败回调
               //     wx.showModal({
               //         title: '错误',
-              //         content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+              //         content: '无法发送数据，请检查网络状态'
               //     });
               //     that.setData({ 'signList': {} })
               //     }
@@ -136,7 +136,7 @@ Page({
       fail() { // 失败回调
         wx.showModal({
           title: '错误',
-          content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+          content: '无法发送数据，请检查网络状态'
         });
       }
     })
@@ -231,7 +231,7 @@ Page({
           fail() { // 失败回调
             wx.showModal({
               title: '错误',
-              content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+              content: '无法发送数据，请检查网络状态'
             });
           }
         })
@@ -307,7 +307,7 @@ Page({
             fail() { // 失败回调
               wx.showModal({
                 title: '错误',
-                content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+                content: '无法发送数据，请检查网络状态'
               });
             }
           })
@@ -366,7 +366,7 @@ Page({
             fail() { // 失败回调
               wx.showModal({
                 title: '错误',
-                content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+                content: '无法发送数据，请检查网络状态'
               });
             }
           })

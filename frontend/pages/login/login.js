@@ -61,6 +61,10 @@ Page({
                         },
                         fail() { // 失败回调
                           console.log('向后端发送数据失败！');
+                          wx.showModal({
+                            title: '错误',
+                            content: '无法发送数据，请检查网络状态'
+                          });
                         }
                       })
                     }
@@ -73,6 +77,13 @@ Page({
                     })
                   }
                 }
+              },
+              fail() { // 失败回调
+                console.log('向后端发送数据失败！');
+                wx.showModal({
+                  title: '错误',
+                  content: '无法发送数据，请检查网络状态'
+                });
               }
             })
           }
@@ -104,6 +115,15 @@ Page({
           'cookie': app.globalData.cookies //读取cookie
         },
         success(res) {  // 成功回调
+          console.log("login界面onLoad wx请求pos1")
+          if (res.statusCode != 200) {
+            console.log("login界面onLoad wx请求pos1.1, res.statusCode:",res.statusCode)
+            wx.reLaunch({
+              url: '/pages/login/login',
+            })
+            return
+          }
+          console.log("login界面onLoad wx请求pos1.2, res.statusCode:", res.statusCode)
           console.log('向后端发送数据成功！', res.data);
           // app.globalData.cookies=res.header['Set-Cookie'];
           // res.data 包含了后端传回的学号等信息。
@@ -121,6 +141,10 @@ Page({
         },
         fail() { // 失败回调
           console.log('向后端发送数据失败！');
+          wx.showModal({
+            title: '错误',
+            content: '无法发送数据，请检查网络状态'
+          })
         }
       })
     }
@@ -210,7 +234,7 @@ Page({
   //           fail() { // 失败回调
   //             wx.showModal({
   //               title: '错误',
-  //               content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+  //               content: '无法发送数据，请检查网络状态'
   //               });
   //           }
   //           })

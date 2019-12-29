@@ -92,7 +92,11 @@ Page({
         console.log("解析后的messages请求：", that.data.messages)
       },
       fail() { // 失败回调
-        console.log('向后端发送数据失败！');
+        console.log('向后端发送数据失败！')
+        wx.showModal({
+          title: '错误',
+          content: '无法发送数据，请检查网络状态'
+        })
       }
     })
   },
