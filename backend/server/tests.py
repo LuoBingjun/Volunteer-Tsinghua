@@ -37,10 +37,10 @@ class AuthTestCase(TestCase):
     # 普通用户登录
     def test_first_wx_login(self):
         client = APIClient()
-        response = client.post('/auth/login', {'token': 'null'})
+        response = client.post('/api/auth/login', {'token': 'null'})
         assert response.status_code == 200
         assert response.data.get('first_login') == True
-        response = client.post('/auth/user', {
+        response = client.post('/api/auth/user', {
             'name': '清小华',
             'id': 2017011111,
             'department': '软件学院',
@@ -49,14 +49,14 @@ class AuthTestCase(TestCase):
             'id_card':'11111119990000000x'
         })
         assert response.status_code == 200
-        response = client.get('/auth/user')
+        response = client.get('/api/auth/user')
         assert response.status_code == 200
 
     # 管理员登录
     def test_web_login(self):
         client = APIClient()
         response = client.post(
-            '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
+            '/api/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
         assert response.status_code == 200
 
     # 测试函数执行后执行
@@ -73,12 +73,12 @@ class ProjectCreateTestCase(TestCase):
     def test_create_project(self):
         client = APIClient()
         response = client.post(
-            '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
+            '/api/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
         assert response.status_code == 200
         # file = File(open('media/cover.jpg', 'rb'))
         # uploaded_file = SimpleUploadedFile(
         #     'cover.jpg', file.read(), content_type='multipart/form-data')
-        response = client.post('/project/detail', {
+        response = client.post('/api/project/detail', {
             "title": "题目",
             "content": "内容",
             "introduction": "简介",
@@ -130,17 +130,17 @@ class ProjectTestCase(TestCase):
         client = APIClient()
 
         response = client.post(
-            '/auth/weblogin', {'username': 'admin1', 'password': 'admin1'})
+            '/api/auth/weblogin', {'username': 'admin1', 'password': 'admin1'})
         assert response.status_code == 200
 
-        response = client.get('/project/detail', {'id': 1})
+        response = client.get('/api/project/detail', {'id': 1})
         assert response.status_code == 200
         assert response.data.get('content') == 'testcontent'
 
-        response = client.post('/auth/login', {'token': 'null'})
+        response = client.post('/api/auth/login', {'token': 'null'})
         assert response.status_code == 200
 
-        response = client.get('/project/detail', {'id': 1})
+        response = client.get('/api/project/detail', {'id': 1})
         assert response.status_code == 200
         # assert response.data.get('title') == 'test'
 
@@ -149,16 +149,16 @@ class ProjectTestCase(TestCase):
         client = APIClient()
 
         response = client.post(
-            '/auth/weblogin', {'username': 'admin1', 'password': 'admin1'})
+            '/api/auth/weblogin', {'username': 'admin1', 'password': 'admin1'})
         assert response.status_code == 200
 
-        response = client.get('/project/list')
+        response = client.get('/api/project/list')
         assert response.status_code == 200
 
-        response = client.post('/auth/login', {'token': 'null'})
+        response = client.post('/api/auth/login', {'token': 'null'})
         assert response.status_code == 200
 
-        response = client.get('/project/list')
+        response = client.get('/api/project/list')
         assert response.status_code == 200
 
     # 搜索项目
@@ -166,16 +166,16 @@ class ProjectTestCase(TestCase):
         client = APIClient()
 
         response = client.post(
-            '/auth/weblogin', {'username': 'admin1', 'password': 'admin1'})
+            '/api/auth/weblogin', {'username': 'admin1', 'password': 'admin1'})
         assert response.status_code == 200
 
-        response = client.get('/project/list', {"search": "tset"})
+        response = client.get('/api/project/list', {"search": "tset"})
         assert response.status_code == 200
 
-        response = client.post('/auth/login', {'token': 'null'})
+        response = client.post('/api/auth/login', {'token': 'null'})
         assert response.status_code == 200
 
-        response = client.get('/project/list', {"search": "tset"})
+        response = client.get('/api/project/list', {"search": "tset"})
         assert response.status_code == 200
 
     def tearDown(self):
@@ -210,32 +210,32 @@ class ProjectCancelTestCase(TestCase):
         client = APIClient()
 
         response = client.post(
-            '/auth/weblogin', {'username': 'admin2', 'password': 'admin2'})
+            '/api/auth/weblogin', {'username': 'admin2', 'password': 'admin2'})
         assert response.status_code == 200
 
-        response = client.post('/project/cancel', {'project_id': 1})
+        response = client.post('/api/project/cancel', {'project_id': 1})
         assert response.status_code == 404
 
-        response = client.post('/project/cancel', {'project_id': 2})
+        response = client.post('/api/project/cancel', {'project_id': 2})
         assert response.status_code == 404
 
-        response = client.post('/project/cancel', {'project_id': 3})
+        response = client.post('/api/project/cancel', {'project_id': 3})
         assert response.status_code == 200
 
         response = client.post(
-            '/auth/weblogin', {'username': 'admin1', 'password': 'admin1'})
+            '/api/auth/weblogin', {'username': 'admin1', 'password': 'admin1'})
         assert response.status_code == 200
 
-        response = client.post('/project/cancel', {'project_id': 1})
+        response = client.post('/api/project/cancel', {'project_id': 1})
         assert response.status_code == 200
 
-        response = client.post('/project/cancel', {'project_id': 2})
+        response = client.post('/api/project/cancel', {'project_id': 2})
         assert response.status_code == 200
 
-        response = client.post('/project/cancel', {'project_id': 3})
+        response = client.post('/api/project/cancel', {'project_id': 3})
         assert response.status_code == 404
 
-        response = client.post('/project/cancel', {'project_id': 4})
+        response = client.post('/api/project/cancel', {'project_id': 4})
         assert response.status_code == 200
 
     def tearDown(self):
@@ -264,10 +264,10 @@ class CheckTestCase(TestCase):
     def test_viewapplyinfo(self):
         client = APIClient()
         response = client.post(
-            '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
+            '/api/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
         assert response.status_code == 200
 
-        response = client.get('/check/ViewApplyInfo', {'project_id': 1})
+        response = client.get('/api/check/ViewApplyInfo', {'project_id': 1})
         assert response.status_code == 200
 
     # 审核操作
@@ -275,11 +275,11 @@ class CheckTestCase(TestCase):
     def test_checkop(self):
         client = APIClient()
         response = client.post(
-            '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
+            '/api/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
         assert response.status_code == 200
 
         response = client.post(
-            '/check/CheckOp', {'apply_id': 1, 'checked': True})
+            '/api/check/CheckOp', {'apply_id': 1, 'checked': True})
         assert response.status_code == 200
 
     # 测试函数执行后执行
@@ -304,11 +304,11 @@ class ApplyTestCase(TestCase):
     # 报名
     def test_fillform(self):
         client = APIClient()
-        response = client.post('/auth/login', {'token': 'null'})
+        response = client.post('/api/auth/login', {'token': 'null'})
         assert response.status_code == 200
 
         response = client.post(
-            '/apply/fillform', {'job_id': 1, 'form': '{json文本}'})
+            '/api/apply/fillform', {'job_id': 1, 'form': '{json文本}'})
         assert response.status_code == 200
 
     def tearDown(self):
@@ -336,10 +336,10 @@ class CancelApplyTestCase(TestCase):
     def test_cancelapply(self):
         client = APIClient()
 
-        response = client.post('/auth/login', {'token': 'null'})
+        response = client.post('/api/auth/login', {'token': 'null'})
         assert response.status_code == 200
 
-        response = client.post('/apply/cancelapply', {'project_id': 1, 'job_id':1})
+        response = client.post('/api/apply/cancelapply', {'project_id': 1, 'job_id':1})
         assert response.status_code == 200
 
     def tearDown(self):
@@ -363,10 +363,10 @@ class signprojectTestCase(TestCase):
     def test_create_signproject(self):
         client = APIClient()
         response = client.post(
-            '/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
+            '/api/auth/weblogin', {'username': 'test1234', 'password': 'test1234'})
         assert response.status_code == 200
 
-        response = client.post('/sign/project', {
+        response = client.post('/api/sign/project', {
             "title": "签到标题",
             "content": "签到内容",
             "begin_time": "2019-12-01 12:00:00",
@@ -379,7 +379,7 @@ class signprojectTestCase(TestCase):
         })
         assert response.status_code == 200
 
-        response = client.post('/sign/project', {
+        response = client.post('/api/sign/project', {
             "title": "签到标题",
             "content": "签到内容",
             "begin_time": "2019-12-01 12:00:00",
@@ -419,10 +419,10 @@ class signinTestCase(TestCase):
     # 签到
     def test_signin(self):
         client = APIClient()
-        response = client.post('/auth/login', {'token': 'null'})
+        response = client.post('/api/auth/login', {'token': 'null'})
         assert response.status_code == 200
 
-        response = client.post('/sign/signin', {'sign_project_id': 1,
+        response = client.post('/api/sign/signin', {'sign_project_id': 1,
                                                 'longitude': 116.320002393781,
                                                 'latitude': 40.0011853})
         assert response.status_code == 200
@@ -459,10 +459,10 @@ class signoutTestCase(TestCase):
 
     def test_signout(self):
         client = APIClient()
-        response = client.post('/auth/login', {'token': 'null'})
+        response = client.post('/api/auth/login', {'token': 'null'})
         assert response.status_code == 200
 
-        response = client.post('/sign/signout', {'sign_record_id': 1})
+        response = client.post('/api/sign/signout', {'sign_record_id': 1})
         assert response.status_code == 200
 
     def tearDown(self):
@@ -477,10 +477,10 @@ class webuserTestCase(TestCase):
     def test_create_webuser(self):
         client = APIClient()
         response = client.post(
-            '/auth/weblogin', {'username': 'admin', 'password': 'admin'})
+            '/api/auth/weblogin', {'username': 'admin', 'password': 'admin'})
         assert response.status_code == 200
 
-        response = client.post('/auth/webuser', {'username': 'redcross',
+        response = client.post('/api/auth/webuser', {'username': 'redcross',
                                                  'password': 'redcross',
                                                  'name': '清华大学红十字会',
                                                  'description': '这是简介',
@@ -493,15 +493,15 @@ class webuserTestCase(TestCase):
     def test_modify_webuser(self):
         client = APIClient()
         response = client.post(
-            '/auth/weblogin', {'username': 'admin', 'password': 'admin'})
+            '/api/auth/weblogin', {'username': 'admin', 'password': 'admin'})
         assert response.status_code == 200
 
-        response = client.put('/auth/webuser', {
+        response = client.put('/api/auth/webuser', {
             'name': '校团委管理员'
         })
         assert response.status_code == 200
 
-        response = client.put('/auth/webuser?id=2', {
+        response = client.put('/api/auth/webuser?id=2', {
             'name': '测试管理员'
         })
         assert response.status_code == 200
@@ -509,22 +509,22 @@ class webuserTestCase(TestCase):
     def test_get_webuser(self):
         client = APIClient()
         response = client.post(
-            '/auth/weblogin', {'username': 'test_user', 'password': 'test_user'})
+            '/api/auth/weblogin', {'username': 'test_user', 'password': 'test_user'})
         assert response.status_code == 200
 
-        response = client.get('/auth/webuser')
+        response = client.get('/api/auth/webuser')
         assert response.status_code == 200
 
-        response = client.get('/auth/webuser?id=1')
+        response = client.get('/api/auth/webuser?id=1')
         assert response.status_code == 200
 
     def test_delete_webuser(self):
         client = APIClient()
         response = client.post(
-            '/auth/weblogin', {'username': 'admin', 'password': 'admin'})
+            '/api/auth/weblogin', {'username': 'admin', 'password': 'admin'})
         assert response.status_code == 200
 
-        response = client.delete('/auth/webuser?id=2')
+        response = client.delete('/api/auth/webuser?id=2')
         assert response.status_code == 200
 
     def tearDown(self):
@@ -550,22 +550,22 @@ class commentTestCase(TestCase):
     
     def test_comment(self):
         client = APIClient()
-        response = client.post('/auth/login', {'token': 'null'})
+        response = client.post('/api/auth/login', {'token': 'null'})
         assert response.status_code == 200
 
-        response = client.post('/my/comment', {"join_record_id":1,
+        response = client.post('/api/my/comment', {"join_record_id":1,
                                                 "comment":"评价",
                                                 "comment_rank":5
                                                  })
         assert response.status_code == 200
 
-        response = client.post('/my/comment', {"join_record_id":1,
+        response = client.post('/api/my/comment', {"join_record_id":1,
                                                 "comment":"评价",
                                                 "comment_rank":5
                                                  })
         assert response.status_code == 406
 
-        response = client.post('/my/comment', {"join_record_id":2,
+        response = client.post('/api/my/comment', {"join_record_id":2,
                                                 "comment":"评价",
                                                 "comment_rank":5
                                                  })
