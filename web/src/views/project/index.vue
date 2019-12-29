@@ -33,7 +33,7 @@
       </div>
       {{requirements}}
     </el-card>
-    <el-card v-if="!finished && !started" style="margin-bottom:10px;">
+    <el-card v-if="!finished" style="margin-bottom:10px;">
       <div slot="header" class="clearfix">
         <span>
           <i class="el-icon-check"></i>
@@ -42,10 +42,10 @@
       </div>
       <p v-if="applyList && applyList.length == 0">暂时还没有人报名QAQ</p>
       <checkform v-if="applyList && applyList.length > 0" :applyList="applyList" :form="JSON.parse(form)"></checkform>
-      <el-button type="danger" @click="deleteProject">
-        <i class="el-icon-delete"> 删除项目</i>
-      </el-button>
     </el-card>
+    <el-button type="danger" @click="deleteProject" v-if="!started">
+      <i class="el-icon-delete"> 删除项目</i>
+    </el-button>
     <el-card v-if="!finished && started">
       <div slot="header" class="clearfix">
         <span><i class="el-icon-close"> 结项操作</i></span>
@@ -318,32 +318,57 @@ export default {
               that.joinList[i].job_names=job_names.join(', ')
             }
           }).catch(err=>{
-            Message({
-              message:"获取Joinlist失败: "+err,
-              type:"error",
-              duration:"5000"
-            })
+            if(err.request.status==403)
+            {
+              Message({
+                message:'没有权限访问',
+                type:'error',
+                duration:3000
+              })
+              that.$router.push({path:'/dashboard'})
+            }
+            else{
+              Message({
+                message:"获取Joinlist失败: "+err,
+                type:"error",
+                duration:"5000"
+              })
+            }
           })
         }
-        else if(!that.started)
+        else if(!that.finished)
         {
-          getProjectApplyList(this.projectID)
+          getProjectApplyList(that.projectID)
             .then(res => {
               console.log("报名信息：", res.data);
               that.applyList = res.data;
             })
             .catch(err => {
-              Message({
-                message: "获取错误" + "Error request" + err,
-                type: "error",
-                duration: 5 * 1000
-              });
+              var code=err.request.status
+              if(code==403)
+              {
+                Message({
+                  message: "没有权限访问",
+                  type: "error",
+                  duration: 5 * 1000
+                });
+                that.$router.push({path:'/dashboard'})
+              }
+              else
+              {
+                Message({
+                  message: "获取错误" + "Error request" + err,
+                  type: "error",
+                  duration: 5 * 1000
+                });
+              }
             });
         }
       })
       .catch(err => {
         var code=err.response.status
-        if(err.response.status==404)
+        console.log('code',code)
+        if(err.response.status==404 || err.response.status==403)
         {
           Message({
             message: "未找到项目",
