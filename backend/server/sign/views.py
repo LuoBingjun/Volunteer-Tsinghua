@@ -132,18 +132,7 @@ class signinView(APIView):
         distance=round(distance,3)
         print(distance)
         if distance > 100:
-            return Response({"error":"请前往指定地点签到"},status=406)
-
-        _file = open("record.txt", 'a', encoding='utf-8')
-        print('签到人:'+str(request.user.name)+'\n\r', file=_file)
-        print('(sign_project.longitude,sign_project.latitude):('
-            +str(sign_project.longitude)+','+str(sign_project.latitude)+')\n\r',file=_file)
-        print('(longitude,latitude):('
-            +str(longitude)+','+str(latitude)+')'+'\n\r',file=_file)
-        print('distance:'+str(distance)+'\n\r',file=_file)
-        print('\n\r',file=_file)
-        _file.close()
-        
+            return Response({"error":"请前往指定地点签到"},status=406)        
 
         sign_record = SignRecord.objects.create(sign_project=sign_project,join_record=join_record)
 
