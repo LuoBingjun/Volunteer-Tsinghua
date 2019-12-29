@@ -1,17 +1,18 @@
 <template>
     <div>
         <el-form :model="form" :rules="rules" ref="form">           
-            <el-form-item label="用户昵称" prop="username" v-if="isnew">
+            <el-form-item label="登陆名称" prop="username" v-if="isnew">
                 <el-input v-model="form.username" class="short"></el-input>
             </el-form-item>
+            <el-form-item label="登陆密码" v-if="isnew" prop="password">
+                <el-input v-model="form.password" class="short" type="password"></el-input>
+            </el-form-item>
+            <el-divider v-if="isnew"></el-divider>
             <el-form-item label="团体名称" prop="name">
                 <el-input v-model="form.name" class="short"></el-input>
             </el-form-item>
             <el-form-item label="负责人名" prop="manager"> 
                 <el-input v-model="form.manager" class="short"></el-input>
-            </el-form-item>
-            <el-form-item label="登陆密码" v-if="isnew" prop="password">
-                <el-input v-model="form.password" class="short" type="password"></el-input>
             </el-form-item>
             <el-form-item label="联系方式" prop="phone">
                 <el-input v-model="form.phone" class="short"></el-input>

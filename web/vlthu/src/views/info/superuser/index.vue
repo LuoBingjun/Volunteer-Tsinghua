@@ -1,30 +1,35 @@
 <template>
     <div>
-        <h2 style="margin:15px">
-            <i class="el-icon-setting"></i> 管理所有用户
-        </h2>
-        <el-table :data="users" style="width: 100%">
-            <el-table-column type="expand" label-width="auto">
-                <template slot-scope="scope">
-                    <userform :user="scope.row" @modifyuser='modifyUser' @deleteuser='deleteUser'></userform>
-                </template>
-            </el-table-column>
-            <el-table-column
-                label="团体名称"
-                prop="name">
-            </el-table-column>
-            <el-table-column
-                label="负责人"
-                prop="manager">
-            </el-table-column>
-            <el-table-column
-                label="联系电话"
-                prop="phone">
-            </el-table-column>
-        </el-table>
-        <el-card>
-            <p><i class='el-icon-plus'> 添加新用户</i></p>
-            <userform :user="newuser" @modifyuser='addUser'></userform>
+        <h2><i class="el-icon-setting"> 管理所有用户</i></h2>
+        <el-card style="margin:10px 0px">
+            <el-table :data="users" style="width: 100%">
+                <el-table-column type="expand" label-width="auto">
+                    <template slot-scope="scope">
+                        <userform :user="scope.row" @modifyuser='modifyUser' @deleteuser='deleteUser'></userform>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    label="团体名称"
+                    prop="name">
+                </el-table-column>
+                <el-table-column
+                    label="负责人"
+                    prop="manager">
+                </el-table-column>
+                <el-table-column
+                    label="联系电话"
+                    prop="phone">
+                </el-table-column>
+            </el-table>
+        </el-card>
+        <el-card style="margin:10px 0px">
+            <div slot="header" class="clearfix">
+                <p><i class='el-icon-plus'> 添加新用户</i></p>
+            </div>
+            <el-button @click="addform_open=!addform_open" v-if="!addform_open" type="primary">
+                <i class='el-icon-arrow-down'> 点击展开表单</i>
+            </el-button>
+            <userform v-if="addform_open" :user="newuser" @modifyuser='addUser'></userform>
         </el-card>
     </div>
 </template>
@@ -40,7 +45,8 @@ export default {
             users:[],
             newuser:{
                 isnew:true
-            }
+            },
+            addform_open:undefined
         }
     },
     components:{
