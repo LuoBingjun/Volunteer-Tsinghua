@@ -111,9 +111,12 @@ class loginView(APIView):
         }
         response = requests.post(
             'https://alumni-test.iterator-traits.com/fake-id-tsinghua-proxy/api/user/session/token', json=params).json()
-        print(response)
+        # print(response)
         userinfo = response.get('user')
-        return userinfo
+        if userinfo:
+            return userinfo
+        else:
+            raise PermissionDenied()
 
 
 class webloginSerializer(serializers.Serializer):
