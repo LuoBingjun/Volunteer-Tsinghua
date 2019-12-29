@@ -73,17 +73,7 @@ Page({
 
               item.status = 1
 
-              for (let item of res.data.signrecord_set) {
-                if (item.sign_out_time) {
-                  //  已签退
-                  signList[item.sign_project].status = 4
-                }
-                else {
-                  //  未签退
-                  signList[item.sign_project].status = 2
-                  signList[item.sign_project].signrecordid = item.id
-                }
-              }
+
 
               // wx.request({
               //     url: `${app.globalData.backEndUrl}/my/signrecord?signproject=${item.id}`,
@@ -117,6 +107,18 @@ Page({
             }
             item.begin_time = item.begin_time.Format("yyyy-MM-dd HH:mm:ss")
             item.end_time = item.end_time.Format("yyyy-MM-dd HH:mm:ss")
+          }
+
+          for (let item of res.data.signrecord_set) {
+            if (item.sign_out_time) {
+              //  已签退
+              signList[item.sign_project].status = 4
+            }
+            else {
+              //  未签退
+              signList[item.sign_project].status = 2
+              signList[item.sign_project].signrecordid = item.id
+            }
           }
 
 
