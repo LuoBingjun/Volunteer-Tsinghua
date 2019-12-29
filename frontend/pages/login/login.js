@@ -270,8 +270,8 @@ Page({
         fail(res) {
           console.log("跳转到助教小程序失败！", res)
           wx.showModal({
-            title: '网络异常',
-            content: '网络异常',
+            title: '请认证身份',
+            content: '认证身份失败',
             success(res) {
               if (res.confirm) {
                 console.log('用户点击确定')
