@@ -47,9 +47,7 @@ export default {
                     type:"success",
                     duration:1500
                 })
-                setTimeout(function(){
-                    that.$router.push('/dashboard')
-                },1500)
+                that.$router.push('/dashboard')
             }).catch(err=>{
                 Message({
                     message:"error: "+err,

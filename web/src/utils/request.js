@@ -32,9 +32,12 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
+    console.log(response.status,response)
     if (response.status !== 200) {
+      
       return Promise.reject(new Error(response.data || 'Error'))
     } else {
+      
       return response
     }
   },

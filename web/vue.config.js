@@ -40,12 +40,15 @@ module.exports = {
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       '/api': {
-        target: 'https://2019-a15.iterator-traits.com/',
+        target: 'http://2019-a15.iterator-traits.com:3389/',
         //target: 'http://62.234.0.237/',
+        pathRewrite: {
+          '^/api': ''   // 在请求的时候 凡是/api开头的地址都可以跨域
+        },
         changeOrigin: true
       },
       '/media':{
-        target: 'https://2019-a15.iterator-traits.com/',
+        target: 'http://2019-a15.iterator-traits.com:3389/',
       }
     },
     after: require('./mock/mock-server.js')

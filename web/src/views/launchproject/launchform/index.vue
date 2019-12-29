@@ -7,7 +7,7 @@
       <el-input v-model="form.title" placeholder="请输入项目标题"></el-input>
     </el-form-item>
     <el-form-item label="项目简介" prop="introduction">
-      <el-input v-model="form.introduction" placeholder="请输入项目简介"></el-input>
+      <el-input v-model="form.introduction" placeholder="请输入项目简介（不超过20个中文字符）"></el-input>
     </el-form-item>
     
     <el-form-item label="选择标签" prop="type">
@@ -132,16 +132,21 @@
           <i class="el-icon-delete"></i> 删除岗位
         </el-button>
       </div>
-      <el-form-item :rules="{required:true,message:'请输入岗位名称',trigger:'blur'}" label="名称">
+      <el-form-item :prop="'jobs.'+index+'.job_name'" :rules="{required:true,message:'请输入岗位名称',trigger:'blur'}" label="名称">
         <el-input v-model="job.job_name" class="short"></el-input>
       </el-form-item>
-      <el-form-item :rules="{required:true,message:'请选择岗位工时',trigger:'blur'}" label="工时">
+      <el-form-item :prop="'jobs.'+index+'.job_worktime'" 
+        :rules="[{required:true,message:'请选择岗位工时',trigger:'blur'},
+                 {validator:worktimeValidator,trigger:'blur'}]"
+        label="工时">
         <el-input v-model="job.job_worktime" class="short"></el-input>
       </el-form-item>
-      <el-form-item :rules="{required:true,message:'请输入岗位描述',trigger:'blur'}" label="描述">
+      <el-form-item :prop="'jobs.'+index+'.job_content'" :rules="{required:true,message:'请输入岗位描述',trigger:'blur'}" label="描述">
         <el-input v-model="job.job_content" class="short"></el-input>
       </el-form-item>
-      <el-form-item :rules="{required:true,message:'请设置岗位人数',trigger:'blur'}" label="人数">
+      <el-form-item :prop="'jobs.'+index+'.job_require_num'" 
+        :rules="[{required:true,message:'请设置岗位人数',trigger:'blur'},
+                 {validator:requirenumValidator,trigger:'blur'}]" label="人数">
         <el-input v-model="job.job_require_num" class="short"></el-input>
       </el-form-item>
     </el-card>
@@ -188,7 +193,7 @@
       </div>
 
       <el-form-item
-        label="文字描述"
+        label="文字描述" :prop="'form.'+index+'.text'"
         :rules="{required:true,message:'请输入表单项名称',trigger:'blur'}"
         style="margin:10px 0px"
       >
@@ -202,7 +207,8 @@
           <i class="el-icon-plus">添加选项</i>
         </el-button>
       </el-form-item>
-      <el-form-item v-for="(option,index) in item.options" :key="option.index" :label="'选项'+(index+1)">
+      <el-form-item v-for="(option,index2) in item.options" :key="index2" :label="'选项'+(index2+1)"
+        :prop="'form.'+index+'.options.'+index2+'.name'" :rules="{required:true,trigger:'blur',message:'选项不能为空'}">
         <el-input v-model="option.name" class="short"></el-input>
         <el-button @click="rmFormOption(item,option)">
           <i class="el-icon-delete"></i>
@@ -220,7 +226,7 @@
         <i class="el-icon-plus">新增多选项</i>
       </el-button>
     </div>
-    <el-button type="primary" @click="submitform">发起项目</el-button>
+    <el-button type="primary" @click="submitform" :loading="loading">发起项目</el-button>
   </el-form>
 </template>
 
@@ -276,11 +282,8 @@ export default {
       rules: {
         title: [{ required: true, message: "请输入项目标题", trigger: "blur" }],
         content: { required: true, message: "请输入项目详情", trigger: "blur" },
-        introduction: {
-          required: true,
-          message: "请输入项目简介",
-          trigger: "blur"
-        },
+        introduction: [{required: true, message: "请输入项目简介", trigger: "blur" },
+                       {max:20,message:"简介不能超过20个中文字符",trigger:'change' }],
         type:{required:true,message:"请选择项目标签",trigger:"blur"},
         requirements: {
           required: true,
@@ -328,8 +331,37 @@ export default {
           trigger: "blur"
         },
         cover: { required: true, message: "请上传封面图片", trigger: "blur" }
-      }
+      },
+      loading:false
     };
+  },
+  computed:{
+    worktimeValidator(){
+      return function(rule,value,callback){
+        var pattern=/^(0|[1-9][0-9]*)?(\.[0-9]*)?$/;
+        if(pattern.test(value))
+        {
+          callback();
+        }
+        else
+        {
+          callback(new Error('工时必须是大于零的实数'))
+        }
+      }
+    },
+    requirenumValidator(){
+      return function(rule,value,callback){
+        var pattern=/^[1-9][0-9]*$/;
+        if(pattern.test(value))
+        {
+          callback();
+        }
+        else
+        {
+          callback(new Error('人数必须是正整数'))
+        }
+      }
+    }
   },
   methods: {
     rmjob(item) {
@@ -375,6 +407,7 @@ export default {
       var that = this;
       //this.$refs.uploader.submit(); //getfile
       console.log(this.form);
+      this.loading=true
       this.$refs.mainform.validate(valid => {
         console.log(valid);
         if (valid) {
@@ -404,14 +437,32 @@ export default {
                 duration: 5000
               });
               that.$router.push({ path: "/dashboard" });
+              that.loading=false
             })
             .catch(err => {
-              Message({
-                message: "错误：" + err,
-                type: "error",
-                duration: 5000
-              });
+              var errcode=err.request.status
+              console.log(errcode)
+              if(errcode==400){
+                Message({
+                  message: "表单项不符合规则",
+                  type: "error",
+                  duration: 5000
+                });
+              }
+              else{
+                Message({
+                  message: "错误："+err,
+                  type: "error",
+                  duration: 5000
+                });
+              }
+              that.loading=false
             });
+        }
+        else
+        {
+          Message({message:"有项目不符合要求",type:"error",duration:"3000"})
+          that.loading=false
         }
       });
     },

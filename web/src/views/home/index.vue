@@ -1,17 +1,17 @@
 <template>
   <div style="margin:40px;">
     <h2><i class="el-icon-news"/> 正在报名中的项目</h2>
-      <el-card v-for="project in applyingProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
+      <el-card v-for="project in applyingProjects" :id="project.id" :key="project.index" @click="jumpToDetail" style="margin:10px 0px">
         <a :id="project.id" @click="jumpToDetail">{{ project.title }}</a>
       </el-card>
     <p v-if="applyingProjects.length==0">暂无记录</p>
     <h2><i class="el-icon-s-data"/> 正在进行中的项目</h2>
-    <el-card v-for="project in currentProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
+    <el-card v-for="project in currentProjects" :id="project.id" :key="project.index" @click="jumpToDetail" style="margin:10px 0px">
       <a :id="project.id" @click="jumpToDetail">{{ project.title }}</a>
     </el-card>
     <p v-if="currentProjects.length==0">暂无记录</p>
     <h2><i class="el-icon-time"/> 历史项目</h2>
-    <el-card v-for="project in historyProjects" :id="project.id" :key="project.index" @click="jumpToDetail">
+    <el-card v-for="project in historyProjects" :id="project.id" :key="project.index" @click="jumpToDetail" style="margin:10px 0px">
       <a :id="project.id" @click="jumpToDetail">{{ project.title }}</a>
     </el-card>
     <p v-if="currentProjects.length==0">暂无记录</p>

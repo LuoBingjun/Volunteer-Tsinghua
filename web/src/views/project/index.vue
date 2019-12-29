@@ -228,7 +228,7 @@ export default {
             type:'success',
             duration:3000
           })
-          setTimeout(function(){that.$router.go(0)},3000) 
+          that.$router.go(0)
         })
       }).catch(()=>{
       })
@@ -265,9 +265,7 @@ export default {
             type:"success",
             duration:1500
           })
-          setTimeout(() => {
-            that.$router.push({path:'/dashboard'})
-          }, 1500);
+          that.$router.push({path:'/dashboard'})
         })
       }).catch(()=>{
         Message({
@@ -344,11 +342,24 @@ export default {
         }
       })
       .catch(err => {
-        Message({
-          message: err,
-          type: "error",
-          duration: 5 * 1000
-        });
+        var code=err.response.status
+        if(err.response.status==404)
+        {
+          Message({
+            message: "未找到项目",
+            type: "info",
+            duration: 5 * 1000
+          });
+          that.$router.push({path:'/404'})
+        }
+        else
+        {
+          Message({
+            message: err,
+            type: "error",
+            duration: 5 * 1000
+          });
+        }
       });
   }
 };
