@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "反馈评价",
+  "usingComponents": {
+        "i-input": "/dist/input/index",
+        "i-button": "/dist/button/index",
+        "i-panel": "/dist/panel/index",
+        "i-rate": "/dist/rate/index",
+        "i-cell-group": "/dist/cell-group/index",
+        "i-cell": "/dist/cell/index"
+  }
+}

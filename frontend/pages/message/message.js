@@ -6,34 +6,34 @@ Page({
   data: {
     current: "message",
     "name": "FTP server",
-  //   "messages":[
-  //     {
-  //         "id": 1,
-  //         "type": "P", // ('M', '模板消息'), ('P', '普通消息')
-  //         "title": "测试项目",
-  //         "content": "测试内容内容内容内容内容内容内容内容",
-  //         "sender": {
-  //             "description": '组织名称'
-  //         },
-  //         "project": {
-  //             "id": 1,
-  //             "title": "测试项目",
-  //         }
-  //     },
-  //     {
-  //         "id": 1,
-  //         "type": "M", // ('M', '模板消息'), ('P', '普通消息')
-  //         "title": "测试项目",
-  //         "content": [{"key":"签到时间", "value":"2019-12-02"},{"key":"签到地点", "value":"6A305"}],
-  //         "sender": {
-  //             "description": '组织名称'
-  //         },
-  //         "project": {
-  //             "id": 1,
-  //             "title": "测试项目",
-  //         }
-  //     }
-  // ]
+    //   "messages":[
+    //     {
+    //         "id": 1,
+    //         "type": "P", // ('M', '模板消息'), ('P', '普通消息')
+    //         "title": "测试项目",
+    //         "content": "测试内容内容内容内容内容内容内容内容",
+    //         "sender": {
+    //             "description": '组织名称'
+    //         },
+    //         "project": {
+    //             "id": 1,
+    //             "title": "测试项目",
+    //         }
+    //     },
+    //     {
+    //         "id": 1,
+    //         "type": "M", // ('M', '模板消息'), ('P', '普通消息')
+    //         "title": "测试项目",
+    //         "content": [{"key":"签到时间", "value":"2019-12-02"},{"key":"签到地点", "value":"6A305"}],
+    //         "sender": {
+    //             "description": '组织名称'
+    //         },
+    //         "project": {
+    //             "id": 1,
+    //             "title": "测试项目",
+    //         }
+    //     }
+    // ]
   },
   handleChange({ detail }) {
     if (detail.key != this.data.current) {
@@ -50,6 +50,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
+
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
     var that = this
     var app = getApp()
 
@@ -63,10 +78,8 @@ Page({
       success(res) {  // 成功回调
         console.log("得到的数据为", res)
 
-        for(var item of res.data)
-        {
-          if(item.type == 'M')
-          {
+        for (var item of res.data) {
+          if (item.type == 'M') {
             item.content = JSON.parse(item.content.replace(/\s+/g, ""))
           }
         }
@@ -74,29 +87,18 @@ Page({
         that.setData({
           "messages": res.data
         })
-        
 
-        console.log("解析后的messages请求：",that.data.messages)
+
+        console.log("解析后的messages请求：", that.data.messages)
       },
       fail() { // 失败回调
-        console.log('向后端发送数据失败！');
+        console.log('向后端发送数据失败！')
+        wx.showModal({
+          title: '错误',
+          content: '无法发送数据，请检查网络状态'
+        })
       }
     })
-
-    },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
   },
 
   /**
@@ -130,12 +132,14 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function (res) {
+    return {
+      path: '/pages/login/login'
+    }
 
   },
 
   enterProject: function (e) {
-    console.log("-------"+e.currentTarget.projectID)
-    wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + e.currentTarget.projectID })
+    wx.navigateTo({ "url": "/pages/currentproject/currentproject?projectID=" + e.currentTarget.dataset.projectid })
   },
 })

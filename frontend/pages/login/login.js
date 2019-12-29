@@ -38,7 +38,37 @@ Page({
                   app.globalData.cookies = res.header['Set-Cookie']
                   if (res.data.login_status) {
                     console.log('res.data.login_status为true')
-                    wx.reLaunch({ 'url': "/pages/home/home" })
+                    if(!options.page)
+                    {
+                      wx.reLaunch({ 'url': "/pages/home/home" })
+                    }
+                    else
+                    {
+                      wx.request({
+                        url: `${app.globalData.backEndUrl}/auth/user`,
+                        method: 'get',
+                        header: {
+                          'content-type': 'application/json', // 提交的数据类型
+                          'cookie': app.globalData.cookies //读取cookie
+                        },
+                        success(res) {  // 成功回调
+                          console.log("home.js 获取用户信息：", res.data)
+                          app.globalData.userInfo = JSON.parse(JSON.stringify(res.data))
+                          that.setData({
+                            "username": app.globalData.userInfo.name,
+                          })
+                          wx.reLaunch({ "url": `/pages/${options.page}/${options.page}?projectID=${options.projectID}`})
+                        },
+                        fail() { // 失败回调
+                          console.log('向后端发送数据失败！');
+                          wx.showModal({
+                            title: '错误',
+                            content: '无法发送数据，请检查网络状态'
+                          });
+                        }
+                      })
+                    }
+
                   }
                   else {
                     console.log('res.data.login_status为false还未登录')
@@ -47,6 +77,13 @@ Page({
                     })
                   }
                 }
+              },
+              fail() { // 失败回调
+                console.log('向后端发送数据失败！');
+                wx.showModal({
+                  title: '错误',
+                  content: '无法发送数据，请检查网络状态'
+                });
               }
             })
           }
@@ -78,6 +115,15 @@ Page({
           'cookie': app.globalData.cookies //读取cookie
         },
         success(res) {  // 成功回调
+          console.log("login界面onLoad wx请求pos1")
+          if (res.statusCode != 200) {
+            console.log("login界面onLoad wx请求pos1.1, res.statusCode:",res.statusCode)
+            wx.reLaunch({
+              url: '/pages/login/login',
+            })
+            return
+          }
+          console.log("login界面onLoad wx请求pos1.2, res.statusCode:", res.statusCode)
           console.log('向后端发送数据成功！', res.data);
           // app.globalData.cookies=res.header['Set-Cookie'];
           // res.data 包含了后端传回的学号等信息。
@@ -95,6 +141,10 @@ Page({
         },
         fail() { // 失败回调
           console.log('向后端发送数据失败！');
+          wx.showModal({
+            title: '错误',
+            content: '无法发送数据，请检查网络状态'
+          })
         }
       })
     }
@@ -184,7 +234,7 @@ Page({
   //           fail() { // 失败回调
   //             wx.showModal({
   //               title: '错误',
-  //               content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+  //               content: '无法发送数据，请检查网络状态'
   //               });
   //           }
   //           })
@@ -220,8 +270,8 @@ Page({
         fail(res) {
           console.log("跳转到助教小程序失败！", res)
           wx.showModal({
-            title: '网络异常',
-            content: '网络异常',
+            title: '请认证身份',
+            content: '认证身份失败',
             success(res) {
               if (res.confirm) {
                 console.log('用户点击确定')

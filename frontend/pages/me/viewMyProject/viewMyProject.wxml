@@ -4,11 +4,15 @@
       <i-card title="{{item.project.title}}" bindtap="enterProject" id="{{item.project.id}}">
         <view slot="content">{{item.project.introduction}}</view>
         <view slot="footer">
-          
-            <view>
-              <i-icon size="16" type="time" />认证工时：{{item.work_time}} 
-            </view>
-          
+
+          <view>
+            <i-icon size="16" type="time" />认证工时：{{item.work_time}}
+          </view>
+          <view style="text-align: right;">
+            <button wx:if="{{!item.is_comment}}" class="weui-btn mini-btn mini-button" type="primary" size="mini" data-joinrecordid="{{item.id}}" data-title="{{item.project.title}}" catchtap="comment">反馈评价</button>
+            <button wx:else class="weui-btn mini-btn mini-button" type="primary" size="mini" disabled="true">已评价</button>
+            <button class="weui-btn mini-btn mini-button" type="primary" size="mini" data-title="{{item.project.title}}" data-worktime="{{item.work_time}}" catchtap="worktimeprove">工时证明</button>
+          </view>
         </view>
       </i-card>
     </div>
@@ -17,7 +21,7 @@
       <i-card title="{{item.title}}" bindtap="enterProject" id="{{item.id}}">
         <view slot="content">{{item.introduction}}</view>
         <view slot="footer">
-                    
+
         </view>
       </i-card>
     </div>

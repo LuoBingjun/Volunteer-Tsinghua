@@ -23,6 +23,7 @@ Page({
                     'projectID': options.projectID })
     console.log("从project跳转到URL：", getUrl)
     var that = this;
+    this.setData(app.globalData.userInfo)
     wx.request({
       url: getUrl,
       method: "get",
@@ -40,6 +41,21 @@ Page({
             "form": JSON.parse(res.data.form.replace(/\s+/g, "")),
           });
           console.log("报名问卷界面请求得到的数据：", that.form)
+
+          // 自动填写某些项目：
+          let i = 0
+          let len = 0
+          for(len = that.data.form.length; i < len; i++)
+          {
+            if(that.data.form[i].bind)
+            {
+              that.data.form[i].value = that.data[that.data.form[i].bind]
+              that.setData({
+                form: that.data.form
+              })
+            }
+          }
+          console.log("自动填写之后的form:",that.data.form)
         }
         else {
           wx.showModal({
@@ -51,7 +67,7 @@ Page({
       fail() { // 失败回调
         wx.showModal({
           title: "错误",
-          content: "无法发送数据，请检查网络状态（也有可能是我们服务器挂了）"
+          content: "无法发送数据，请检查网络状态"
         });
       }
     })
@@ -102,11 +118,15 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function (res) {
+    return {
+        path: '/pages/login/login'
+    }
 
   },
 
   onTextChanged: function (e) {
+    console.log("submit.js onTextChanged函数被调用")
     let dataset = e.currentTarget.dataset
     let value = e.detail.detail.value;
     this.data.form[dataset.item].value = value
@@ -123,9 +143,22 @@ Page({
     this.setData({
       form: this.data.form
     })
-    // console.log(this.data.form)
+    console.log(this.data.form)
   },
 
+  onCheckChanged: function (e) {
+    console.log(e)
+    let num = e.currentTarget.dataset.item
+    let item=e.detail
+    var form=this.data.form
+    form[num].value=item
+    this.setData({
+      form:form
+    })
+    console.log(num,this.data.form[num].value)
+  },
+
+  /*
   onCheckChanged: function (e) {
     console.log(e)
     let dataset = e.currentTarget.dataset
@@ -144,6 +177,7 @@ Page({
       form: this.data.form
     })
   },
+  */
 
   // radioChange: function (e) {
   //   if (this.data.status == "joined") return;
@@ -257,7 +291,7 @@ Page({
           fail() { // 失败回调
             wx.showModal({
               title: '错误',
-              content: '无法发送数据，请检查网络状态（也有可能是我们服务器挂了）'
+              content: '无法发送数据，请检查网络状态'
             });
           }
         })

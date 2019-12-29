@@ -8,6 +8,10 @@
     "i-radio": "/dist/radio/index",
     "i-message": "/dist/message/index",
     "i-checkbox-group": "/dist/checkbox-group/index",
-    "i-checkbox": "/dist/checkbox/index"
+    "i-checkbox": "/dist/checkbox/index",
+    "van-checkbox": "/dist/Vant/checkbox/index",
+    "van-checkbox-group": "/dist/Vant/checkbox-group/index",
+    "van-cell": "/dist/Vant/cell/index",
+    "van-cell-group": "/dist/Vant/cell-group/index"
   }
 }

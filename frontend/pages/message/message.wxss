@@ -1,9 +1,8 @@
 /* pages/current_project/index.wxss */
-.message-card{
-    margin-bottom: 15rpx;
-}
 .card-demo image {
     border-radius: 50%;  
+    height: 30px;
+    width: 30px;
 }
 .caption-title {
 font-weight: bold;
@@ -15,13 +14,11 @@ margin-top: 30rpx;
 margin-bottom: 30rpx;
 }
 
-.col-icon {
+.col-class {
 text-align: left;
-line-height: 100%;
 }
 
 .col-content {
 text-align: right;
-line-height: 100%;
 }
   

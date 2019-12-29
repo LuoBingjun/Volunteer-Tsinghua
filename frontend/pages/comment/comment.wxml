@@ -1,0 +1,19 @@
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title">{{title}}</view>
+  </view>
+
+  <i-cell-group>
+    <i-cell title="综合评分">
+      <i-rate bind:change="onRateChange" value="{{input.starIndex}}" size="32">
+      </i-rate>
+    </i-cell>
+    <i-cell title="评价反馈">
+    <i-input value="{{ input.textcomment }}" type="textarea" data-item="textcomment" bind:change="onValueChanged" />
+    </i-cell>
+  </i-cell-group>
+
+  <view>
+    <button class="weui-btn buttons" type="primary" bindtap="onSubmit">提交反馈</button>
+  </view>
+</view>

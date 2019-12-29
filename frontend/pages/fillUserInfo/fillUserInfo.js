@@ -9,7 +9,8 @@ Page({
     'name': "",
     input:{
       'phone': '',
-      'email': ''
+      'email': '',
+      'id_card': ''
     }
   },
 
@@ -66,7 +67,10 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function (res) {
+    return {
+        path: '/pages/login/login'
+    }
 
   },
   // enterProject:function(e){
@@ -90,7 +94,7 @@ Page({
     // console.log("fillUserInfo.js: formSubmit函数开始", e.detail.value)
 
     // 检测用户是否填写完全信息
-    if (this.data.input.phone.length && this.data.input.email.length) {
+    if (this.data.input.phone.length && this.data.input.email.length && this.data.input.id_card.length) {
       let app = getApp();
       const userUrl = `${app.globalData.backEndUrl}/auth/user`
       console.log('fillUserInfo中formSubmit函数，cookie为：', app.globalData.cookies)
@@ -103,7 +107,8 @@ Page({
           'id': that.data.id,
           'department': that.data.department,
           'email': that.data.input.email,
-          'phone': that.data.input.phone
+          'phone': that.data.input.phone,
+          'id_card': that.data.input.id_card
         },
         header: {
           'content-type': 'application/json',// 提交的数据类型
@@ -119,7 +124,7 @@ Page({
           else{
             wx.showModal({
               title: '错误',
-              content: '手机号或邮箱格式有误',
+              content: '填写信息格式有误',
               success(res) {
                 if (res.confirm) {
                   console.log('用户点击确定')
@@ -132,14 +137,17 @@ Page({
 
         },
         fail() { // 失败回调
-          console.log('填写用户信息向后端发送数据失败！');
+          wx.showModal({
+            title: '错误',
+            content: '无法发送数据，请检查网络状态'
+          })
         }
       })
     }
     else {
       wx.showModal({
         title: '提示',
-        content: '请输入手机号和邮箱',
+        content: '请输入手机号,邮箱和身份证号',
         success(res) {
           if (res.confirm) {
             console.log('用户点击确定')

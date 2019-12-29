@@ -15,17 +15,31 @@ Page({
     console.log("viewMyProject页面加载： ", options)
     let title = {
       'ALL': '所有项目',
-      'CHECKING': '审核中的项目',
-      'CURRENT': '正在进行的项目',
-      'HISTORY': '历史项目'
+      'CHECKING': '待审核项目',
+      'CURRENT': '进行中项目',
+      'HISTORY': '已完成项目'
     }[options.type]
     wx.setNavigationBarTitle({
       title: title
     })
 
-    let that = this;
+    
     this.setData(options)
+  },
 
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    
+    let that = this;
     var app = getApp()
     let urlWhole = "null"
     if (that.data.type == "ALL") {
@@ -57,22 +71,12 @@ Page({
       },
       fail() { // 失败回调
         console.log('向后端发送数据失败！');
+        wx.showModal({
+          title: '错误',
+          content: '无法发送数据，请检查网络状态'
+        })
       }
     })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
   },
 
   /**
@@ -106,7 +110,10 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function (res) {
+    return {
+        path: '/pages/login/login'
+    }
 
   },
   
@@ -123,4 +130,14 @@ Page({
     }
     
   },
+  comment:function(e){
+    let dataset = e.currentTarget.dataset
+    console.log("点击了评价按钮！,dataset:", dataset)
+    wx.navigateTo({ "url": "/pages/comment/comment?joinrecordid=" + dataset.joinrecordid + '&title='+dataset.title })
+  },
+  worktimeprove:function(e){
+    let dataset = e.currentTarget.dataset
+    console.log("点击了评价按钮！,dataset:", dataset)
+    wx.navigateTo({ "url": "/pages/worktimeprove/worktimeprove?title="+dataset.title + "&worktime="+dataset.worktime})
+  }
 })
