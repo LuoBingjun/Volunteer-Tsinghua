@@ -35,9 +35,9 @@ class historyView(generics.ListAPIView):
 
             _end_time = _end_time.replace(day=_end_time.day+1)
             return JoinRecord.objects.filter(user=self.request.user, project__finished=True, 
-                    project__begin_datetime__gte=_begin_time, project__end_datetime__lte=_end_time)
+                    project__begin_datetime__gte=_begin_time, project__end_datetime__lte=_end_time).order_by('-time')
         else:
-            return JoinRecord.objects.filter(user=self.request.user, project__finished=True)
+            return JoinRecord.objects.filter(user=self.request.user, project__finished=True).order_by('-time')
         
 class commentSerializer(serializers.Serializer):
     join_record_id=serializers.IntegerField(max_value=None, min_value=0)
@@ -172,7 +172,8 @@ class signrecordView(generics.RetrieveAPIView):
         sign_project = get_object_or_404(SignProject, pk=id)
         return get_object_or_404(sign_project.signrecord_set, join_record__user=self.request.user)
 
-class messagesSerializer(serializers.ModelSerializer):     
+class messagesSerializer(serializers.ModelSerializer):
+    time = serializers.DateTimeField(format="%m月%d日 %H:%M")
     class Meta: 
         model = Message
         exclude = ['receiver']
@@ -182,7 +183,7 @@ class messagesView(generics.ListAPIView):
     serializer_class = messagesSerializer
     @login_required(wx=True)
     def get_queryset(self):
-        return Message.objects.filter(receiver=self.request.user)
+        return Message.objects.filter(receiver=self.request.user).order_by('-time')
         
         
 # 管理员查询自己发起的项目
@@ -219,7 +220,7 @@ class allprojectView(generics.ListAPIView):
             _end_time = _end_time.replace(day=_end_time.day + 1)
             queryset = queryset.filter(begin_datetime__gte=_begin_time, end_datetime__lte=_end_time)
         
-        return queryset
+        return queryset.order_by('-time')
 
 
 class processdetailinSerializer(serializers.Serializer):
@@ -231,8 +232,19 @@ class signprojectSerializer(serializers.ModelSerializer):
         exclude = ['project']
         depth = 0
 
+class projectSerializer(serializers.ModelSerializer):
+    type =  serializers.CharField(source='get_type_display')
+    webuser = serializers.ReadOnlyField(source='webuser.name')
+    begin_datetime = serializers.DateTimeField(format="%Y-%m-%d")
+    end_datetime = serializers.DateTimeField(format="%Y-%m-%d")
+    class Meta:
+        model = Project
+        fields = '__all__'
+
 class processdetailSerializer(serializers.ModelSerializer):
     signproject=serializers.ListField(child=signprojectSerializer())
+    project = projectSerializer()
+
     class Meta: 
         model = JoinRecord
         fields = ['project','job','signrecord_set','signproject']

@@ -18,6 +18,7 @@ class WebUser(AbstractUser):
     manager = models.CharField('负责人', blank=True, null=True, max_length=16)
     email = models.EmailField('电子邮箱', blank=True, null=True)
     phone = models.DecimalField('电话', null=True, blank=True, max_digits=11, decimal_places=0)
+    avatar = models.ImageField('头像')
 
 class ApplyRecord(models.Model):
     user = models.ForeignKey('WxUser', on_delete=models.CASCADE)
@@ -36,6 +37,7 @@ class JoinRecord(models.Model):
     comment_rank = models.IntegerField('评分', blank=True, null=True)
     comment = models.TextField('评价', blank=True, null=True)
     is_comment = models.BooleanField('评价状态', default=False)
+    time = models.DateTimeField('加入时间', auto_now_add=True)
 
 # 项目签到
 class SignProject(models.Model):
@@ -61,8 +63,9 @@ class Project(models.Model):
     webuser = models.ForeignKey('WebUser', on_delete=models.CASCADE)
     title = models.CharField('项目', max_length=128)
     introduction = models.CharField('简介', max_length=32)
+    loc = models.CharField('地点', max_length=16)
     content = models.TextField('详情')
-    type = models.CharField('种类', max_length=2, choices=[('WH','文化教育'),('SH', '赛会服务'), ('SQ', '社区服务'), ('YL', '医疗卫生'), ('JK', '健康残障'), ('XY', '校园讲解'), ('QT', '其他')])
+    type = models.CharField('种类', max_length=2, choices=[('WH','文教'),('SH', '赛会'), ('SQ', '社区'), ('YL', '医疗'), ('JK', '健康'), ('XY', '讲解'), ('QT', '其他')])
     cover = models.ImageField('封面图片', blank=True)
     requirements = models.TextField('需求')
     form = models.TextField('报名表单', blank=True)
@@ -82,6 +85,7 @@ class Message(models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     title = models.CharField('标题', null=True, blank=True, max_length=24)
     content = models.TextField('内容', null=True, blank=True)
+    time = models.DateTimeField('发送时间', auto_now_add=True)
 
 
 class Job(models.Model):

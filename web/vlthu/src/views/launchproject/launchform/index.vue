@@ -21,14 +21,16 @@
         <el-option label="其他项目" value="QT"></el-option>
       </el-select>
     </el-form-item>
-
+    <el-form-item label="项目地点" prop="loc">
+      <el-input v-model="form.loc" placeholder="请填写活动地点"></el-input>
+    </el-form-item>
     <el-form-item label="项目详情" prop="content">
       <el-input v-model="form.content" type="textarea" :rows="6"></el-input>
     </el-form-item>
     <el-form-item label="项目需求" prop="requirements">
       <el-input type="textarea" v-model="form.requirements" :rows="6"></el-input>
     </el-form-item>
-    <el-form-item label="封面图片" prop="cover" ref="upload_item">
+    <el-form-item label="封面图片 (宽高比2:1)" prop="cover" ref="upload_item">
       <el-upload
         action="#"
         list-type="picture-card"
@@ -39,8 +41,68 @@
         :http-request="getFile"
         ref="uploader"
         :on-remove="handleCoverRemove"
+        accept="image/*"
       >
-        <i slot="default" class="el-icon-plus"></i>
+        <i slot="default" :class="form.cover?'el-icon-close':'el-icon-plus'"></i>
+      </el-upload>
+    </el-form-item>
+    <el-form-item prop="success_note">
+      <div slot="label"> 
+        报名成功提示
+        <el-tooltip content="报名成功后显示给志愿者的提示信息">
+          <i class="el-icon-question"></i> 
+        </el-tooltip>
+      </div>
+      <el-input v-model="form.success_note"></el-input>
+    </el-form-item>
+
+    <el-form-item ref="upload_qrcode1">
+      <div slot='label'>
+        <span>
+          活动群二维码
+          <el-tooltip content="不是必填项，仅报名成功后可见">
+            <i class="el-icon-question"></i>
+          </el-tooltip>
+        </span>
+      </div>
+      <el-upload
+        action="#"
+        list-type="picture-card"
+        :auto-upload="true"
+        :multiple="false"
+        :limit="1"
+        name="cover"
+        :http-request="getQrcode1"
+        ref="uploader1"
+        :on-remove="handleQrcode1Remove"
+        accept="image/*"
+      >
+        <i slot="default" :class="form.qrcode1?'el-icon-close':'el-icon-plus'"></i>
+      </el-upload>
+    </el-form-item>
+
+    <el-form-item ref="upload_qrcode2">
+      <div slot='label'>
+        <span>
+          负责人二维码
+          <el-tooltip content="不是必填项，仅报名成功后可见">
+            <i class="el-icon-question"></i>
+          </el-tooltip>
+        </span>
+      </div>
+      <el-upload
+        action="#"
+        list-type="picture-card"
+        :auto-upload="true"
+        :multiple="false"
+        :limit="1"
+        name="cover"
+        :http-request="getQrcode2"
+        ref="uploader2"
+        :on-remove="handleQrcode2Remove"
+        accept="image/*"
+      >
+        <i slot="default" :class="form.qrcode2?'el-icon-close':'el-icon-plus'"></i>
       </el-upload>
     </el-form-item>
 
@@ -110,13 +172,15 @@
               <i class="el-icon-info hb"></i>
             </el-tooltip>
           </span>
-          <span v-else-if="item.bind=='school'">
+          <span v-else-if="item.bind=='department'">
             报名表单项{{index+1}}（该选项以院系为默认值）
             <el-tooltip content="填写时默认填充项为报名者院系" placement="top">
               <i class="el-icon-info hb"></i>
             </el-tooltip>
           </span>
-          <span v-else>报名表单项{{index+1}}</span>
+          <span v-else-if="item.type=='text'">报名表单项{{index+1}}（文本）</span>
+          <span v-else-if="item.type=='radioBox'">报名表单项{{index+1}}（单选）</span>
+          <span v-else-if="item.type=='checkBox'">报名表单项{{index+1}}（多选）</span>
         </span>
               <el-button @click="rmForm(item)" style="float: right; padding: 3px 0" type="text">
         <i class="el-icon-delete"></i> 删除表单项
@@ -174,6 +238,8 @@ export default {
         cover: undefined,
         introduction: undefined,
         type:undefined,
+        loc:undefined,
+        success_note:"报名成功！",
         form: [
           {
             text: "姓名",
@@ -191,12 +257,10 @@ export default {
             text: "院系",
             required: true,
             type: "text",
-            bind: "school"
+            bind: "department"
           }
         ],
         deadline: undefined,
-        begin_datetime: undefined,
-        end_datetime: undefined,
         time_range: undefined,
         jobs: [
           {
@@ -205,7 +269,9 @@ export default {
             job_content: "job1content1",
             job_require_num: 250
           }
-        ]
+        ],
+        qrcode1:undefined,
+        qrcode2:undefined
       },
       rules: {
         title: [{ required: true, message: "请输入项目标题", trigger: "blur" }],
@@ -215,7 +281,7 @@ export default {
           message: "请输入项目简介",
           trigger: "blur"
         },
-        type:{required:true,message:"请选择项目标签",trigger:"blul"},
+        type:{required:true,message:"请选择项目标签",trigger:"blur"},
         requirements: {
           required: true,
           message: "请输入项目需求",
@@ -229,6 +295,11 @@ export default {
         time_range: {
           required: true,
           message: "请选择活动起止时间",
+          trigger: "blur"
+        },
+        loc: {
+          required: true,
+          message: "请填写活动地点",
           trigger: "blur"
         },
         jobs: {
@@ -302,7 +373,7 @@ export default {
     },
     submitform() {
       var that = this;
-      this.$refs.uploader.submit(); //getfile
+      //this.$refs.uploader.submit(); //getfile
       console.log(this.form);
       this.$refs.mainform.validate(valid => {
         console.log(valid);
@@ -313,22 +384,18 @@ export default {
           newform.append("content", this.form.content);
           newform.append("introduction", this.form.introduction);
           newform.append("requirements", this.form.requirements);
+          newform.append("loc", this.form.loc);
           newform.append("type", this.form.type);
           newform.append("cover", this.form.cover);
-          newform.append(
-            "deadline",
-            new Date(this.form.deadline).toISOString()
-          );
-          newform.append(
-            "begin_datetime",
-            new Date(this.form.time_range[0]).toISOString()
-          );
-          newform.append(
-            "end_datetime",
-            new Date(this.form.time_range[1]).toISOString()
-          );
+          newform.append("success_note", this.form.success_note);
+          newform.append("deadline",new Date(this.form.deadline).toISOString());
+          newform.append("begin_datetime",new Date(this.form.time_range[0]).toISOString());
+          newform.append("end_datetime",new Date(this.form.time_range[1]).toISOString());
           newform.append("jobs", JSON.stringify(this.form.jobs));
           newform.append("form", JSON.stringify(this.form.form));
+          
+          if(this.form.qrcode1){newform.append("qrcode_1",this.form.qrcode1);console.log("qrcode1 added")}
+          if(this.form.qrcode2){newform.append("qrcode_2",this.form.qrcode2);console.log("qrcode2 added")}
           startProject(newform)
             .then(res => {
               Message({
@@ -349,14 +416,48 @@ export default {
       });
     },
     getFile(file) {
-      console.log("重置cover！");
+      console.log("重置cover！",file);
       this.$refs.mainform.clearValidate("cover");
-      this.form.cover = file.file;
+      var that=this
+      new Promise(function(resolve,reject){
+        let _URL=window.URL||window.webkitURL
+        let img=new Image()
+        img.onload=function(){
+          let valid=(img.width==2*img.height)
+          valid?resolve():reject()
+        }
+        img.src=_URL.createObjectURL(file.file)
+      }).then(()=>{
+        that.form.cover = file.file;
+      }).catch(()=>{
+        Message({
+          message:"上传的图片不符合要求（要求宽高比2:1）",
+          type:'warning',
+          duration:5000
+        })
+        that.$refs.uploader.clearFiles()
+      })
     },
     handleCoverRemove() {
       console.log("清除cover！");
       this.form.cover = undefined;
-    }
+    },
+    getQrcode1(file){
+      console.log('重置qrcode1')
+      this.form.qrcode1=file.file
+    },
+    handleQrcode1Remove(){
+      console.log('清除qrcode1')
+      this.form.qrcode1=undefined
+    },
+    getQrcode2(file){
+      console.log('重置qrcode2')
+      this.form.qrcode2=file.file
+    },
+    handleQrcode2Remove(){
+      console.log('清除qrcode2')
+      this.form.qrcode2=undefined
+    },
   }
 };
 </script>

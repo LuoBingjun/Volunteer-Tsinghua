@@ -1,6 +1,8 @@
 <template>
     <div>
-        <p>superuser</p>
+        <h2 style="margin:15px">
+            <i class="el-icon-setting"></i> 管理所有用户
+        </h2>
         <el-table :data="users" style="width: 100%">
             <el-table-column type="expand" label-width="auto">
                 <template slot-scope="scope">
@@ -47,7 +49,6 @@ export default {
     methods:{
         getIndex(id)
         {
-            console.log("INDEX! ")
             for(var i in this.users)
             {
                 if(this.users[i].id==id)
@@ -57,7 +58,17 @@ export default {
         },
         modifyUser(form)
         {
-            modifyUserInfo(form,form.id).then(res=>{
+            var formdata=new FormData()
+            formdata.append('username',form.username)
+            formdata.append('password',form.password)
+            formdata.append('name',form.name)
+            formdata.append('description',form.description)
+            formdata.append('manager',form.manager)
+            formdata.append('email',form.email)
+            formdata.append('phone',form.phone)
+            if(form.avatar)formdata.append('avatar',form.avatar)
+            console.log("here!",formdata)
+            modifyUserInfo(formdata,form.id).then(res=>{                
                 Message({
                     message: '成功修改',
                     type: 'success',
@@ -69,41 +80,55 @@ export default {
                 this.users[index].manager=form.manager
                 this.users[index].phone=form.phone
                 this.users[index].email=form.email
-                this.users[index].description=form.description
+                this.users[index].description=form.description                            
             }).catch(err=>{
                 console.log(err)
             })
         },
         deleteUser(id)
         { 
-            var index=this.getIndex(id)
-            console.log(id,index)
-            deleteUser(id).then(res=>{
-                Message({
-                    message: '成功删除',
-                    type: 'success',
-                    duration: 5 * 1000
+            var that=this
+            this.$confirm("该操作不可逆，是否继续","提示",{
+                confirmButtonText: '确定',
+                cancelButtonText:'取消',
+                type:'warning'
+            }).then(()=>{
+                var index=that.getIndex(id)
+                console.log(id,index)
+                deleteUser(id).then(res=>{
+                    Message({
+                        message: '成功删除',
+                        type: 'success',
+                        duration: 5 * 1000
+                    })
+                    that.users[index].deleted=true
+                }).catch(err=>{
+                    Message({
+                        message: 'error: '+err,
+                        type: 'error',
+                        duration: 5 * 1000
+                    })
                 })
-                this.users[index].deleted=true
-            }).catch(err=>{
+            }).catch(()=>{
                 Message({
-                    message: 'error: '+err,
-                    type: 'error',
+                    message: '取消修改',
+                    type: 'info',
                     duration: 5 * 1000
                 })
             })
         },
         addUser(form){
             console.log("here")
-            addUser({
-                username:form.name,
-                password:form.password,
-                name:form.name,
-                description:form.description,
-                manager:form.manager,
-                email:form.email,
-                phone:form.phone
-            }).then(res=>{
+            var formdata=new FormData()
+            formdata.append('username',form.username)
+            formdata.append('password',form.password)
+            formdata.append('name',form.name)
+            formdata.append('description',form.description)
+            formdata.append('manager',form.manager)
+            formdata.append('email',form.email)
+            formdata.append('phone',form.phone)
+            if(form.avatar)formdata.append('avatar',form.avatar)
+            addUser(formdata).then(res=>{
                 Message({
                     message: '成功添加',
                     type: 'success',

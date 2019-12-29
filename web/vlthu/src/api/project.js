@@ -7,6 +7,17 @@ export function getProjectDetails(projectID){
     })
 }
 
+export function deleteProject(projectID)
+{
+    return request({
+        url:'/project/cancel',
+        method:'post',
+        data:{
+            project_id:projectID
+        }
+    })
+}
+
 export function getProjectApplyList(projectID)
 {
     return request({
@@ -42,6 +53,14 @@ export function downloadExcel(projectID){
     })
 }
 
+export function uploadExcel(options){
+    return request({
+        url:`/worktime/import`,
+        method:'post',
+        data:options
+    })
+}
+
 export function startSign(options)
 {
     return request({
@@ -57,5 +76,24 @@ export function startProject(options)
         method:"post",
         url: '/project/detail',
         data:options
+    })
+}
+
+export function endProject(id,options)
+{
+    return request({
+        method:"put",
+        url:`/project/detail?id=${id}`,
+        data:{
+            "finished":true
+        }
+    })
+}
+
+export function getProjectJoinList(id)
+{
+    return request({
+        method:"get",
+        url:`/worktime/viewjoininfo?project_id=${id}`
     })
 }

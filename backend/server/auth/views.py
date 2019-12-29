@@ -18,7 +18,12 @@ from backend import settings
 from server.models import *
 from server.utils import login_required
 
+from server.auth.identicon import *
 
+import random
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from io import BytesIO
+from PIL import Image
 class preloginSerializer(serializers.Serializer):
     code = serializers.CharField()
 
@@ -106,9 +111,12 @@ class loginView(APIView):
         }
         response = requests.post(
             'https://alumni-test.iterator-traits.com/fake-id-tsinghua-proxy/api/user/session/token', json=params).json()
-        print(response)
+        # print(response)
         userinfo = response.get('user')
-        return userinfo
+        if userinfo:
+            return userinfo
+        else:
+            raise PermissionDenied()
 
 
 class webloginSerializer(serializers.Serializer):
@@ -208,31 +216,44 @@ class userView(APIView):
 
 
 class postWebuserSerializer(serializers.ModelSerializer):
+    avatar = serializers.ImageField(read_only=True)
     class Meta:
         model = WebUser
         fields = ['username', 'password', 'name',
-                  'description', 'manager', 'email', 'phone']
+                  'description', 'manager', 'email', 'phone', 'avatar']
 
 
 class putWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['name', 'description', 'manager', 'email', 'phone']
+        fields = ['name', 'description', 'manager', 'email', 'phone', 'avatar']
 
 
 class getWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['id', 'name', 'description', 'manager', 'email', 'phone']
+        fields = ['id', 'name', 'description', 'manager', 'email', 'phone', 'avatar']
 
 
 class webuserView(APIView):
+    serializer_class = getWebuserSerializer
     @login_required(web=True)
     def post(self, request):
         if not request.user.is_superuser:
             raise PermissionDenied()
         serializer = postWebuserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
+        if not request.data.get('avatar'):
+            avatar = render_identicon(random.randint(1,100000)*10000000+random.randint(1,10000000), 16)  
+            f=BytesIO()
+            avatar.save(f,'JPEG')
+            file = InMemoryUploadedFile(f, None, 'avatar.jpg', None, 48, None, None)       
+            serializer.validated_data['avatar']=file
+        else:
+            serializer.validated_data['avatar']=request.FILES.get('avatar')
+
+
         WebUser.objects.create_user(**serializer.validated_data)
         return Response(status=200)
 
@@ -274,7 +295,7 @@ class webuserView(APIView):
 class listWebuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = WebUser
-        fields = ['id', 'name', 'description', 'manager', 'email', 'phone']
+        fields = ['id', 'name', 'description', 'manager', 'email', 'phone', 'avatar']
 
 
 class listwebuserView(ListAPIView):
@@ -292,3 +313,13 @@ class unbundlingView(APIView):
         request.user.openid = None
         request.user.save()
         return Response(status=200)
+
+# class testView(APIView):
+
+#     def post(self,request):
+#         img = render_identicon(2017013627, 16)
+#         img.save('123123.png')
+#         # im = Image.open('123123.png')
+#         # im_rotate_180 = im.transpose(Image.FLIP_LEFT_RIGHT)
+#         # im.paste(im_rotate_180,(48,48),None)
+#         return Response(status=200)

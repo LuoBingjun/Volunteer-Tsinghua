@@ -2,99 +2,69 @@
     <el-card>
         <h1>
             <i class="el-icon-user">
-            </i> {{oldname}}的团体信息
+            </i> {{form.name}} 的团体信息
         </h1>
-        <el-form :model="form" :rules="rules" label-width="auto" ref="form">
-            <el-form-item label="团体名称" prop="name">
-                <el-input class="short" v-model="form.name"/>
-            </el-form-item>
-            <el-form-item label="团体描述" prop="description">
-                <el-input class="short" v-model="form.description"/>
-            </el-form-item>
-            <el-form-item label="电子邮箱" prop="email">
-                <el-input class="short" v-model="form.email"/>
-            </el-form-item>
-            <el-form-item label="电话号码" prop="phone">
-                <el-input class="short" v-model="form.phone"/>
-            </el-form-item>
-            <el-button type="primary" @click="updateInfo"> <i class="el-icon-upload"> 更新</i></el-button>
-            <el-button type="danger" @click="resetInfo" plain> <i class="el-icon-close"> 重置</i></el-button>
-        </el-form>
+        <userform :user="form" ref="userform" @modifyuser="modifyuser"/>
     </el-card>
 </template>
 <script>
 import {getUserInfo,modifyUserInfo} from '@/api/user'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
+import userform from '../superuser/userform'
+
 export default {
     name: "user",
+    components:{userform},
     data(){
-        var emailValidator=(rule,value,callback)=>{
-            callback()
-        }
-        var phoneValidator=(rule,value,callback)=>{
-            callback()
-        }
         return{
-            oldname:undefined,
             form:{
                 name:undefined,
                 description:undefined,
                 manager:undefined,
                 email:undefined,
-                phone:undefined
+                phone:undefined,
+                avatar:undefined,
+                id:undefined
             },
-            rules:{
-                email:[
-                    {validator:emailValidator,message:"邮箱不符合格式",trigger:"blur"}
-                ],
-                phone:[
-                    {validator:phoneValidator,message:"手机号不符合格式",trigger:"blur"}
-                ]
-            }
         }
     },
     methods:{
-        updateInfo(){
+        modifyuser(form)
+        {
+            console.log("form->",form)
             var that=this
-            this.$refs.form.validate().then((valid)=>{
-                if(valid)
-                {
-                    modifyUserInfo(that.form).then(()=>{
-                        that.oldname=that.form.name
-                        Message({
-                            message: '成功修改',
-                            type: 'success',
-                            duration: 5 * 1000
-                        })
-                        that.$router.push({path:'/dashboard'})
-                    })
-                }
-            }).catch(err=>{
+            var formdata=new FormData()
+            formdata.append('name',form.name)
+            formdata.append('description',form.description)
+            formdata.append('manager',form.manager)
+            formdata.append('email',form.email)
+            formdata.append('phone',form.phone)
+            if(form.avatar)formdata.append('avatar',form.avatar)
+
+            modifyUserInfo(formdata).then(res=>{
                 Message({
-                    message: 'Error: '+err,
-                    type: 'error',
-                    duration: 5 * 1000
+                    message:"成功修改",
+                    type:"success",
+                    duration:1500
                 })
-            })
-        },
-        resetInfo(){
-            getUserInfo().then(res=>{
-                this.form=res.data
-                this.oldname=res.data.name
+                setTimeout(function(){
+                    that.$router.push('/dashboard')
+                },1500)
             }).catch(err=>{
                 Message({
-                    message: 'Error: '+err,
-                    type: 'error',
-                    duration: 5 * 1000
+                    message:"error: "+err,
+                    type:'error',
+                    duration:5000
                 })
             })
         }
     },
     created(){
+        var that=this
         getUserInfo().then(res=>{
-            this.form=res.data
-            console.log(this.form)
-            this.oldname=res.data.name
+            var form=res.data
+            form.nodelete=true
+            that.form=form
         }).catch(err=>{
             Message({
                 message: 'Error: '+err,

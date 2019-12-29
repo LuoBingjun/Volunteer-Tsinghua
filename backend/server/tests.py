@@ -85,6 +85,7 @@ class ProjectCreateTestCase(TestCase):
             "requirements": "需求",
             "type":'QT',
             "form": "{}",
+            "loc":"loc",
             "cover": open('media/cover.jpg', 'rb'),
             "qrcode_1":open('media/cover.jpg', 'rb'),
             "qrcode_2":open('media/cover.jpg', 'rb'),
