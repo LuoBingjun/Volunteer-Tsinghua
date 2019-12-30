@@ -45,6 +45,7 @@ services:
     restart: always
     volumes:
       - ./log/nginx/:/var/log/nginx/
+      - ./log/uwsgi/:/var/log/uwsgi/
       - ./web/dist:/var/www/web
       - ./backend/media:/var/www/media
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
