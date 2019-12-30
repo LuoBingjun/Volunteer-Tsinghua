@@ -270,10 +270,10 @@ export default {
         time_range: undefined,
         jobs: [
           {
-            job_name: "job1",
-            job_worktime: 2.5,
-            job_content: "job1content1",
-            job_require_num: 250
+            job_name: "",
+            job_worktime: "",
+            job_content: "",
+            job_require_num: ""
           }
         ],
         qrcode1:undefined,
