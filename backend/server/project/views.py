@@ -93,45 +93,16 @@ class detailView(GenericAPIView):
 
     @login_required(web=True)
     def post(self, request):
-        # 图片问题
-        # _data=request.POST.copy()
-        
-        # print(_data["jobs"])
-
-        # job_dict = eval(_data["jobs"])
-        # print(job_dict)
-
-        # #_data["jobs"] = json.loads(job_dict)
-        # _data["jobs"]=job_dict
-        # print(_data["jobs"])
-
-        # print(dict(_data["jobs"]))
-
         serializer = detailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        # serializer.save()
 
-        # _title = serializer.validated_data['title']
-        # _content = serializer.validated_data['content']
-        # _cover = serializer.validated_data['cover']
-        # _requirements=serializer.validated_data['requirements']
-        # _form=serializer.validated_data['form']
-        # _deadline=serializer.validated_data['deadline']
-        # _begin_datetime=serializer.validated_data['begin_datetime']
-        # _end_datetime=serializer.validated_data['end_datetime']
         _jobs=serializer.validated_data['jobs']
-        del serializer.validated_data['jobs']
-        # _introduction=serializer.validated_data['introduction']
-        
+        del serializer.validated_data['jobs']        
 
         job_data = json.loads(_jobs)
         job_serializer = jobSerializer(data=job_data, many=True)
         job_serializer.is_valid(raise_exception=True)
-
-        # print(job_serializer.validated_data)
         serializer.validated_data['webuser'] = request.user
-
-
         _project=Project(**serializer.validated_data)
         _project.save()
 
@@ -170,6 +141,8 @@ class detailView(GenericAPIView):
     def put(self, request):
         id = request.query_params.get('id')
         project = get_object_or_404(Project, id=id)
+        if not (request.user.is_superuser or request.user == project.webuser):
+            raise PermissionDenied()
         serializer = putDetailSerializer(
             project, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)

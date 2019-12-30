@@ -1,11 +1,13 @@
-xlwt
-xlrd
 django==2.2.8
 djangorestframework
+mysqlclient
 Pillow
 requests
+xlwt
+xlrd
 redis
 django-redis
 jieba
 celery
 pycryptodome
+uwsgi

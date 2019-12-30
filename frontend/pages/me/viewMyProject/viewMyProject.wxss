@@ -2,3 +2,7 @@
 .project-card{
   margin-top: 15rpx;
 }
+
+.mini-button{
+  margin: 5px;
+}

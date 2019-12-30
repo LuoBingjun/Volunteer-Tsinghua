@@ -15,5 +15,4 @@
       <button class="weui-btn" type="primary" id="login" bindtap="onLoginPushed">绑定学号</button>
     </view>
   </view>
-
 </view>

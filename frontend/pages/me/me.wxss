@@ -1,7 +1,7 @@
 /* pages/current_project/index.wxss */
 
 .name-row {
-  margin-top:20px;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
@@ -9,4 +9,13 @@
   padding: 10px 0;
   text-align: center;
   /* padding:20rpx 20rpx 20rpx 20rpx; */
+}
+
+.setting-row {
+  margin-top: 15px;
+  /* padding:20rpx 20rpx 20rpx 20rpx; */
+}
+
+.navi-icon{
+  margin-right: 16px;vertical-align: middle;width:20px; height: 20px;
 }

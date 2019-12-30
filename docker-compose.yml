@@ -1,0 +1,68 @@
+version: "3"
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./log/mysql:/var/lib/mysql
+      - ./config/mysql/my.cnf:/etc/mysql/my.cnf
+    expose:
+      - 3306
+    restart: always
+    env_file:
+      - config/config.env
+    networks:
+      - db_network
+
+  redis:
+    image: redis
+    command: redis-server
+    expose:
+      - 6379
+    restart: always
+    networks:
+      - db_network
+
+  app:
+    build: .
+    command: /bin/bash -c "python manage.py makemigrations && python manage.py migrate && celery multi start w1 -A backend.celery -l info --logfile=/var/log/celery/celery.log && uwsgi --ini uwsgi.ini --enable-threads --thunder-lock"
+    restart: always
+    volumes:
+      - ./backend:/code
+      - ./log/celery/:/var/log/celery/
+    expose:
+      - 80
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - config/config.env
+    networks:
+      - web_network
+      - db_network
+
+  nginx:
+    image: nginx
+    restart: always
+    volumes:
+      - ./log/nginx/:/var/log/nginx/
+      - ./web/dist:/var/www/web
+      - ./backend/media:/var/www/media
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - ./config/ssl:/ssl
+    env_file:
+      - config/config.env
+    command: /bin/bash -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    ports: 
+      - 443:443
+      - 80:80
+    depends_on: 
+      - app
+    networks:
+      - web_network
+
+networks:
+  web_network:
+    driver: bridge
+  db_network:
+    driver: bridge

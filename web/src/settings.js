@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Vlthu',
+  title: '志愿清华管理端',
 
   /**
    * @type {boolean} true | false

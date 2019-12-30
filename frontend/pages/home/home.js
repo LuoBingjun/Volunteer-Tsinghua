@@ -5,8 +5,10 @@ Page({
    */
   data: {
     current: 'home',
-    "username": "FTP server",
-    "projects": [
+    projectsKind: 0,
+    showLeft1: false,
+    username: undefined,
+    projects: []/*[
       {
         "id": 1,
         "cover": "封面图片url",
@@ -19,10 +21,16 @@ Page({
         "time": "发起时间",
         "deadline": "截止时间"
       },
-    ],
-    "searchbar": true,
+    ]*/,
     inputShowed: false,
-    inputVal: ""
+    inputVal: "",
+    page:0,
+    type:0,
+    lastPage: false,
+    loadingPage: false,
+    typeText: "按标签筛选",
+    typelock: false,
+    swipers:[]
   },
 
   handleChange({ detail }) {
@@ -39,7 +47,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  updateList(){
     var that = this
     var app = getApp()
     let isIphoneX = app.globalData.isIphoneX;
@@ -47,25 +55,73 @@ Page({
     this.setData({
       isIphoneX: isIphoneX
     })
-
-    wx.request({
-      url: `${app.globalData.backEndUrl}/project/list`,
-      method: 'get',
-      header: {
-        'content-type': 'application/json', // 提交的数据类型
-        'cookie': app.globalData.cookies //读取cookie
-      },
-      success(res) {  // 成功回调
-        console.log("得到的数据为", res)
-        that.setData({
-          "projects": res.data
-        })
-      },
-      fail() { // 失败回调
-        console.log('向后端发送数据失败！');
-      }
+    this.setData({
+      page:this.data.page+1
     })
+    
+    var typeParam=""
+    if(this.data.type==1)typeParam="&type=WH"
+    else if(this.data.type==2)typeParam="&type=SH"
+    else if(this.data.type==3)typeParam="&type=SQ"
+    else if (this.data.type==4)typeParam="&type=YL"
+    else if (this.data.type==5)typeParam="&type=JK"
+    else if (this.data.type==6)typeParam="&type=XY"
+    else if (this.data.type==7)typeParam="&type=QT"
 
+    var searchParam=""
+    if(this.data.inputVal.length>0)searchParam=`&search=${this.data.inputVal}`
+    
+    var getUrl=`${app.globalData.backEndUrl}/project/list?page=${this.data.page}${typeParam}${searchParam}`
+    console.log("请求页面，url为",getUrl)
+
+    this.setData({loadingPage:true})
+    setTimeout(
+      function(){
+        wx.request({
+          url: getUrl,
+          method: 'get',
+          header: {
+            'content-type': 'application/json', // 提交的数据类型
+            'cookie': app.globalData.cookies //读取cookie
+          },
+          success(res) {  // 成功回调
+            if(res.statusCode==200)
+            {
+              console.log("得到的数据为", res)
+              that.setData({
+                projects: that.data.projects.concat(res.data.results),
+                lastPage: res.data.next===null,
+                loadingPage: false,
+                typelock:false
+              })
+            }
+            else if(res.statusCode==404)
+            {
+              console.log("无数据")
+              that.setData({
+                lastPage: true,
+                loadingPage: false,
+                typelock:false
+              })
+            }
+          },
+          fail() { // 失败回调
+            console.log('向后端发送数据失败！');
+            that.setData({loadingPage:false})
+            wx.showModal({
+              title: '错误',
+              content: '无法发送数据，请检查网络状态'
+            });
+          }
+        })
+      },100
+    )
+  },
+
+  onLoad: function (options) {
+    let app = getApp()
+    let that = this
+    this.updateList()
     // 请求用户信息：
     wx.request({
       url: `${app.globalData.backEndUrl}/auth/user`,
@@ -83,6 +139,10 @@ Page({
       },
       fail() { // 失败回调
         console.log('向后端发送数据失败！');
+        wx.showModal({
+          title: '错误',
+          content: '无法发送数据，请检查网络状态'
+        });
       }
     })
   },
@@ -98,7 +158,35 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    let that = this
+    let app =  getApp();
+        
+    //  加载轮播图图片
+    wx.request({
+      url: `${app.globalData.backEndUrl}/project/swiper`,
+      method: 'get',
+      header: {
+        'content-type': 'application/json', // 提交的数据类型
+        'cookie': app.globalData.cookies //读取cookie
+      },
+      success(res) {  // 成功回调
+        if(res.statusCode==200)
+        {
+          console.log("轮播图得到的数据为", res)
+          that.setData({
+            swipers: res.data
+          })
+        }
+      },
+      fail() { // 失败回调
+        console.log('向后端发送数据失败！');
+        that.setData({loadingPage:false})
+        wx.showModal({
+          title: '错误',
+          content: '无法发送数据，请检查网络状态'
+        });
+      }
+    })
   },
 
   /**
@@ -119,20 +207,24 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    console.log("pull down")
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    if(!this.data.lastPage)
+      this.updateList()
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function (res) {
+    return {
+        path: '/pages/login/login'
+    }
 
   },
   enterProject: function (e) {
@@ -149,17 +241,68 @@ Page({
   hideInput: function () {
     this.setData({
       inputVal: "",
-      inputShowed: false
+      inputShowed: false,
+      page:0,
+      lastPage:false,
+      projects:[],
+      typelock:true
     });
+    this.updateList()
   },
   clearInput: function () {
     this.setData({
-      inputVal: ""
+      inputVal: "",
+      page:0,
+      lastPage:false,
+      projects:[],
+      typelock:true
     });
+    this.updateList()
   },
   inputTyping: function (e) {
+    if(!this.data.typelock)
+    {
+      this.setData({
+        inputVal: e.detail.value,
+        showLeft1: false,
+        page:0,
+        lastPage:false,
+        projects:[],
+        typelock:true
+      });
+      this.updateList()
+    }
+    
+
+  },
+  showKinds() {
     this.setData({
-      inputVal: e.detail.value
+        showLeft1: !this.data.showLeft1
     });
+  },
+  kindChange(event) {
+    console.log(event)
+    var typeText="按标签筛选"
+    if(event.detail==1)typeText="文化教育"
+    else if(event.detail==2)typeText="赛会服务"
+    else if(event.detail==3)typeText="社区服务"
+    else if(event.detail==4)typeText="医疗卫生"
+    else if(event.detail==5)typeText="健康残障"
+    else if(event.detail==6)typeText="校园讲解"
+    else if(event.detail==7)typeText="其他项目"
+
+    this.setData({
+      showLeft1: false,
+      type:event.detail,
+      page:0,
+      lastPage:false,
+      projects:[],
+      typeText:typeText
+    });
+    this.updateList()
+    // wx.showToast({
+    //   icon: 'none',
+    //   title: `切换至第${event.detail}项`
+    // });
   }
 })

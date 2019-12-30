@@ -1,7 +1,7 @@
 <view class="page">
   <i-row i-class="name-row">
     <i-col span="6" i-class="name-col">
-        <i-avatar size="large">{{userInfo.name[0]}}</i-avatar>
+      <i-avatar size="large">{{userInfo.name[0]}}</i-avatar>
     </i-col>
     <i-col span="18">
       <i-row>
@@ -12,30 +12,65 @@
       </i-row>
     </i-col>
   </i-row>
-  <i-row>
-    <view class="weui-cells weui-cells_after-title">
-      <navigator url="/pages/me/viewMyProject/viewMyProject?type=ALL" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-        <view class="weui-cell__bd">所有项目</view>
+  <!-- <view class="weui-cells__title">我的项目</view> -->
+  <view class="weui-cells weui-cells_after-title">
+    <navigator url="/pages/me/viewMyProject/viewMyProject?type=ALL" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__hd">
+        <image src="/src/all.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+        </view>
+        <view class="weui-cell__bd">
+          所有项目</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <navigator url="/pages/me/viewMyProject/viewMyProject?type=CHECKING" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__hd">
+        <image src="/src/loading.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+      </view>
+      <view class="weui-cell__bd">
+        待审核项目</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <navigator url="/pages/me/viewMyProject/viewMyProject?type=CURRENT" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__hd">
+        <image src="/src/task-management.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+      </view>
+      <view class="weui-cell__bd">
+        进行中项目</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <navigator url="/pages/me/viewMyProject/viewMyProject?type=HISTORY" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__hd">
+        <image src="/src/confirm.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+      </view>
+      <view class="weui-cell__bd">
+        已完成项目</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    </view>
+
+    <view class="weui-cells weui-cells_after-title setting-row">
+      <navigator url="/pages/changeUserInfo/changeUserInfo" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__hd">
+          <image src="/src/editor.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+        </view>
+        <view class="weui-cell__bd">
+          修改个人信息</view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
-      <navigator url="/pages/me/viewMyProject/viewMyProject?type=CHECKING" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-        <view class="weui-cell__bd">审核中的项目</view>
-        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-      </navigator>
-            <navigator url="/pages/me/viewMyProject/viewMyProject?type=CURRENT" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-        <view class="weui-cell__bd">正在进行的项目</view>
-        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-      </navigator>
-                  <navigator url="/pages/me/viewMyProject/viewMyProject?type=HISTORY" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-        <view class="weui-cell__bd">历史项目</view>
+      <navigator bind:tap="unbundling" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__hd">
+          <image src="/src/unlock.png" style="margin-right: 16px;vertical-align: middle;width:20px; height: 20px;"></image>
+        </view>
+        <view class="weui-cell__bd">
+        解绑用户
+        </view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
     </view>
-  </i-row>
-  
-  <i-tab-bar current="me" bindchange="handleChange" fixed="true">
-    <i-tab-bar-item key="home" icon="homepage" current-icon="homepage_fill" title="项目广场"></i-tab-bar-item>
-    <i-tab-bar-item key="message" icon="remind" current-icon="remind_fill" count="3" title="通知"></i-tab-bar-item>
-    <i-tab-bar-item key="me" icon="mine" current-icon="mine_fill" dot title="我的"></i-tab-bar-item>
-  </i-tab-bar>
-</view>
+
+    <!-- <i-tab-bar current="me" bindchange="handleChange" fixed="true">
+      <i-tab-bar-item key="home" icon="homepage" current-icon="homepage_fill" title="项目广场"></i-tab-bar-item>
+      <i-tab-bar-item key="message" icon="remind" current-icon="remind_fill" count="3" title="通知"></i-tab-bar-item>
+      <i-tab-bar-item key="me" icon="mine" current-icon="mine_fill" dot title="我的"></i-tab-bar-item>
+    </i-tab-bar> -->
+  </view>

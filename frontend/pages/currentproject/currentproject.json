@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "正在进行的项目",
+  "navigationBarTitleText": "工作信息",
   "usingComponents": {
     "i-panel": "/dist/panel/index",
     "i-row": "/dist/row/index",
@@ -9,8 +9,13 @@
     "i-sticky": "/dist/sticky/index",
     "i-sticky-item": "/dist/sticky-item/index",
     "i-card": "/dist/card/index",
+    "i-button": "/dist/button/index",
     "van-collapse": "/dist/Vant/collapse/index",
     "van-collapse-item": "/dist/Vant/collapse-item/index",
+    "van-card": "/dist/Vant/card/index",
+    "van-panel": "/dist/Vant/panel/index",
+    "van-icon": "/dist/Vant/icon/index",
+    "van-tag": "/dist/Vant/tag/index",
     "i-icon": "/dist/icon/index"
   }
 }

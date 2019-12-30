@@ -8,9 +8,11 @@
     "pages/message/message",
     "pages/project/project",
     "pages/project/submit/submit",
-    "pages/project/sign/sign",
     "pages/homepage/homepage",
-    "pages/currentproject/currentproject"
+    "pages/currentproject/currentproject",
+    "pages/comment/comment",
+    "pages/worktimeprove/worktimeprove",
+    "pages/changeUserInfo/changeUserInfo"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -30,9 +32,31 @@
   "navigateToMiniProgramAppIdList": [
     "wx1ebe3b2266f4afe0"
   ],
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "项目广场",
+        "iconPath": "/src/home.png",
+        "selectedIconPath": "/src/home-fill.png"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "text": "通知",
+        "iconPath": "/src/comments.png",
+        "selectedIconPath": "/src/comments-fill.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "/src/account.png",
+        "selectedIconPath": "/src/account-fill.png"
+      }
+    ]
+  },
   "permission": {
     "scope.userLocation": {
-      "desc": "你的位置信息将用于基于地理位置的签到"
+      "desc": "你的位置信息将用于基于地理位置的签到功能"
     }
   }
 }
