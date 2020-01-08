@@ -4,6 +4,7 @@ services:
   - docker
 
 before_install:
+- mv config/config.env.example config/config.env
 - docker-compose build
 
 script:
