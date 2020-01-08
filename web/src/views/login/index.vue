@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">志愿清华管理端 登录</h3>
+        <h3 class="title">志愿清华管理端登录</h3>
       </div>
 
       <el-form-item prop="username">

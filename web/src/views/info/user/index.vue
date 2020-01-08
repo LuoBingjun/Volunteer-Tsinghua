@@ -1,11 +1,11 @@
 <template>
-    <el-card>
-        <h1>
+    <div style="margin:40px;">
+        <h2>
             <i class="el-icon-user">
-            </i> {{form.name}} 的团体信息
-        </h1>
+            </i> {{form.name}}的团体信息
+        </h2>
         <userform :user="form" ref="userform" @modifyuser="modifyuser"/>
-    </el-card>
+    </div>
 </template>
 <script>
 import {getUserInfo,modifyUserInfo} from '@/api/user'

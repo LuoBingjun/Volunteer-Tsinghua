@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div style="margin:40px;">
         <h2><i class="el-icon-setting"> 管理所有用户</i></h2>
-        <el-card style="margin:10px 0px">
+        <el-card>
             <el-table :data="users" style="width: 100%">
                 <el-table-column type="expand" label-width="auto">
                     <template slot-scope="scope">
@@ -24,7 +24,7 @@
         </el-card>
         <el-card style="margin:10px 0px">
             <div slot="header" class="clearfix">
-                <p><i class='el-icon-plus'> 添加新用户</i></p>
+                <i class='el-icon-plus'> 添加新用户</i>
             </div>
             <el-button @click="addform_open=!addform_open" v-if="!addform_open" type="primary">
                 <i class='el-icon-arrow-down'> 点击展开表单</i>
