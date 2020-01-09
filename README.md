@@ -3,4 +3,6 @@
 
 ## 文件结构
 - backend: 后端代码
-- frontend: 前端代码
+- frontend: 小程序端代码
+- web：Web端代码
+- config：部署配置
