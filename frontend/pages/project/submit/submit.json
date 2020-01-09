@@ -12,6 +12,8 @@
     "van-checkbox": "/dist/Vant/checkbox/index",
     "van-checkbox-group": "/dist/Vant/checkbox-group/index",
     "van-cell": "/dist/Vant/cell/index",
-    "van-cell-group": "/dist/Vant/cell-group/index"
+    "van-cell-group": "/dist/Vant/cell-group/index",
+    "van-radio": "/dist/Vant/radio/index",
+    "van-radio-group": "/dist/Vant/radio-group/index"
   }
 }

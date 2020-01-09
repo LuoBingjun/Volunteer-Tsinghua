@@ -137,11 +137,13 @@ Page({
   },
 
   onRadioChanged: function (e) {
+    console.log(e)
     let dataset = e.currentTarget.dataset
-    let value = e.detail.value;
-    this.data.form[dataset.item].value = value
+    let value = e.detail;
+    var form=this.data.form
+    form[dataset.item].value = value
     this.setData({
-      form: this.data.form
+      form: form
     })
     console.log(this.data.form)
   },
